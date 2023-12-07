@@ -1,0 +1,25 @@
+
+.footer {
+    height: 10vh;
+    background-color: #2E2E2E;
+    color: #fff;
+    padding: 20px 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 20px;
+  
+    .linkContainer {
+      display: flex;
+      gap: 24px;
+  
+      .footerLink {
+        font-family: 'elza-text', sans-serif;
+        font-weight: 300;
+        color: inherit;
+        text-decoration: none;
+      }
+    }
+  
+  }
+  

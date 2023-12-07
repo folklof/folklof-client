@@ -1,0 +1,17 @@
+.component-wrapper .primaryButton {
+    padding: 8px 16px;
+    width: 15em;
+    background-color: #515CB1;
+    color: rgb(255, 255, 255);
+    border: none;
+    text-transform: none;
+    border-radius:50px;
+    font-size: 16px;
+    cursor: pointer;
+  
+    &:hover {
+      background-color: #115293;
+      color: white;
+    }
+  }
+  
