@@ -1,9 +1,18 @@
 import React from "react";
 import { Box, Typography } from "@mui/material";
 import { PrimaryButton } from "../../components";
+import { useNavigate } from "react-router-dom";
 import styles from "./HeroSection.module.scss";
 
 const HeroSection: React.FC = () => {
+  const navigate = useNavigate();
+
+  const handleTryNowClick = () => {
+    navigate('/signin');
+  };
+
+
+
   return (
     <Box className={styles.heroContainer}>
       <Box className={styles.imageContainerLeft}>
@@ -38,7 +47,7 @@ const HeroSection: React.FC = () => {
           </Typography>
           <PrimaryButton
             text="Try it now"
-            onClick={() => console.log("Try it now clicked")}
+            onClick={handleTryNowClick}
           />
         </Box>
       </Box>

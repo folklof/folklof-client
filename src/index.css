@@ -1,11 +1,13 @@
 :root {
   
   box-sizing: border-box;
-  background-color: #180326;
+  background-color: #0c0113;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
+* {
+  box-sizing: border-box;
+}

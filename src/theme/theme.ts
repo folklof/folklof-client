@@ -24,6 +24,11 @@ const theme = createTheme({
       fontWeight: 400,
       fontSize: '1.5rem',
     },
+
+    body1: {
+      fontFamily: 'elza-text, sans-serif',
+      fontWeight: 400,
+    },
   },
 });
 
