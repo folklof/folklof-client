@@ -1,8 +1,9 @@
-import React from "react";
+import React from 'react';
 import { TopNavbar, DashboardNavbar, Carousel, Footer } from "../../components";
 import { BestStories, NewRelease } from "../../containers";
 
 const DashboardPage: React.FC = () => {
+  
   return (
     <>
       <TopNavbar />

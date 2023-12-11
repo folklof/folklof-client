@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-interface UserProfile {
+export interface UserProfile {
   ID: string;
   role_id: number;
   username: string;
@@ -11,10 +11,13 @@ interface UserProfile {
   created_date: string;
 }
 
-const getUserProfile = async (): Promise<UserProfile> => {
+export const getUserProfile = async () => {
   const endpoint = 'http://localhost:5001/api/v1/users/profile';
-  const response = await axios.get<UserProfile>(endpoint, { withCredentials: true});
-  return response.data;
+  const response = await axios.get(endpoint, { withCredentials: true });
+  return response.data.data; // Accessing the nested data
 };
 
-export default getUserProfile;
+export const logoutUser = async (): Promise<void> => {
+  const endpoint = 'http://localhost:5001/api/v1/auth/logout';
+  await axios.get(endpoint, {withCredentials: true});
+};

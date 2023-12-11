@@ -1,5 +1,6 @@
 import React from 'react';
 import { Box, Typography, Grid } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import { BookCard } from '../../components';
 
 const dummyBooks = [
@@ -44,6 +45,13 @@ const dummyBooks = [
 ];
 
 const BestStories: React.FC = () => {
+  const navigate = useNavigate();
+
+  const handleSeeAllStoriesClick = () => {
+    navigate('/categories');
+};
+
+
     return (
       <Box sx={{ 
         display: 'flex', 
@@ -62,7 +70,7 @@ const BestStories: React.FC = () => {
           <Typography color="white" variant="h5">
             Best Stories
           </Typography>
-          <Typography color="white" variant="h5" sx={{ cursor: 'pointer' }}>
+          <Typography color="white" variant="h5" sx={{ cursor: 'pointer' }} onClick={handleSeeAllStoriesClick}>
             See all stories
           </Typography>
         </Box>

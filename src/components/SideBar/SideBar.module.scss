@@ -1,0 +1,21 @@
+// Sidebar.module.scss
+
+.sidebar {
+    color: white;
+    background-color: transparent;
+    padding: 1rem;
+    min-width: 15vw; // Set a minimum width for the sidebar
+    max-width: 15vw;
+    margin: 10vh 0;
+  }
+  
+  .categoryList {
+    margin-bottom: 2rem;
+  }
+  
+  .filterSection {
+    margin-bottom: 1rem;
+  }
+  
+  // Add any additional styling you need for the sidebar here
+  

@@ -1,1 +1,1 @@
-export { default as getUserProfile } from './auth';
+export { getUserProfile, logoutUser } from './auth';
