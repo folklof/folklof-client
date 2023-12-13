@@ -1,64 +1,77 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Box, Typography, IconButton, Slider, styled } from "@mui/material";
+import { useParams } from "react-router-dom";
+import { useQuery } from "react-query";
+import { Widget, TinyText } from "../AudioBookPlayer/AudioBookStyled.tsx";
+import { fetchBookData } from "../../api/bookAPI";
+import { Box, Typography, IconButton, Slider, Skeleton } from "@mui/material";
 import PauseRounded from "@mui/icons-material/PauseRounded";
 import PlayArrowRounded from "@mui/icons-material/PlayArrowRounded";
+import styles from './AudioBookPlayer.module.scss';
 
-
-// Styled components
-const Widget = styled("div")(({ theme }) => ({
-  padding: 16,
-  borderRadius: 16,
-  width: "100%",
-  maxWidth: "100%",
-  margin: "auto",
-  position: "relative",
-  zIndex: 1,
-  backgroundColor:
-    theme.palette.mode === "dark" ? "rgba(0,0,0,0.6)" : "rgba(255,255,255, 0.5)",
-  backdropFilter: "blur(40px)",
-}));
-
-const TinyText = styled(Typography)({
-  fontSize: "0.75rem",
-  opacity: 0.38,
-  fontWeight: 500,
-  letterSpacing: 0.2,
-});
-
-// Main component
 const AudioBookPlayer: React.FC = () => {
+  const { id } = useParams();
   const [isPlaying, setIsPlaying] = useState(false);
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
-  const audioRef = useRef<HTMLAudioElement>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  const {
+    data: bookData,
+    isLoading,
+    isError,
+    error,
+  } = useQuery(["bookData", id], () => fetchBookData(id!), { enabled: !!id });
+
+  const FormattedText = ({ text }: { text: string }) => {
+    const cleanText = text.replace(/\\"/g, '"');
+
+    return (
+      <>
+        {cleanText.split("\\n").map((line, index) => (
+          <React.Fragment key={index}>
+            {line}
+            <br />
+          </React.Fragment>
+        ))}
+      </>
+    );
+  };
 
   useEffect(() => {
     const audio = audioRef.current;
+    if (!audio || !bookData?.audio_link) return;
 
+    // Function to set audio data
     const setAudioData = () => {
       if (audio) {
         setDuration(audio.duration);
       }
     };
 
-    const setAudioTime = () => setCurrentTime(audio ? audio.currentTime : 0);
+    audio.load();
 
-    const handleAudioEnd = () => setIsPlaying(false); // Handler for audio end
+    // Adding event listeners
+    audio.addEventListener("loadedmetadata", setAudioData);
+    audio.addEventListener("timeupdate", () =>
+      setCurrentTime(audio.currentTime)
+    );
+    audio.addEventListener("ended", () => setIsPlaying(false));
 
-    if (audio) {
-      audio.addEventListener("loadeddata", setAudioData);
-      audio.addEventListener("timeupdate", setAudioTime);
-      audio.addEventListener("ended", handleAudioEnd); // Listen for audio end
-    }
-
+    // Removing event listeners
     return () => {
-      if (audio) {
-        audio.removeEventListener("loadeddata", setAudioData);
-        audio.removeEventListener("timeupdate", setAudioTime);
-        audio.removeEventListener("ended", handleAudioEnd); // Clean up
-      }
+      audio.removeEventListener("loadedmetadata", setAudioData);
+      audio.removeEventListener("timeupdate", () =>
+        setCurrentTime(audio.currentTime)
+      );
+      audio.removeEventListener("ended", () => setIsPlaying(false));
     };
-  }, []);
+  }, [bookData?.audio_link, id]);
+
+  useEffect(() => {
+    // Reset states when bookData changes
+    setCurrentTime(0);
+    setIsPlaying(false);
+  }, [bookData]);
 
   const togglePlayPause = () => {
     const audio = audioRef.current;
@@ -68,9 +81,9 @@ const AudioBookPlayer: React.FC = () => {
     }
   };
 
-  const handleSliderChange = (_event: Event, newValue: number | number[]) => {
+  const handleSliderChange = (_: any, newValue: number | number[]) => {
     const audio = audioRef.current;
-    const newTime = typeof newValue === "number" ? newValue : newValue[0];
+    const newTime = Array.isArray(newValue) ? newValue[0] : newValue;
     if (audio) {
       audio.currentTime = newTime;
       setCurrentTime(newTime);
@@ -83,123 +96,152 @@ const AudioBookPlayer: React.FC = () => {
     return `${minute}:${secondLeft < 10 ? `0${secondLeft}` : secondLeft}`;
   }
 
+  const getErrorMessage = (err: unknown) => {
+    if (err instanceof Error) return err.message;
+    return String(err);
+  };
+
+  if (isLoading) {
+    return (
+      <Box className={styles.audioBox}>
+      <Widget className={styles.widget}>
+          <Box
+            sx={{ display: "flex", gap: "35px", width: "100%", height: "60vh" }}
+          >
+            {/* Skeleton for the Media Player Container */}
+            <Box className={styles.mediaPlayerContainer}>
+            <Skeleton
+              variant="rectangular"
+              width={450}
+              height={450}
+              className={styles.mediaSkeleton}
+            />
+              <Skeleton variant="text" width={210} height={60} />
+              <Skeleton variant="rectangular" width={"90%"} height={60} />
+            </Box>
+
+            {/* Skeleton for the Text Container */}
+            <Box className={styles.textContainer}>
+              <Skeleton variant="text" width={"50%"} height={60} />
+              <Skeleton variant="rectangular" width={"58vw"} height={"50vh"} />
+            </Box>
+          </Box>
+        </Widget>
+      </Box>
+    );
+  }
+  if (isError) return <div>Error: {getErrorMessage(error)}</div>;
+
   return (
-    <Box sx={{ width: "100%", padding: "5vw 10vw", overflow: "hidden" }}>
+    <Box
+      sx={{
+        width: "100%",
+        padding: "5vw",
+        marginBottom: "10vh",
+        overflow: "hidden",
+      }}
+    >
       <Widget>
-        <audio ref={audioRef} src="src/assets/audio/a.mp3" preload="metadata" />
-        <Box sx={{ display: "flex", alignItems: "center" }}>
+        <audio ref={audioRef} src={bookData?.audio_link} preload="metadata" />
+        {/* Main container for media player and text */}
+        <Box
+          sx={{ display: "flex", gap: "35px", width: "100%", height: "65vh" }}
+        >
+          {/* Media Player Container */}
           <Box
             sx={{
-              width: 450,
-              height: 550,
-              overflow: "hidden",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              maxWidth: "50%",
+              backgroundColor: "rgba(242,242,242, 0.9)",
               borderRadius: "15px",
-              marginRight: "1rem",
+              backdropFilter: "blur(40px)",
             }}
           >
-            <img
-              src="src/assets/images/sample-a.webp"
-              style={{
-                width: "100%",
-                height: "100%",
-                objectFit: "cover",
+            <Box
+              sx={{
+                width: "25vw",
+                height: "25vw",
+                overflow: "hidden",
+                borderRadius: "15px",
+                marginBottom: "1rem",
               }}
+            >
+              <img
+                src={bookData?.cover_image}
+                alt={bookData?.title}
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                  borderRadius: "35px",
+                  padding: "20px",
+                }}
+              />
+            </Box>
+            <Typography variant="h5" noWrap sx={{ textAlign: "center" }}>
+              {bookData?.title}
+            </Typography>
+            <Slider
+              aria-label="time-indicator"
+              size="small"
+              value={currentTime}
+              min={0}
+              step={1}
+              max={duration}
+              onChange={handleSliderChange}
+              sx={{ width: "90%" }}
             />
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                width: "90%",
+              }}
+            >
+              <TinyText>{formatDuration(currentTime)}</TinyText>
+              <TinyText>-{formatDuration(duration - currentTime)}</TinyText>
+            </Box>
+            <IconButton
+              aria-label={isPlaying ? "pause" : "play"}
+              onClick={togglePlayPause}
+              sx={{ marginBottom: 4 }}
+            >
+              {isPlaying ? (
+                <PauseRounded fontSize="large" />
+              ) : (
+                <PlayArrowRounded fontSize="large" />
+              )}
+            </IconButton>
           </Box>
-          <Box sx={{ ml: 1.5, minWidth: 0 }}>
-            <Typography variant="h4" noWrap>
-              The brave little star
-            </Typography>
-            <Typography variant="h6" letterSpacing={-0.25} sx={{ width: "50vw" }}>
-            Once upon a time, in a twinkling night sky, 
-            there was a small star named Twink.
-            Twink felt tiny and dim compared to the other stars. 
-            He wished he could be brighter. 
-            One evening, the wise Moon noticed 
-            Twink's sadness and said, 
-            Twink, every star is special. 
-            Your gentle glow is just what some people need. 
-            Encouraged, Twink tried to shine his best. 
-            That night, a little girl on Earth looked up and saw Twink. 
-            Look, Mommy, that star is shining just for me! she exclaimed.
-            Twink realized that even as a small star, 
-            he could make a big difference to someone. 
-            From then on, Twink shone happily every night, 
-            knowing he was important just the way he was.
-            Your gentle glow is just what some people need. 
-            Encouraged, Twink tried to shine his best. 
-            That night, a little girl on Earth looked up and saw Twink. 
-            Look, Mommy, that star is shining just for me! she exclaimed.
-            Twink realized that even as a small star, 
-            he could make a big difference to someone. 
-            From then on, Twink shone happily every night, 
-            knowing he was important just the way he was.
-            </Typography>
-          </Box>
-        </Box>
-        <Slider
-          aria-label="time-indicator"
-          size="small"
-          value={currentTime}
-          min={0}
-          step={1}
-          max={duration}
-          onChange={handleSliderChange}
-          sx={{
-            color: "#FDCC64",
-            height: 4,
-            "& .MuiSlider-thumb": {
-              width: 8,
-              height: 8,
-              backgroundColor: "#FDCC64",
-              transition: "0.3s cubic-bezier(.47,1.64,.41,.8)",
-              "&:hover, &.Mui-focusVisible, &.Mui-active": {
-                width: 20,
-                height: 20,
-              },
-            },
-            "& .MuiSlider-track": {
-              backgroundColor: "#FDCC64",
-            },
-            "& .MuiSlider-rail": {
-              opacity: 0.28,
-              backgroundColor: "#FDCC64",
-            },
-          }}
-        />
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            mt: -2,
-          }}
-        >
-          <TinyText>{formatDuration(currentTime)}</TinyText>
-          <TinyText>-{formatDuration(duration - currentTime)}</TinyText>
-        </Box>
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            mt: -1,
-          }}
-        >
-          <IconButton
-            aria-label={isPlaying ? "pause" : "play"}
-            onClick={togglePlayPause}
+
+          {/* Text Container */}
+          <Box
+            sx={{
+              maxWidth: "100%",
+              overflow: "hidden",
+              padding: "45px",
+              backdropFilter: "blur(40px)",
+              backgroundColor: "rgba(242,242,242, 0.9)",
+              borderRadius: "20px",
+            }}
           >
-            {isPlaying ? (
-              <PauseRounded fontSize="large" />
-            ) : (
-              <PlayArrowRounded fontSize="large" />
-            )}
-          </IconButton>
+            <Typography variant="h4" noWrap sx={{ textAlign: "center" }}>
+              {bookData?.title}
+            </Typography>
+            <Typography
+              variant="h6"
+              letterSpacing={-0.25}
+              sx={{ width: "58vw", overflow: "auto", maxHeight: "50vh", mt: 2 }}
+            >
+              <FormattedText text={bookData ? bookData.desc : ""} />
+            </Typography>
+          </Box>
         </Box>
       </Widget>
     </Box>
   );
-}
+};
 
 export default AudioBookPlayer;

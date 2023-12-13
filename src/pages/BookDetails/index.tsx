@@ -1,9 +1,13 @@
-import React from 'react';
-import { TopNavbar, DashboardNavbar, AudioBookPlayer, Quiz } from '../../components';
+import React, { useEffect } from 'react';
+import { TopNavbar, DashboardNavbar, AudioBookPlayer, Quiz, Footer } from '../../components';
 import { ReviewList, FeedbackForm } from '../../containers';
 
 const BookDetails: React.FC = () => {
     const bookTitle = "The Brave Little Star";
+
+    useEffect(() => {
+      window.scrollTo(0, 0);
+  }, []);
 
     return (
     <>
@@ -13,6 +17,7 @@ const BookDetails: React.FC = () => {
       <Quiz />
       <ReviewList bookTitle={bookTitle} />
       <FeedbackForm />
+      <Footer />
     </>
   );
 }

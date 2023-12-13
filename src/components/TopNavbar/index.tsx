@@ -16,7 +16,7 @@ const TopNavbar: React.FC = () => {
   const menuOpen = Boolean(anchorEl);
 
   const handleLogoClick = () => {
-    navigate('/');
+    navigate('/dashboard');
   };
 
   const handleSignInClick = () => {
