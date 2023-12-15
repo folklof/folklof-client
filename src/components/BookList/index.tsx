@@ -1,5 +1,4 @@
-// BookList.tsx
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Typography,
@@ -8,19 +7,21 @@ import {
   Rating,
   SelectChangeEvent,
 } from "@mui/material";
-import { useNavigate } from 'react-router-dom';
+import StarBorderIcon from "@mui/icons-material/StarBorder";
+import { useNavigate } from "react-router-dom";
 import { PrimaryButton, SecondaryButton } from "../../components";
 import styles from "./BookList.module.scss";
-import { BookAttributes } from "../../types";
+import { BookAttributes, BookWithRating } from "../../types";
+import axios from "axios";
+
+const baseURL = import.meta.env.VITE_BASE_URL;
 
 interface BookListProps {
   books: BookAttributes[];
   sort: string;
   handleSortChange: (event: SelectChangeEvent<string>) => void;
-  isLoading: boolean;  // Add this line
+  isLoading: boolean;
 }
-
-
 
 const BookList: React.FC<BookListProps> = ({
   books,
@@ -28,7 +29,34 @@ const BookList: React.FC<BookListProps> = ({
   handleSortChange,
 }) => {
   const navigate = useNavigate();
-  
+  const [bookListWithRatings, setBookListWithRatings] = useState<
+    BookWithRating[]
+  >([]);
+
+  useEffect(() => {
+    const fetchRatings = async () => {
+      const updatedBooks: BookWithRating[] = await Promise.all(
+        books.map(async (book) => {
+          try {
+            const response = await axios.get(
+              `${baseURL}/reviews/rating/${book.ID}`
+            );
+            return { ...book, ...response.data.data };
+          } catch (error) {
+            console.error("Error fetching rating for book ID:", book.ID, error);
+            return { ...book };
+          }
+        })
+      );
+
+      setBookListWithRatings(updatedBooks);
+    };
+
+    if (books.length > 0) {
+      fetchRatings();
+    }
+  }, [books]);
+
   return (
     <Box className={styles.bookList}>
       <Box className={styles.sortByContainer}>
@@ -44,7 +72,7 @@ const BookList: React.FC<BookListProps> = ({
         </Select>
       </Box>
 
-      {books.map((book) => (
+      {bookListWithRatings.map((book) => (
         <Box key={book.ID} className={styles.bookItem}>
           <img
             src={book.cover_image}
@@ -56,8 +84,28 @@ const BookList: React.FC<BookListProps> = ({
               <Typography variant="h5" className={styles.bookTitle}>
                 {book.title}
               </Typography>
-              <Rating name="read-only" value={5} readOnly />{" "}
-              {/* Adjust rating logic */}
+              <Rating
+                name="read-only"
+                value={book.avgRating || 0}
+                readOnly
+                precision={0.5}
+                emptyIcon={
+                  <StarBorderIcon
+                    style={{ color: "rgba(255, 255, 255, 0.5)" }}
+                  />
+                }
+                sx={{
+                  "& .MuiRating-iconFilled": {
+                    color: "gold",
+                  },
+                  "& .MuiRating-iconEmpty": {
+                    color: "rgba(255, 255, 255, 0.5)",
+                  },
+                  "& .MuiRating-iconHover": {
+                    color: "gold",
+                  },
+                }}
+              />
             </Box>
             <Box>
               <Typography variant="body2">Duration: {book.duration}</Typography>

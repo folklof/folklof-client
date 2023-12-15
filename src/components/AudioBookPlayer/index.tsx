@@ -2,11 +2,11 @@ import React, { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { useQuery } from "react-query";
 import { Widget, TinyText } from "../AudioBookPlayer/AudioBookStyled.tsx";
-import { fetchBookData } from "../../api/bookAPI";
+import { fetchBookData } from "../../api/book/bookAPI.ts";
 import { Box, Typography, IconButton, Slider, Skeleton } from "@mui/material";
 import PauseRounded from "@mui/icons-material/PauseRounded";
 import PlayArrowRounded from "@mui/icons-material/PlayArrowRounded";
-import styles from './AudioBookPlayer.module.scss';
+import styles from "./AudioBookPlayer.module.scss";
 
 const AudioBookPlayer: React.FC = () => {
   const { id } = useParams();
@@ -104,18 +104,18 @@ const AudioBookPlayer: React.FC = () => {
   if (isLoading) {
     return (
       <Box className={styles.audioBox}>
-      <Widget className={styles.widget}>
+        <Widget className={styles.widget}>
           <Box
             sx={{ display: "flex", gap: "35px", width: "100%", height: "60vh" }}
           >
             {/* Skeleton for the Media Player Container */}
             <Box className={styles.mediaPlayerContainer}>
-            <Skeleton
-              variant="rectangular"
-              width={450}
-              height={450}
-              className={styles.mediaSkeleton}
-            />
+              <Skeleton
+                variant="rectangular"
+                width={450}
+                height={450}
+                className={styles.mediaSkeleton}
+              />
               <Skeleton variant="text" width={210} height={60} />
               <Skeleton variant="rectangular" width={"90%"} height={60} />
             </Box>
@@ -136,7 +136,7 @@ const AudioBookPlayer: React.FC = () => {
     <Box
       sx={{
         width: "100%",
-        padding: "5vw",
+        padding: "5vw 8vw",
         marginBottom: "10vh",
         overflow: "hidden",
       }}
@@ -219,7 +219,7 @@ const AudioBookPlayer: React.FC = () => {
           {/* Text Container */}
           <Box
             sx={{
-              maxWidth: "100%",
+              Width: "100%",
               overflow: "hidden",
               padding: "45px",
               backdropFilter: "blur(40px)",
@@ -233,7 +233,27 @@ const AudioBookPlayer: React.FC = () => {
             <Typography
               variant="h6"
               letterSpacing={-0.25}
-              sx={{ width: "58vw", overflow: "auto", maxHeight: "50vh", mt: 2 }}
+              sx={{
+                width: "50vw",
+                maxHeight: "50vh",
+                mt: 2,
+                paddingLeft: 0,
+                paddingRight: 6,
+                overflow: "auto",
+                "&::-webkit-scrollbar": {
+                  width: "10px",
+                },
+                "&::-webkit-scrollbar-track": {
+                  backgroundColor: "#f1f1f1",
+                },
+                "&::-webkit-scrollbar-thumb": {
+                  backgroundColor: "#515CB1",
+                  borderRadius: "5px",
+                  "&:hover": {
+                    backgroundColor: "#515CB1",
+                  },
+                },
+              }}
             >
               <FormattedText text={bookData ? bookData.desc : ""} />
             </Typography>
