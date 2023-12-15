@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { fetchQuizData, submitQuizAnswer } from "../../api";
 import {
   Box,
   Typography,
@@ -6,74 +7,90 @@ import {
   RadioGroup,
   FormControl,
   FormControlLabel,
+  Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  Skeleton,
   FormLabel,
 } from "@mui/material";
 import { PrimaryButton } from "..";
+import { QuizQuestion, QuizProps } from "../../types";
+import styles from "./Quiz.module.scss";
 
-interface Question {
-  question: string;
-  options: string[];
-  correct: string;
-}
+const Quiz: React.FC<QuizProps> = ({ bookId }) => {
+  const [quizData, setQuizData] = useState<QuizQuestion[]>([]);
+  const [isLoading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+  const [answer, setAnswer] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
 
-const questions: Question[] = [
-  {
-    question: "What is the name of the small star in the story?",
-    options: ["Sparkle", "Twink", "Bright"],
-    correct: "Twink",
-  },
-  {
-    question: "Who helped Twink understand his importance?",
-    options: ["The Sun", "The Moon", "A Comet"],
-    correct: "The Moon",
-  },
-  {
-    question: "What did Twink realize by the end of the story?",
-    options: [
-      "He wanted to be bigger.",
-      "He needed to be brighter.",
-      "He could make a big difference even as a small star.",
-    ],
-    correct: "He could make a big difference even as a small star.",
-  },
-  // Add more questions as needed
-];
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await fetchQuizData(bookId);
+        setQuizData(data);
+        setLoading(false);
+      } catch (err) {
+        setError(true);
+        setLoading(false);
+      }
+    };
 
-const Quiz: React.FC = () => {
-  const [answers, setAnswers] = useState<string[]>(
-    new Array(questions.length).fill("")
-  );
+    fetchData();
+  }, [bookId]);
 
-  const handleChange = (
-    event: React.ChangeEvent<HTMLInputElement>,
-    index: number
-  ) => {
-    const updatedAnswers = [...answers];
-    updatedAnswers[index] = event.target.value;
-    setAnswers(updatedAnswers);
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setAnswer(event.target.value);
   };
 
-//   const handleSubmit = () => {
-//     console.log(answers);
-//   };
+  const handleSubmit = async () => {
+    if (!quizData.length || !answer) {
+      console.log("No question selected or no answer chosen.");
+      return;
+    }
+
+    try {
+      const quizId = quizData[0].ID;
+      const response = await submitQuizAnswer(quizId, answer);
+      setModalMessage(response.message);
+      setIsModalOpen(true);
+    } catch (error) {
+      setModalMessage(
+        error instanceof Error ? error.message : "An unexpected error occurred"
+      );
+      setIsModalOpen(true);
+    }
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  if (isLoading) {
+    return (
+      <Box sx={{ maxWidth: "80vw", m: "auto", p: 3 }}>
+        <Skeleton variant="text" width="80%" height={60} />
+        <Skeleton variant="rectangular" width="80%" height={118} />
+      </Box>
+    );
+  }
+
+  if (error) return <div>An error has occurred</div>;
+
+  const singleQuestion = quizData.length > 0 ? quizData[0] : null;
 
   return (
-    <Box
-      sx={{
-        maxWidth: "80vw",
-        m: "auto",
-        p: 3,
-        bgcolor: "transparent",
-        border: "1px solid #227078",
-        borderRadius: 4,
-      }}
-    >
-      <Typography variant="h4" sx={{ color: "white", mb: 6 }}>
+    <Box className={styles.quizBox}>
+      <Typography variant="h4" className={styles.quizTitle}>
         Mystical Quest
       </Typography>
-      <FormControl component="fieldset">
-        {questions.map((question, index) => (
-          <Box key={index} sx={{ mb: 6 }}>
+      {singleQuestion && (
+        <FormControl component="fieldset">
+          <Box sx={{ mb: 6, padding: 3 }}>
             <FormLabel
               component="legend"
               sx={{
@@ -82,12 +99,12 @@ const Quiz: React.FC = () => {
                 "&.Mui-focused": { color: "white" },
               }}
             >
-              {question.question}
+              {singleQuestion.question}
             </FormLabel>
             <RadioGroup
-              name={`question-${index}`}
-              value={answers[index]}
-              onChange={(event) => handleChange(event, index)}
+              name="quiz-question"
+              value={answer}
+              onChange={handleChange}
               row
               sx={{
                 ".MuiFormControlLabel-root": {
@@ -101,9 +118,13 @@ const Quiz: React.FC = () => {
                 },
               }}
             >
-              {question.options.map((option) => (
+              {[
+                singleQuestion.option1,
+                singleQuestion.option2,
+                singleQuestion.option3,
+              ].map((option, index) => (
                 <FormControlLabel
-                  key={option}
+                  key={index}
                   value={option}
                   control={<Radio />}
                   label={option}
@@ -112,14 +133,28 @@ const Quiz: React.FC = () => {
               ))}
             </RadioGroup>
           </Box>
-        ))}
-        <Box sx={{ display: 'flex', width:'75vw' , justifyContent: 'flex-end', mt: 2 }}>
-        <PrimaryButton
-          text="Submit"
-          onClick={() => console.log("Primary button clicked")}
-        />
-      </Box>
-      </FormControl>
+          <Box
+            sx={{
+              display: "flex",
+              width: "75vw",
+              justifyContent: "flex-end",
+              mb: 3,
+            }}
+          >
+            <PrimaryButton text="Submit" onClick={handleSubmit} disabled={answer === ""} />
+          </Box>
+        </FormControl>
+      )}
+
+      <Dialog open={isModalOpen} onClose={handleCloseModal}>
+        <DialogTitle>Quest Outcome</DialogTitle>
+        <DialogContent>
+          <DialogContentText>{modalMessage}</DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseModal}>Close</Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };
