@@ -1,24 +1,33 @@
 import React from 'react';
-import { Typography, Card, CardMedia, CardContent } from '@mui/material';
+import { Typography, Card, CardMedia, CardContent,Tooltip } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 interface BookCardProps {
+  id: string;
   title: string;
   category: string;
   imageUrl: string;
 }
 
-const BookCard: React.FC<BookCardProps> = ({ title, category, imageUrl }) => {
+const BookCard: React.FC<BookCardProps> = ({ id, title, imageUrl, category  }) => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(`/book/${id}`);
+  };
+
   return (
     <Card sx={{ maxWidth: 253, bgcolor: 'transparent', borderRadius: 3, marginRight:'33px'}}>
-      <CardMedia
+      <CardMedia onClick={handleClick }
         component="img"
         height="250"
         image={imageUrl}
         alt={title}
-        sx={{ borderRadius: 2 }}
+        sx={{ borderRadius: 2, cursor: 'pointer' }}
       />
       <CardContent>
-        <Typography 
+      <Tooltip title={title} placement="top" arrow>
+        <Typography onClick={handleClick }
           gutterBottom 
           variant="h6" 
           color="white"
@@ -28,10 +37,12 @@ const BookCard: React.FC<BookCardProps> = ({ title, category, imageUrl }) => {
             overflow: 'hidden',
             textOverflow: 'ellipsis',
             maxWidth: '100%',
+            cursor: 'pointer'
           }}
         >
           {title}
         </Typography>
+        </Tooltip>
         <Typography variant="body2" color="white">
           {category}
         </Typography>

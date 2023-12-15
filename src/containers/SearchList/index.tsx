@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Grid, Box, Skeleton, SelectChangeEvent } from "@mui/material";
 import { useInfiniteQuery } from "react-query";
-import { SideBar, BookList, SecondaryButton } from "../../components";
+import { SideBar, BookList } from "../../components";
 import {
   fetchBooks,
   BooksResponse,
@@ -10,9 +10,9 @@ import {
   fetchAgeGroups,
 } from "../../api/book/bookAPI";
 import { BookAttributes, ICategory, IAgeGroup } from "../../types";
-import styles from "./AllBooks.module.scss";
+import styles from "./SearchList.module.scss";
 
-const AllBooks: React.FC<{ searchQuery: string | null }> = ({ searchQuery }) => {
+const SearchLists: React.FC<{ searchQuery: string | null }> = ({ searchQuery }) => {
   const [sort, setSort] = useState<string>("2");
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [selectedAgeGroup, setSelectedAgeGroup] = useState<string>("");
@@ -32,9 +32,13 @@ const AllBooks: React.FC<{ searchQuery: string | null }> = ({ searchQuery }) => 
     initializeData();
   }, []);
 
+//   useEffect(() => {
+//     console.log("Current search query:", searchQuery);
+//   }, [searchQuery]);
+
   const effectiveSearchQuery = searchQuery || '';
 
-  const { data, isLoading, isError, error, fetchNextPage } = useInfiniteQuery<
+  const { data, isLoading, isError, error } = useInfiniteQuery<
     BooksResponse,
     Error,
     BooksResponse,
@@ -72,7 +76,7 @@ const AllBooks: React.FC<{ searchQuery: string | null }> = ({ searchQuery }) => 
           selectedAgeGroup={selectedAgeGroup}
         />
       </Grid>
-      <Grid item xs={12} md={8} lg={9}>
+      <Grid item xs={12} md={8} lg={9} marginBottom={15}>
         {isLoading ? (
           <Box>
             {Array.from(new Array(3)).map((_, index) => (
@@ -106,12 +110,6 @@ const AllBooks: React.FC<{ searchQuery: string | null }> = ({ searchQuery }) => 
               handleSortChange={handleSortChange}
               isLoading={isLoading}
             />
-            <Box textAlign="left" my={2} padding={"6vh"}>
-              <SecondaryButton
-                text="Load More"
-                onClick={() => fetchNextPage()}
-              />
-            </Box>
           </>
         )}
       </Grid>
@@ -119,4 +117,4 @@ const AllBooks: React.FC<{ searchQuery: string | null }> = ({ searchQuery }) => 
   );
 };
 
-export default AllBooks;
+export default SearchLists;

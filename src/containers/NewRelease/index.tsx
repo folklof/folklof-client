@@ -1,49 +1,14 @@
 import React from 'react';
-import { Box, Typography, Grid } from '@mui/material';
+import { Box, Typography, Grid, Skeleton } from '@mui/material';
 import { BookCard } from '../../components';
-
-const dummyBooks = [
-    {
-      id: 1,
-      title: 'Book Title 1',
-      category: 'Fantasy',
-      imageUrl: 'src/assets/images/featured-a.webp',
-    },
-    {
-      id: 3,
-      title: 'The Brave Little Star',
-      category: 'Fantasy',
-      imageUrl: 'src/assets/images/featured-b.webp',
-    },
-    {
-      id: 4,
-      title: 'Book Title 3',
-      category: 'Fantasy',
-      imageUrl: 'src/assets/images/featured-c.webp',
-    },
-    {
-      id: 5,
-      title: 'Lady Bug',
-      category: 'Fantasy',
-      imageUrl: 'src/assets/images/heroleft-a.webp',
-    },
-    {
-      id: 6,
-      title: 'DragonFly',
-      category: 'Fantasy',
-      imageUrl: 'src/assets/images/heroleft-b.webp',
-    },
-    {
-      id: 7,
-      title: 'DragonFly',
-      category: 'Fantasy',
-      imageUrl: 'src/assets/images/login-bg.webp',
-    },
-    
-    // Add more dummy book objects
-  ];
+import { useQuery } from 'react-query';
+import { fetchNewReleaseBooks } from '../../api/book/bookAPI';
+import { BookAttributes } from '../../types'; 
 
 const NewRelease: React.FC = () => {
+  const { data: books = [], isLoading, isError } = useQuery<BookAttributes[]>('new-release', fetchNewReleaseBooks);
+
+
     return (
       <Box sx={{ 
         display: 'flex', 
@@ -65,18 +30,24 @@ const NewRelease: React.FC = () => {
 
         </Box>
         <Grid container justifyContent="center" width="100%">
-          <Grid item xs={12}>
-            <Box sx={{ display: 'flex', justifyContent:"center", marginLeft:"35px", overflowX:"none",flexWrap:"wrap"}}>
-              {dummyBooks.map((book) => (
+        <Grid item xs={12}>
+          <Box sx={{ display: 'flex', justifyContent: 'center', marginLeft: '35px', overflowX: 'none', flexWrap: 'wrap' }}>
+            {isLoading ? (
+              <Skeleton variant="rectangular" width="100%" height={118} />
+            ) : isError ? (
+              <Typography color="error">Error loading stories.</Typography>
+            ) : (
+              books.map((book) => (
                 <BookCard
-                  key={book.id}
+                  id={book.ID} 
+                  key={book.ID}
                   title={book.title}
-                  category={book.category}
-                  imageUrl={book.imageUrl}
-                />
-              ))}
-            </Box>
-          </Grid>
+                  category={book.category.name}
+                  imageUrl={book.cover_image}                />
+              ))
+            )}
+          </Box>
+        </Grid>
         </Grid>
       </Box>
     );
