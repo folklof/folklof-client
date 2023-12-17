@@ -15,12 +15,12 @@ const ReviewList: React.FC<ReviewListProps> = ({ bookId, refresh }) => {
 
   useEffect(() => {
     const getReviews = async () => {
-      console.log(`Fetching reviews for bookId: ${bookId}`);
+      // console.log(`Fetching reviews for bookId: ${bookId}`);
       setLoading(true);
   
       try {
         const bookReviews = await fetchBookReviews(bookId);
-        console.log('Fetched reviews:', bookReviews);
+        // console.log('Fetched reviews:', bookReviews);
   
         if (bookReviews && bookReviews.length > 0) {
           setReviews(bookReviews);

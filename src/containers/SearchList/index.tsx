@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Grid, Box, Skeleton, SelectChangeEvent } from "@mui/material";
+import { Grid, Box, SelectChangeEvent } from "@mui/material";
 import { useInfiniteQuery } from "react-query";
 import { SideBar, BookList } from "../../components";
 import {
@@ -81,7 +81,7 @@ const SearchLists: React.FC<{ searchQuery: string | null }> = ({ searchQuery }) 
           <Box>
             {Array.from(new Array(3)).map((_, index) => (
               <Box key={index} sx={{ marginBottom: 2 }}>
-                <Skeleton
+                {/* <Skeleton
                   variant="rectangular"
                   height={118}
                   animation="wave"
@@ -94,7 +94,7 @@ const SearchLists: React.FC<{ searchQuery: string | null }> = ({ searchQuery }) 
                 <Skeleton
                   variant="text"
                   sx={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }}
-                />
+                /> */}
               </Box>
             ))}
           </Box>

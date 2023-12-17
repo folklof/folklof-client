@@ -83,3 +83,65 @@ export interface Review {
     created_date: string;
   };
 }
+
+
+//Favourite
+export interface FavouriteBookDetails {
+  ID: string;
+  title: string;
+  desc: string;
+  duration: string;
+  audio_link: string;
+  cover_image: string;
+  created_date: string;
+  avgRating?: number;
+}
+
+export interface FavouriteBook {
+  ID: string;
+  user_id: string;
+  book_id: string;
+  is_add: boolean;
+  created_date: string;
+  book: FavouriteBookDetails;
+}
+
+export interface FavouriteProps {
+  onLoaded: () => void;
+}
+
+
+// Library
+export interface BookDetails {
+  ID: string;
+  title: string;
+  desc: string;
+  duration: string;
+  audio_link: string;
+  cover_image: string;
+  created_date: string;
+  avgRating?: number;
+}
+
+export interface LibraryBook {
+  ID: string;
+  user_id: string;
+  book_id: string;
+  is_read: boolean;
+  created_date: string;
+  book: BookDetails;
+}
+
+export interface LibraryProps {
+    onLoaded: () => void;
+  }
+
+// Rating
+export interface RatingResponse {
+  success: boolean;
+  message: string;
+  data: {
+    avgRating?: number;
+    totalBookReviews?: number;
+  };
+}

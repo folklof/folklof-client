@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import {
   Box,
   Typography,
@@ -9,6 +8,7 @@ import {
   Alert,
 } from "@mui/material";
 import { PrimaryButton } from "../../components";
+import { getUserProfile, postFeedback } from "../../api";
 
 interface FeedbackFormProps {
   bookId: string;
@@ -20,19 +20,16 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ bookId, onNewReview }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [userId, setUserId] = useState<string | null>(null);
-  const [openSnackbar, setOpenSnackbar] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [openSuccessSnackbar, setOpenSuccessSnackbar] = useState(false);
+  const [openWarningSnackbar, setOpenWarningSnackbar] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [warningMessage, setWarningMessage] = useState("");
 
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_BASE_URL}/users/profile`,
-          {
-            withCredentials: true,
-          }
-        );
-        setUserId(response.data.data.ID);
+        const userProfile = await getUserProfile();
+        setUserId(userProfile.ID);
       } catch (error) {
         console.error("Error fetching user profile:", error);
       }
@@ -42,19 +39,23 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ bookId, onNewReview }) => {
   }, []);
 
   const handleCloseSnackbar = (
-    _event: React.SyntheticEvent | Event,
-    reason?: string
+    setOpen: React.Dispatch<React.SetStateAction<boolean>>
   ) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    setOpenSnackbar(false);
+    return (_event?: React.SyntheticEvent | Event, reason?: string) => {
+      if (reason === "clickaway") {
+        return;
+      }
+      setOpen(false);
+    };
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!userId) {
-      console.error("User ID is not available");
+    if (!userId || !title || !description || rating === null || rating < 1) {
+      setWarningMessage(
+        "Please fill in all fields and provide a rating of at least 1"
+      );
+      setOpenWarningSnackbar(true);
       return;
     }
 
@@ -66,13 +67,11 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ bookId, onNewReview }) => {
     };
 
     try {
-      const response = await axios.post(
-        `${import.meta.env.VITE_BASE_URL}/reviews/book/${bookId}`,
-        feedbackData
-      );
-      console.log("Feedback submitted:", response.data);
-      setSnackbarMessage("Feedback submitted successfully!");
-      setOpenSnackbar(true);
+      // Use the postFeedback function from the API service
+      await postFeedback(bookId, feedbackData);
+      console.log("Feedback submitted");
+      setSuccessMessage("Feedback submitted successfully!");
+      setOpenSuccessSnackbar(true);
       // Reset form fields
       setTitle("");
       setDescription("");
@@ -132,6 +131,7 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ bookId, onNewReview }) => {
           variant="filled"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
+          required
           sx={{
             borderRadius: "8px",
             "& label": {
@@ -153,6 +153,7 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ bookId, onNewReview }) => {
           rows={4}
           value={description}
           onChange={(e) => setDescription(e.target.value)}
+          required
           sx={{
             borderRadius: "8px",
             "& label": {
@@ -172,16 +173,31 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ bookId, onNewReview }) => {
         </Box>
       </form>
       <Snackbar
-        open={openSnackbar}
+        open={openSuccessSnackbar}
         autoHideDuration={6000}
-        onClose={handleCloseSnackbar}
+        onClose={handleCloseSnackbar(setOpenSuccessSnackbar)}
       >
         <Alert
-          onClose={handleCloseSnackbar}
+          onClose={handleCloseSnackbar(setOpenSuccessSnackbar)}
           severity="success"
           sx={{ width: "100%" }}
         >
-          {snackbarMessage}
+          {successMessage}
+        </Alert>
+      </Snackbar>
+
+      {/* Warning Snackbar */}
+      <Snackbar
+        open={openWarningSnackbar}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackbar(setOpenWarningSnackbar)}
+      >
+        <Alert
+          onClose={handleCloseSnackbar(setOpenWarningSnackbar)}
+          severity="warning"
+          sx={{ width: "100%" }}
+        >
+          {warningMessage}
         </Alert>
       </Snackbar>
     </Box>
