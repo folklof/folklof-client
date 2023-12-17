@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Grid, Box, Skeleton, SelectChangeEvent } from "@mui/material";
+import { Grid, Box, SelectChangeEvent } from "@mui/material";
 import { useInfiniteQuery } from "react-query";
 import { SideBar, BookList, SecondaryButton } from "../../components";
 import {
@@ -12,7 +12,7 @@ import {
 import { BookAttributes, ICategory, IAgeGroup } from "../../types";
 import styles from "./AllBooks.module.scss";
 
-const AllBooks: React.FC<{ searchQuery: string | null }> = ({ searchQuery }) => {
+const AllBooks: React.FC<{ searchQuery: string | null, onLoaded: () => void }> = ({ searchQuery, onLoaded }) => {
   const [sort, setSort] = useState<string>("2");
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [selectedAgeGroup, setSelectedAgeGroup] = useState<string>("");
@@ -27,6 +27,7 @@ const AllBooks: React.FC<{ searchQuery: string | null }> = ({ searchQuery }) => 
       } catch (error) {
         console.error("Failed to initialize data:", error);
       }
+      onLoaded();
     };
 
     initializeData();
@@ -77,20 +78,20 @@ const AllBooks: React.FC<{ searchQuery: string | null }> = ({ searchQuery }) => 
           <Box>
             {Array.from(new Array(3)).map((_, index) => (
               <Box key={index} sx={{ marginBottom: 2 }}>
-                <Skeleton
+                {/* <Skeleton
                   variant="rectangular"
                   height={118}
                   animation="wave"
-                  sx={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }}
+                  sx={{ backgroundColor: '#f1f1f13d' }}
                 />
                 <Skeleton
                   variant="text"
-                  sx={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }}
+                  sx={{ backgroundColor: '#f1f1f13d' }}
                 />
                 <Skeleton
                   variant="text"
-                  sx={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }}
-                />
+                  sx={{ backgroundColor: '#f1f1f13d' }}
+                /> */}
               </Box>
             ))}
           </Box>

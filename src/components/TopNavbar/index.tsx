@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useQuery, useQueryClient } from 'react-query';
 import { getUserProfile, logoutUser } from '../../api/auth';
 
+
 const TopNavbar: React.FC = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -43,8 +44,8 @@ const TopNavbar: React.FC = () => {
     <AppBar position="static" sx={{ backgroundColor: 'transparent', width: '100%', boxShadow: 'none' }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters sx={{ justifyContent: 'space-between' }}>
-          <Typography variant="h6" noWrap sx={{ color: '#CFCFCF', fontWeight: 'bold', cursor: 'pointer' }} onClick={handleLogoClick}>
-            FOLKLOF
+          <Typography variant={"logotype" as any} noWrap sx={{ color: '#CFCFCF', fontWeight: 'bold', cursor: 'pointer' }} onClick={handleLogoClick}>
+            folklof
           </Typography>
           {isSuccess && userProfile ? (
             <>
@@ -59,7 +60,7 @@ const TopNavbar: React.FC = () => {
                 open={menuOpen}
                 onClose={handleMenuClose}
               >
-                <MenuItem onClick={() => navigate('/profile')}>Profile</MenuItem>
+                {/* <MenuItem onClick={() => navigate('/profile')}>Profile</MenuItem> */}
                 <MenuItem onClick={handleLogout}>Sign Out</MenuItem>
               </Menu>
             </>

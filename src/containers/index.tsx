@@ -7,3 +7,5 @@ export { default as AllBooks } from './AllBooks';
 export { default as ReviewList } from './ReviewList';
 export { default as FeedbackForm } from './FeedbackForm';
 export { default as SearchList } from './SearchList';
+export { default as Library } from './Library';
+export { default as Favourite } from './Favourite';
