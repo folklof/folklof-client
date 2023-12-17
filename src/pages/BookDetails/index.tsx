@@ -4,7 +4,7 @@ import { TopNavbar, DashboardNavbar, AudioBookPlayer, Quiz, Footer } from '../..
 import { ReviewList, FeedbackForm } from '../../containers';
 
 const BookDetails: React.FC = () => {
-  const { id: bookId } = useParams<{ id: string }>(); // Use useParams to get the bookId from the URL
+  const { id: bookId } = useParams<{ id: string }>();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -13,7 +13,7 @@ const BookDetails: React.FC = () => {
   const [refreshReviews, setRefreshReviews] = useState(false);
 
   const handleNewReview = useCallback(() => {
-    setRefreshReviews(prev => !prev); // Toggle to trigger useEffect in ReviewList
+    setRefreshReviews(prev => !prev);
   }, []);
 
   return (

@@ -84,7 +84,6 @@ export interface Review {
   };
 }
 
-
 //Favourite
 export interface FavouriteBookDetails {
   ID: string;
@@ -110,7 +109,6 @@ export interface FavouriteProps {
   onLoaded: () => void;
 }
 
-
 // Library
 export interface BookDetails {
   ID: string;
@@ -133,8 +131,8 @@ export interface LibraryBook {
 }
 
 export interface LibraryProps {
-    onLoaded: () => void;
-  }
+  onLoaded: () => void;
+}
 
 // Rating
 export interface RatingResponse {
@@ -144,4 +142,32 @@ export interface RatingResponse {
     avgRating?: number;
     totalBookReviews?: number;
   };
+}
+
+//user
+export interface UserProfile {
+  ID: string;
+  role_id: number;
+  username: string;
+  email: string;
+  phone: string | null;
+  age: number | null;
+  avatar: string;
+  created_date: string;
+}
+
+//book card
+export interface BookCardProps {
+  id: string;
+  title: string;
+  category: string;
+  imageUrl: string;
+}
+
+// featured card
+export interface FeatureCardProps {
+  title: string;
+  description: string;
+  imageUrl: string;
+  imageAlt: string;
 }

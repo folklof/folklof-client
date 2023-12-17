@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Review } from '../types';
+import { Review } from '../../types';
 
 export const fetchBookReviews = async (bookId: string): Promise<Review[]> => {
     const baseURL = import.meta.env.VITE_BASE_URL;

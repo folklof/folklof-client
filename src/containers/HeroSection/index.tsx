@@ -8,10 +8,8 @@ const HeroSection: React.FC = () => {
   const navigate = useNavigate();
 
   const handleTryNowClick = () => {
-    navigate('/signin');
+    navigate("/signin");
   };
-
-
 
   return (
     <Box className={styles.heroContainer}>
@@ -42,13 +40,10 @@ const HeroSection: React.FC = () => {
             Unleash the Magical of Learning.
           </Typography>
           <Typography variant="h6" className={styles.subheading}>
-            Empowering Every Child's Journey Through Interactive, Inclusive,
-            and Creative AI-Powered Storytelling.
+            Empowering Every Child's Journey Through Interactive, Inclusive, and
+            Creative AI-Powered Storytelling.
           </Typography>
-          <PrimaryButton
-            text="Try it now"
-            onClick={handleTryNowClick}
-          />
+          <PrimaryButton text="Try it now" onClick={handleTryNowClick} />
         </Box>
       </Box>
 

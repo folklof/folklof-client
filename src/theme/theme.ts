@@ -1,7 +1,7 @@
-import { createTheme } from '@mui/material/styles';
+import { createTheme } from "@mui/material/styles";
 
 // Extending the TypographyVariants interface
-declare module '@mui/material/styles' {
+declare module "@mui/material/styles" {
   interface TypographyVariants {
     logotype?: React.CSSProperties;
   }
@@ -14,40 +14,38 @@ declare module '@mui/material/styles' {
 const theme = createTheme({
   typography: {
     logotype: {
-      fontFamily: 'abril-display, serif',
+      fontFamily: "abril-display, serif",
       fontWeight: 700,
-      fontStyle: 'normal',
-      fontSize: '1.8rem',
+      fontStyle: "normal",
+      fontSize: "1.8rem",
     },
     h1: {
-      fontFamily: 'eixample-dip, sans-serif',
+      fontFamily: "eixample-dip, sans-serif",
       fontWeight: 700,
-      fontSize: '3rem',
+      fontSize: "3rem",
     },
 
     h4: {
-        fontFamily: 'eixample-dip, sans-serif',
+      fontFamily: "eixample-dip, sans-serif",
       fontWeight: 700,
     },
 
     h5: {
-    fontFamily: 'eixample-dip, sans-serif',
+      fontFamily: "eixample-dip, sans-serif",
       fontWeight: 700,
-      fontSize: '1.5rem',
+      fontSize: "1.5rem",
     },
 
     h6: {
-      fontFamily: 'elza-text, sans-serif',
+      fontFamily: "elza-text, sans-serif",
       fontWeight: 400,
-      fontSize: '1.5rem',
+      fontSize: "1.5rem",
     },
 
     body1: {
-      fontFamily: 'elza-text, sans-serif',
+      fontFamily: "elza-text, sans-serif",
       fontWeight: 400,
     },
-
-
   },
 });
 

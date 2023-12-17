@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Typography, Avatar, Rating, Divider } from '@mui/material';
-import { fetchBookReviews } from '../../api/reviews';
+import { fetchBookReviews } from '../../api/feedback/reviews';
 import { Review as ReviewType } from '../../types';
 
 interface ReviewListProps {
@@ -25,7 +25,6 @@ const ReviewList: React.FC<ReviewListProps> = ({ bookId, refresh }) => {
         if (bookReviews && bookReviews.length > 0) {
           setReviews(bookReviews);
         } else {
-          console.log('No reviews found for this book.');
           setReviews([]);
           setError('No reviews available for this book.');
         }

@@ -3,9 +3,11 @@ import GoogleIcon from "@mui/icons-material/Google";
 import { PrimaryButton } from "../../components";
 import styles from "./Login.module.scss";
 
+const baseURL = import.meta.env.VITE_BASE_URL;
+
 const LoginPage: React.FC = () => {
   const handleLogin = () => {
-    window.location.href = "http://localhost:5001/api/v1/auth/login";
+    window.location.href = `${baseURL}/auth/login`;
   };
 
   return (

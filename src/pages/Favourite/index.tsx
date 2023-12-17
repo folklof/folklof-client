@@ -1,12 +1,10 @@
-import React, { useState } from 'react';
-import { TopNavbar, DashboardNavbar, Footer } from '../../components';
-import { Favourite } from '../../containers';
-
-
+import React, { useState } from "react";
+import { TopNavbar, DashboardNavbar, Footer } from "../../components";
+import { Favourite } from "../../containers";
 
 const FavouritePage: React.FC = () => {
-    const [isFavouriteLoaded, setIsFavouriteLoaded] = useState(false);
-    return (
+  const [isFavouriteLoaded, setIsFavouriteLoaded] = useState(false);
+  return (
     <>
       <TopNavbar />
       <DashboardNavbar />
@@ -14,6 +12,6 @@ const FavouritePage: React.FC = () => {
       {isFavouriteLoaded && <Footer />}
     </>
   );
-}
+};
 
 export default FavouritePage;

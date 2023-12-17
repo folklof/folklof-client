@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
-import { checkUserAuthentication } from '../../api'; // Import your new API function
+import { checkUserAuthentication } from '../../api';
 import { Box, LinearProgress } from '@mui/material';
 
 const ProtectedRoute: React.FC = () => {
@@ -10,7 +10,7 @@ const ProtectedRoute: React.FC = () => {
   useEffect(() => {
     const verifyAuth = async () => {
       try {
-        await checkUserAuthentication(); // Call the new API function
+        await checkUserAuthentication();
         setIsAuthenticated(true);
       } catch (error: any) {
         if (error.response?.status === 401) {

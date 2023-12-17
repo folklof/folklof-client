@@ -1,13 +1,7 @@
 import React from 'react';
 import { Typography, Card, CardMedia, CardContent } from '@mui/material';
 import styles from './FeatureCard.module.scss';
-
-interface FeatureCardProps {
-  title: string;
-  description: string;
-  imageUrl: string;
-  imageAlt: string;
-}
+import { FeatureCardProps } from '../../types';
 
 const FeatureCard: React.FC<FeatureCardProps> = ({ title, description, imageUrl, imageAlt }) => {
   return (

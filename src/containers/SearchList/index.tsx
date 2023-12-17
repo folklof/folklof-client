@@ -32,10 +32,6 @@ const SearchLists: React.FC<{ searchQuery: string | null }> = ({ searchQuery }) 
     initializeData();
   }, []);
 
-//   useEffect(() => {
-//     console.log("Current search query:", searchQuery);
-//   }, [searchQuery]);
-
   const effectiveSearchQuery = searchQuery || '';
 
   const { data, isLoading, isError, error } = useInfiniteQuery<
@@ -46,7 +42,6 @@ const SearchLists: React.FC<{ searchQuery: string | null }> = ({ searchQuery }) 
   >(
     ["books", sort, selectedCategory, selectedAgeGroup, effectiveSearchQuery],
     ({ pageParam = 1 }) => {
-      // console.log("Fetching books with query:", effectiveSearchQuery);
       return fetchBooks({
         pageParam,
         queryKey: ["books", sort, selectedCategory, selectedAgeGroup, effectiveSearchQuery],

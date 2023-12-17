@@ -135,13 +135,13 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ bookId, onNewReview }) => {
           sx={{
             borderRadius: "8px",
             "& label": {
-              color: "white", // Style for label
+              color: "white",
             },
             "& .MuiInputBase-input": {
-              color: "white", // Style for input text
+              color: "white",
             },
             "& .MuiFilledInput-root": {
-              backgroundColor: "transparent", // Optional: Adjust background if needed
+              backgroundColor: "transparent",
             },
           }}
         />
@@ -157,10 +157,10 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ bookId, onNewReview }) => {
           sx={{
             borderRadius: "8px",
             "& label": {
-              color: "white", // Style for label
+              color: "white",
             },
             "& .MuiInputBase-input": {
-              color: "white", // Style for input text
+              color: "white",
             },
             "& .MuiFilledInput-root": {
               backgroundColor: "transparent",

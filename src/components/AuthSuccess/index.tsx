@@ -1,46 +1,42 @@
-import React, { useState } from 'react';
-import { useQuery, useQueryClient } from 'react-query';
-import { useNavigate } from 'react-router-dom';
-import { getUserProfile, updateUserAge } from '../../api';
+import React, { useState } from "react";
+import { useQuery, useQueryClient } from "react-query";
+import { useNavigate } from "react-router-dom";
+import { getUserProfile, updateUserAge } from "../../api";
 import {
-  Typography, Dialog, DialogContent, TextField, Box, LinearProgress, Snackbar, Alert
-} from '@mui/material';
-import { PrimaryButton } from '../../components';
-
-// Define the interface for UserProfile
-interface UserProfile {
-  ID: string;
-  role_id: number;
-  username: string;
-  email: string;
-  phone: string | null;
-  age: number | null;
-  avatar: string;
-  created_date: string;
-}
+  Typography,
+  Dialog,
+  DialogContent,
+  TextField,
+  Box,
+  LinearProgress,
+  Snackbar,
+  Alert,
+} from "@mui/material";
+import { PrimaryButton } from "../../components";
+import { UserProfile } from "../../types";
 
 const UserAuth: React.FC = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [user, setUser] = useState<UserProfile | null>(null);
   const [showModal, setShowModal] = useState(false);
-  const [age, setAge] = useState('');
+  const [age, setAge] = useState("");
   const [ageError, setAgeError] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false); // State for Snackbar
 
   // Fetch user profile
-  const { isLoading } = useQuery<UserProfile>('userProfile', getUserProfile, {
+  const { isLoading } = useQuery<UserProfile>("userProfile", getUserProfile, {
     onSuccess: (data) => {
       setUser(data);
       if (data.age === null || data.age === undefined) {
         setShowModal(true);
       } else {
-        navigate('/dashboard');
+        navigate("/dashboard");
       }
     },
     onError: () => {
-      navigate('/signin');
-    }
+      navigate("/signin");
+    },
   });
 
   const handleAgeSubmit = async () => {
@@ -51,18 +47,17 @@ const UserAuth: React.FC = () => {
     }
     try {
       setAgeError(false);
-      const updatedUser = await updateUserAge(user?.ID || '', ageNum);
-      queryClient.setQueryData('userProfile', updatedUser);
+      const updatedUser = await updateUserAge(user?.ID || "", ageNum);
+      queryClient.setQueryData("userProfile", updatedUser);
       setShowModal(false);
       setSnackbarOpen(true); // Open the Snackbar
 
       // Redirect to dashboard after a delay
       setTimeout(() => {
-        navigate('/dashboard');
+        navigate("/dashboard");
       }, 2000);
-      
     } catch (error) {
-      console.error('Error updating age:', error);
+      console.error("Error updating age:", error);
       setAgeError(true);
     }
   };
@@ -75,7 +70,7 @@ const UserAuth: React.FC = () => {
   return (
     <>
       {isLoading ? (
-        <Box sx={{ width: '100%' }}>
+        <Box sx={{ width: "100%" }}>
           <LinearProgress />
         </Box>
       ) : null}
@@ -83,15 +78,16 @@ const UserAuth: React.FC = () => {
         open={showModal}
         PaperProps={{
           sx: {
-            backgroundColor: 'transparent',
-            boxShadow: 'none',
-          }
+            backgroundColor: "transparent",
+            boxShadow: "none",
+          },
         }}
         onClose={() => {}}
       >
-        <DialogContent sx={{ color: 'white' }}>
-          <Typography variant='h5'>
-            One step closer to the fairy tale world, {user?.username}. Please confirm your age.
+        <DialogContent sx={{ color: "white" }}>
+          <Typography variant="h5">
+            One step closer to the fairy tale world, {user?.username}. Please
+            confirm your age.
           </Typography>
           <TextField
             label="Age"
@@ -104,29 +100,26 @@ const UserAuth: React.FC = () => {
             sx={{
               mt: 6,
               mb: 4,
-              input: { color: 'white' },
-              '& label': {
-                color: '#8C8C8C',
+              input: { color: "white" },
+              "& label": {
+                color: "#8C8C8C",
               },
-              '& .MuiOutlinedInput-root': {
-                '& fieldset': {
-                  borderColor: '#8C8C8C',
-                  borderRadius: '10px',
+              "& .MuiOutlinedInput-root": {
+                "& fieldset": {
+                  borderColor: "#8C8C8C",
+                  borderRadius: "10px",
                 },
-                '&.Mui-focused fieldset': {
-                  borderColor: '#8C8C8C',
+                "&.Mui-focused fieldset": {
+                  borderColor: "#8C8C8C",
                 },
-                '&:hover fieldset': {
-                  borderColor: '#8C8C8C',
+                "&:hover fieldset": {
+                  borderColor: "#8C8C8C",
                 },
               },
             }}
           />
-          <Box sx={{display: "flex", justifyContent:"flex-end"}}>
-            <PrimaryButton
-              text="Submit"
-              onClick={handleAgeSubmit}
-            />
+          <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+            <PrimaryButton text="Submit" onClick={handleAgeSubmit} />
           </Box>
         </DialogContent>
       </Dialog>
@@ -136,7 +129,11 @@ const UserAuth: React.FC = () => {
         autoHideDuration={3000}
         onClose={handleCloseSnackbar}
       >
-        <Alert onClose={handleCloseSnackbar} severity="success" sx={{ width: '100%' }}>
+        <Alert
+          onClose={handleCloseSnackbar}
+          severity="success"
+          sx={{ width: "100%" }}
+        >
           Data saved successfully! Redirecting to dashboard...
         </Alert>
       </Snackbar>
