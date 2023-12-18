@@ -21,7 +21,7 @@ const LoginPage: React.FC = () => {
           an enchanting journey through a world of starlit stories.
         </Typography>
         <img
-          src="/src/assets/images/login-char.webp"
+          src="https://folklof.s3.ap-southeast-1.amazonaws.com/images/login-char.webp"
           alt="Login image"
           className={styles.loginImage}
         />

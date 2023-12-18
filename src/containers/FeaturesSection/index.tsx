@@ -8,19 +8,19 @@ const FeaturesSection: React.FC = () => {
     {
       title: 'Engaging Storytelling Adventures',
       description: 'Dive into an ever-expanding universe of tales, with stories added every week to keep young minds enthralled.',
-      imageUrl: '/src/assets/images/featured-a.webp',
+      imageUrl: 'https://folklof.s3.ap-southeast-1.amazonaws.com/images/featured-a.webp',
       imageAlt: 'Feature 1',
     },
     {
       title: 'Educational and Fun',
       description: 'Our stories are designed to educate as well as entertain, instilling a love for reading and learning.',
-      imageUrl: '/src/assets/images/featured-b.webp',
+      imageUrl: 'https://folklof.s3.ap-southeast-1.amazonaws.com/images/featured-b.webp',
       imageAlt: 'Feature 2',
     },
     {
       title: 'Technology Meets Imagination',
       description: "Cutting-edge AI technology personalizes the reading experience, adapting to each child's learning pace and preferences.",
-      imageUrl: '/src/assets/images/featured-c.webp',
+      imageUrl: 'https://folklof.s3.ap-southeast-1.amazonaws.com/images/featured-c.webp',
       imageAlt: 'Feature 3',
     },
   ];

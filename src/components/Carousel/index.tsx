@@ -61,10 +61,10 @@ const Carousel: React.FC = () => {
     >
       <Slider {...settings}>
         <Box component="div">
-          <img src="src/assets/images/carousel-1.webp" alt="Carousel slide 1" />
+          <img src="https://folklof.s3.ap-southeast-1.amazonaws.com/images/carousel-1.webp" alt="Carousel slide 1" />
         </Box>
         <Box component="div">
-          <img src="src/assets/images/carousel-2.webp" alt="Carousel slide 2" />
+          <img src="https://folklof.s3.ap-southeast-1.amazonaws.com/images/carousel-2.webp" alt="Carousel slide 2" />
         </Box>
         {/* More slides */}
       </Slider>

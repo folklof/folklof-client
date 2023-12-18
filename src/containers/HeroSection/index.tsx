@@ -16,12 +16,12 @@ const HeroSection: React.FC = () => {
       <Box className={styles.imageContainerLeft}>
         <img
           className={styles.imgLeftTop}
-          src="/src/assets/images/heroleft-a.webp"
+          src="https://folklof.s3.ap-southeast-1.amazonaws.com/images/heroleft-a.webp"
           alt="Hero Image"
         />
         <img
           className={styles.imgLeftBottom}
-          src="/src/assets/images/heroleft-b.webp"
+          src="https://folklof.s3.ap-southeast-1.amazonaws.com/images/heroleft-b.webp"
           alt="Hero Image"
         />
       </Box>
@@ -30,7 +30,7 @@ const HeroSection: React.FC = () => {
         <Box className={styles.imageContainerMiddle}>
           <img
             className={styles.imgMiddle}
-            src="/src/assets/images/heromiddle.webp"
+            src="https://folklof.s3.ap-southeast-1.amazonaws.com/images/heromiddle.webp"
             alt="Hero Image"
           />
         </Box>
@@ -50,7 +50,7 @@ const HeroSection: React.FC = () => {
       <Box className={styles.imageContainerRight}>
         <img
           className={styles.bigHero}
-          src="/src/assets/images/heroright.webp"
+          src="https://folklof.s3.ap-southeast-1.amazonaws.com/images/heroright.webp"
           alt="Hero Image"
         />
       </Box>
