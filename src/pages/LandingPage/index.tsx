@@ -1,13 +1,13 @@
 import React from 'react';
 import { HeroSection, FeaturesSection } from '../../containers';
-import { Footer, TopNavbar } from '../../components';
+import { Footer, LPNavbar } from '../../components';
 
 
 const LandingPage: React.FC = () => {
 
     return (
         <>
-        <TopNavbar/>
+        <LPNavbar />
         <HeroSection/>
         <FeaturesSection/>
         <Footer/>

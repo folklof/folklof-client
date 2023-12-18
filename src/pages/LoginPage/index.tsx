@@ -1,11 +1,11 @@
 import React from "react";
 import { Login } from "../../containers";
-import { TopNavbar } from "../../components";
+import { LPNavbar  } from "../../components";
 
 const LoginPage: React.FC = () => {
   return (
     <>
-      <TopNavbar />
+      <LPNavbar  />
       <Login />
     </>
   );
