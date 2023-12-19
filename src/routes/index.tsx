@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { DashboardPage, LandingPage, LoginPage, AllCategoriesPage, BookDetailsPage, LibraryPage, FavouritePage, AuthPage, SearchPage } from "../pages";
+import { DashboardPage, LandingPage, LoginPage, AllCategoriesPage, BookDetailsPage, LibraryPage, FavouritePage, AuthPage, SearchPage , AboutUsPage} from "../pages";
 import {ProtectedRoute }from '../services';
 
 const AppRoutes: React.FC = () => {
@@ -10,6 +10,7 @@ const AppRoutes: React.FC = () => {
         <Route path="/auth/success" element={<AuthPage />} />
         <Route path="/" element={<LandingPage />} />
         <Route path="/signin" element={<LoginPage />} />
+        <Route path="/about-us" element={<AboutUsPage />} />
         
         {/* Wrap the protected routes */}
         <Route element={<ProtectedRoute />}>

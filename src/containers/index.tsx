@@ -9,3 +9,4 @@ export { default as FeedbackForm } from './FeedbackForm';
 export { default as SearchList } from './SearchList';
 export { default as Library } from './Library';
 export { default as Favourite } from './Favourite';
+export { default as AboutUs } from './AboutUs';
