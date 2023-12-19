@@ -1,0 +1,53 @@
+.quizBox {
+    max-width: 80vw;
+    margin: auto;
+    padding: 3;
+    background-color: #f1f1f13d;
+    border: 1px solid #227078;
+    border-radius: 20px;
+  }
+  
+  .quizTitle {
+    color: white;
+    margin-bottom: 6;
+    padding: 20px;
+  }
+  
+  .quizFormControl {
+    margin-bottom: 6;
+    padding: 20px;
+  
+    .formLabel {
+      color: white;
+      margin-bottom: 1;
+      &.Mui-focused {
+        color: white;
+      }
+    }
+  
+    .radioGroup {
+      .MuiFormControlLabel-root {
+        margin-right: 4;
+      }
+  
+      .MuiRadio-root {
+        color: white;
+      }
+  
+      .Mui-checked {
+        color: #FDCC64;
+      }
+    }
+  }
+  
+  .submitBox {
+    display: flex;
+    width: 75vw;
+    justify-content: flex-end;
+    margin-top: 2;
+  }
+  
+  .errorText {
+    color: red;
+  }
+  

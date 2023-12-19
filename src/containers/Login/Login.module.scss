@@ -1,0 +1,84 @@
+.loginPage {
+    display: flex;
+    height: 100vh;
+    color: #fff;
+    padding: 20px;
+    position: relative;
+  
+    .leftContainer,
+    .rightContainer {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      flex: 1;
+    }
+  
+    .leftContainer {
+      margin-top: 20vh;
+      padding: 32px;
+      max-width: 50vw;
+    }
+  
+    .rightContainer {
+      position: relative;
+    }
+  
+    .imageBox {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      right: 0;
+      background: url('https://folklof.s3.ap-southeast-1.amazonaws.com/images/login-bg.webp') center/cover no-repeat;
+      z-index: 1;
+      border-radius: 20px;
+      opacity: 0.6;
+    }
+  
+    .loginCard {
+      position: relative;
+      height: 60vh;
+      z-index: 2;
+      margin: auto;
+      padding: 20px;
+      background-color: rgba(255, 255, 255, 0.3);
+      border-radius: 20px;
+    }
+  
+    .title {
+      max-width: 30vw;
+      padding: 5vw 0 2vw 5vw;
+    }
+  
+    .subtitle {
+        max-width: 30vw;
+        padding: 0 5vw;
+    }
+
+    .loginImage {
+      position: absolute; // Position the image absolutely relative to the nearest positioned ancestor
+      bottom: 0; // Align to the bottom of the parent container
+      left: 50%; // Center the image by setting the left edge to 50% of the parent
+      transform: translateX(-50%) rotate(15deg); // Shift the image back by 50% of its width to center it and rotate
+      width: 25vw; // Adjust the width as necessary
+      z-index: 3; // Ensure the z-index is higher than .imageBox to overlap it
+    }
+  
+    .signInTitle {
+      text-align: center;
+      color: #fff;
+    }
+  
+    .terms {
+      text-align: center;
+    }
+
+    .cardContent {
+        margin-top: 10vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-around;
+        height: 50vh;
+    }
+  }
+  

@@ -1,0 +1,86 @@
+.bookList {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 2vw;
+}
+
+.bookItem {
+    display: flex;
+    align-items: center;
+    // width: 85vw;
+    gap: 20px;
+    padding: 16px;
+    background-color: tr;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    margin-bottom: 16px;
+}
+
+.bookCover {
+    width: 15vw;
+    height: 15vw;
+    object-fit: cover;
+    margin-right: 16px;
+    border-radius: 4px;
+}
+
+.bookDetails {
+    display: flex;
+    flex-direction: column;
+    height: 15vw;
+    flex: 1;
+    color: #EFEFEF;
+    justify-content: space-between;
+}
+
+.bookTitle {
+    display: -webkit-box;
+    -webkit-line-clamp: 2; // Number of lines to show
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+.sortByContainer {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 16px;
+}
+
+.sortSelect {
+    background-color: #EFEFEF;
+    border-radius: 4px; // Optionally round corners of the select
+    padding: 0 32px; // Padding inside the select
+    max-height: 45px;
+}
+
+.sortSelect {
+    .MuiSelect-select {
+        padding-right: 8px; // Adjusts padding for the select element
+    }
+
+    .MuiSvgIcon-root {
+        color: #000000; // Color for the dropdown icon
+    }
+}
+
+.buttonWrapper{
+    // margin-left: 15vw;
+    display: flex;
+    flex-direction: column;
+    gap: 2vh;
+}
+
+.paginationContainer {
+    display: flex;
+    justify-content: center; // Centers the pagination component
+    padding: 16px; // Adds some padding around the pagination component
+    background-color: transparent; // Sets the background color to dark
+    // .MuiPagination-ul {
+    //   // Additional styling for the pagination component if needed
+    // }
+  }
+
+
+// Additional styles for buttons and other elements can be added here

@@ -1,0 +1,20 @@
+.featuresContainer {
+    padding: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    gap: 20px;
+    height: 60vh;
+    margin-bottom: 20vh;
+  }
+
+  
+  .featuresSection {
+    .featuresTitle {
+      margin-top: 25vh;
+      margin-bottom: 10vh;
+      text-align: center;
+      color: #fff;
+    }
+}
