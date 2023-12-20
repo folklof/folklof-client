@@ -10,3 +10,5 @@ export { default as SearchList } from './SearchList';
 export { default as Library } from './Library';
 export { default as Favourite } from './Favourite';
 export { default as AboutUs } from './AboutUs';
+export { default as TermsOfUse } from './TermsOfUse';
+export { default as PrivacyPolicy } from './PrivacyPolicy';
