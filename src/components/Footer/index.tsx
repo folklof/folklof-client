@@ -9,14 +9,11 @@ const Footer: React.FC = () => {
         <Link href="/about-us" color="inherit" className={styles.footerLink}>
           About Folklof
         </Link>
-        <Link href="#" color="inherit" className={styles.footerLink}>
+        <Link href="/privacy-policy" color="inherit" className={styles.footerLink}>
           Privacy Policy
         </Link>
-        <Link href="#" color="inherit" className={styles.footerLink}>
+        <Link href="/terms-of-use" color="inherit" className={styles.footerLink}>
           Terms of Use
-        </Link>
-        <Link href="#" color="inherit" className={styles.footerLink}>
-          Business Inquiries
         </Link>
       </Box>
       <Typography variant="body2" className={styles.copyRight}>

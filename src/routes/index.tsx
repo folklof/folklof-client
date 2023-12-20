@@ -1,7 +1,8 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { DashboardPage, LandingPage, LoginPage, AllCategoriesPage, BookDetailsPage, LibraryPage, FavouritePage, AuthPage, SearchPage , AboutUsPage} from "../pages";
+import { DashboardPage, LandingPage, LoginPage, AllCategoriesPage, BookDetailsPage, LibraryPage, FavouritePage, AuthPage, SearchPage , AboutUsPage, TermsOfUsePage} from "../pages";
 import {ProtectedRoute }from '../services';
+import PrivacyPolicyPage from "../pages/PrivacyPolicy";
 
 const AppRoutes: React.FC = () => {
   return (
@@ -11,7 +12,10 @@ const AppRoutes: React.FC = () => {
         <Route path="/" element={<LandingPage />} />
         <Route path="/signin" element={<LoginPage />} />
         <Route path="/about-us" element={<AboutUsPage />} />
-        
+        <Route path="/terms-of-use" element={<TermsOfUsePage />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+
+
         {/* Wrap the protected routes */}
         <Route element={<ProtectedRoute />}>
           <Route path="/dashboard" element={<DashboardPage />} />

@@ -8,3 +8,4 @@ export { default as FavouritePage } from './Favourite';
 export { default as SearchPage } from './SearchPage';
 export { default as AuthPage } from './Auth';
 export { default as AboutUsPage } from './AboutUsPage';
+export { default as TermsOfUsePage } from './TermsOfUsePage';
