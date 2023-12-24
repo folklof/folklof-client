@@ -1,6 +1,6 @@
 .loginPage {
     display: flex;
-    height: 100vh;
+    height: 87vh;
     color: #fff;
     padding: 20px;
     position: relative;
@@ -79,6 +79,63 @@
         align-items: center;
         justify-content: space-around;
         height: 50vh;
+    }
+  }
+  
+  .loginPage {
+    @media (max-width: 425px) {
+      flex-direction: column;
+      align-items: center;
+      height: 70vh;
+  
+      .leftContainer,
+      .rightContainer {
+        flex: none;
+        max-width: 100%;
+        margin-top: 0;
+        padding: 16px;
+      }
+  
+      .leftContainer {
+        margin-top: 4.5vh;
+        order: 2;
+      }
+  
+      .title,
+      .subtitle {
+        max-width: 100%;
+        text-align: left;
+        padding: 1vh 16px;
+      }
+
+      .title {
+        font-size: 2rem;
+      }
+      .subtitle {
+        font-size: 1.2rem;
+      }
+  
+      .loginImage {
+        display: none;
+      }
+  
+      .rightContainer {
+        order: 1;
+        height: 55vh;
+        width: 80vw;
+      }
+  
+  
+      .loginCard {
+        width: 100%;
+        height: auto;
+        margin-top: 20px;
+      }
+  
+      .cardContent {
+        margin-top: 20px;
+        height: 45vh;
+      }
     }
   }
   

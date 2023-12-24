@@ -1,0 +1,75 @@
+.favouriteContainer {
+    background-color: transparent;
+    padding: 8vw;
+  
+    .title {
+      color: white;
+      margin-bottom: 5vh;
+    }
+  
+    .bookItem {
+      display: flex;
+      margin-bottom: 6rem;
+      color: white;
+  
+      .bookDetails {
+        margin-left: 2rem;
+        flex: 1;
+  
+        .bookTitle {
+          font-size: 1rem; // h6 equivalent
+        }
+  
+        .bookDuration,
+        .bookReleaseDate {
+          font-size: 0.875rem; // body2 equivalent
+        }
+      }
+  
+      .buttonWrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        gap: 16px;
+      }
+    }
+  
+    .noBooksContainer {
+      text-align: center;
+      padding: 10vw;
+    }
+  
+    @media (max-width: 425px) {
+      .bookItem {
+        // flex-direction: column;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: center;
+  
+        .bookDetails {
+          margin-left: 16px;
+        //   text-align: center;
+        }
+      }
+    }
+  }
+  
+  .skeletonContainer {
+    display: flex;
+    margin-bottom: 2rem;
+    padding: 1vw 4vw;
+  
+    .skeletonDetails {
+      margin-left: 2rem;
+      flex: 1;
+    }
+  
+    .skeletonButtons {
+      display: flex;
+      flex-direction: column;
+      align-items: start;
+      gap: 16px;
+    }
+  }
+  

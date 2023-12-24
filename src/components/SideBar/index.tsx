@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Typography,
   Accordion,
@@ -7,10 +7,14 @@ import {
   FormGroup,
   FormControlLabel,
   Checkbox,
-  Box
+  Box,
+  Drawer,
+  IconButton
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import { ICategory, IAgeGroup } from '../../types';
+import styles from './SideBar.module.scss';
 
 interface SidebarProps {
   onCategoryChange: (categoryID: string) => void;
@@ -21,7 +25,7 @@ interface SidebarProps {
   selectedAgeGroup: string;
 }
 
-const Sidebar: React.FC <SidebarProps> = ({
+const Sidebar: React.FC<SidebarProps> = ({
   categories,
   ageGroups,
   selectedCategory,
@@ -29,6 +33,11 @@ const Sidebar: React.FC <SidebarProps> = ({
   onCategoryChange,
   onAgeGroupChange
 }) => {
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
+  };
 
   const handleCategoryChange = (categoryID: string) => {
     const newCategory = selectedCategory === categoryID ? "" : categoryID;
@@ -40,9 +49,9 @@ const Sidebar: React.FC <SidebarProps> = ({
     onAgeGroupChange(newAgeGroup);
   };
 
-  return (
-    <Box sx={{ backgroundColor: 'transparent', width: '18vw', marginTop: '8vh' }}>
-      <Typography variant="h5" sx={{ color: 'white' }}>Filter by</Typography>
+  const sidebarContent = (
+    <Box className={styles.sidebarContainer} sx={{ backgroundColor: 'transparent' }}>
+      <Typography variant="h5" sx={{ color: 'white', mb: 2 }}>Filter by</Typography>
 
       <Accordion sx={{ backgroundColor: 'transparent', color: 'white' }}>
         <AccordionSummary expandIcon={<ExpandMoreIcon sx={{ color: 'white' }} />}>
@@ -57,10 +66,7 @@ const Sidebar: React.FC <SidebarProps> = ({
                   <Checkbox
                     checked={selectedCategory === category.ID}
                     onChange={() => handleCategoryChange(category.ID)}
-                    sx={{
-                      color: 'white',
-                      '&.Mui-checked': { color: 'white' },
-                    }}
+                    sx={{ color: 'white', '&.Mui-checked': { color: 'white' } }}
                   />
                 }
                 label={category.name}
@@ -83,10 +89,7 @@ const Sidebar: React.FC <SidebarProps> = ({
                   <Checkbox
                     checked={selectedAgeGroup === ageGroup.ID}
                     onChange={() => handleAgeGroupChange(ageGroup.ID)}
-                    sx={{
-                      color: 'white',
-                      '&.Mui-checked': { color: 'white' },
-                    }}
+                    sx={{ color: 'white', '&.Mui-checked': { color: 'white' } }}
                   />
                 }
                 label={ageGroup.name}
@@ -96,6 +99,54 @@ const Sidebar: React.FC <SidebarProps> = ({
         </AccordionDetails>
       </Accordion>
     </Box>
+  );
+
+  return (
+    <>
+      <Box
+      sx={{ 
+        display: { xs: 'flex', sm: 'none' }, 
+        alignItems: 'center', 
+        marginLeft: 'auto',
+        color: 'white',
+        justifyContent: 'flex-end',
+      }}
+    >
+      <Typography variant="subtitle1" sx={{ marginRight: 1 }}>
+        Filter
+      </Typography>
+      <IconButton
+        edge="start"
+        color="inherit"
+        aria-label="menu"
+        onClick={handleDrawerToggle}
+      >
+        <FilterAltIcon />
+      </IconButton>
+    </Box>
+
+      <Drawer
+        variant="temporary"
+        open={mobileOpen}
+        onClose={handleDrawerToggle}
+        ModalProps={{ keepMounted: true }}
+        sx={{ width: '66vw',
+          display: { xs: 'block', sm: 'none' },
+          '.MuiDrawer-paper': {
+            backgroundColor: '#2e2e2e',
+            color: 'white',
+            width: '80vw',
+            paddingLeft: 4 // Menambahkan padding di sisi kiri
+          }
+        }}
+      >
+        {sidebarContent}
+      </Drawer>
+
+      <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+        {sidebarContent}
+      </Box>
+    </>
   );
 };
 

@@ -36,6 +36,7 @@ const Carousel: React.FC = () => {
   return (
     <Box
       sx={{
+        margin: "5vh 0",
         padding: "2vw 7vw",
         width: "98vw",
         ".slick-slider": {

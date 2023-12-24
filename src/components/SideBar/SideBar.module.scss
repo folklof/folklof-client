@@ -1,16 +1,33 @@
-.sidebar {
-    color: white;
+// Sidebar.module.scss
+.sidebarContainer {
+  background-color: transparent;
+  width: 18vw;
+  margin-top: 8vh;
+  color: white;
+
+  .accordion {
     background-color: transparent;
-    padding: 1rem;
-    min-width: 15vw; // Set a minimum width for the sidebar
-    max-width: 15vw;
-    margin: 10vh 0;
+    color: white;
+
+    .expandIcon {
+      color: white;
+    }
   }
-  
-  .categoryList {
-    margin-bottom: 2rem;
+
+  .filterTitle {
+    color: white;
   }
-  
-  .filterSection {
-    margin-bottom: 1rem;
+
+  .checkbox {
+    color: white;
+    &.Mui-checked {
+      color: white;
+    }
   }
+}
+
+@media (max-width: 425px) {
+  .sidebarContainer {
+    width: 66vw; // Full width for mobile drawer
+  }
+}
