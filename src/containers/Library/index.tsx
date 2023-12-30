@@ -12,6 +12,7 @@ import {
 import { fetchLibraryBooks, removeLibraryBook, updateLibraryStatus } from "../../api";
 import { LibraryBook, LibraryProps } from "../../types";
 import { PrimaryButton, SecondaryButton } from "../../components";
+import styles from "./Library.module.scss";
 
 const LibraryPage: React.FC<LibraryProps> = ({ onLoaded }) => {
   const navigate = useNavigate();
@@ -67,9 +68,9 @@ const LibraryPage: React.FC<LibraryProps> = ({ onLoaded }) => {
 
   const renderBooks = () => {
     return filteredBooks.map((libraryBook) => (
-      <Box key={libraryBook.ID} sx={{ display: "flex", mb: 6, color: "white" }}>
-        <img src={libraryBook.book.cover_image} alt={libraryBook.book.title} style={{ width: 100, height: 100 }} />
-        <Box sx={{ ml: 2, flex: 1 }}>
+      <Box key={libraryBook.ID} sx={{ display: "flex", flexWrap:"wrap", mb: 6, gap:"20px", color: "white", justifyContent: "center" }}>
+        <img src={libraryBook.book.cover_image} alt={libraryBook.book.title} style={{ width: 120, height: 120, borderRadius:"10px" }} />
+        <Box sx={{ flex: 1 }}>
           <Typography variant="h6" sx={{ color: "white" }}>{libraryBook.book.title}</Typography>
           <Rating name="read-only" value={libraryBook.book.avgRating || 0} readOnly precision={0.5} />
           <Typography variant="body2" sx={{ color: "white" }}>Duration: {libraryBook.book.duration}</Typography>
@@ -111,8 +112,8 @@ const LibraryPage: React.FC<LibraryProps> = ({ onLoaded }) => {
   });
 
   return (
-    <Box sx={{ bgcolor: "transparent", padding: "8vw" }}>
-      <Typography variant="h5" gutterBottom sx={{ color: "white" }}>
+    <Box className={styles.libraryContainer}>
+      <Typography variant="h5" gutterBottom className={styles.title}>
         Library
       </Typography>
       <Tabs value={tabValue} onChange={handleTabChange} sx={{ color: "white" }}>
@@ -120,15 +121,15 @@ const LibraryPage: React.FC<LibraryProps> = ({ onLoaded }) => {
         <Tab value="listened" label="Listened" sx={{ textTransform: "none", color: "white" }} />
         <Tab value="unlistened" label="Unlistened" sx={{ textTransform: "none", color: "white" }} />
       </Tabs>
-      <Box sx={{ mt: 2, paddingTop: "5vw" }}>
+      <Box className={styles.bookListContainer}>
         {isLoading ? renderSkeletons() : filteredBooks.length > 0 ? renderBooks() : (
-          <Box sx={{ textAlign: "center", padding: "10vw" }}>
-            <Typography variant="body1" sx={{ color: "white" }}>
+          <Box className={styles.noBooksContainer}>
+            <Typography variant="body1" className={styles.noBooksText}>
               Build your Library
               <br />
               Add titles to your Library, then find them here.
             </Typography>
-            <Button variant="outlined" onClick={handleFindStories} sx={{ mt: 2 }}>Find Stories</Button>
+            <Button variant="outlined" onClick={handleFindStories} className={styles.findStoriesButton}>Find Stories</Button>
           </Box>
         )}
       </Box>

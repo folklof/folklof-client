@@ -1,0 +1,54 @@
+// BestStories.module.scss
+.bestStoriesContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 20px 0;
+  
+    .header {
+      display: flex;
+      width: 85%;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+  
+      .title {
+        color: white;
+        cursor: pointer;
+      }
+    }
+  
+    .gridContainer {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+      
+      .bookDisplay {
+        display: flex;
+        justify-content: center;
+        margin-left: 35px;
+        overflow-x: none;
+        flex-wrap: wrap;
+      }
+    }
+  
+    @media (max-width: 425px) {
+      .header {
+        flex-direction: rows;
+        align-items: center;
+  
+        .title {
+          font-size: 1.2rem; // Adjust font size for mobile
+          margin-bottom: 10px;
+        }
+      }
+  
+      .gridContainer {
+        .bookDisplay {
+          margin-left: 0;
+        }
+      }
+    }
+  }
+  

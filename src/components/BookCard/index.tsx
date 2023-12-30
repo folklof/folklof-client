@@ -8,6 +8,7 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { BookCardProps } from "../../types";
+import styles from './BookCard.module.scss';
 
 const BookCard: React.FC<BookCardProps> = ({
   id,
@@ -22,42 +23,27 @@ const BookCard: React.FC<BookCardProps> = ({
   };
 
   return (
-    <Card
-      sx={{
-        maxWidth: 253,
-        bgcolor: "transparent",
-        borderRadius: 3,
-        marginRight: "33px",
-      }}
-    >
+    <Card  sx={{ backgroundColor: 'transparent'}} className={styles.bookCard}>
       <CardMedia
         onClick={handleClick}
         component="img"
-        height="250"
+        className={styles.bookCardMedia}
         image={imageUrl}
         alt={title}
-        sx={{ borderRadius: 2, cursor: "pointer" }}
       />
-      <CardContent>
+      <CardContent className={styles.bookCardContent}>
         <Tooltip title={title} placement="top" arrow>
           <Typography
             onClick={handleClick}
             gutterBottom
             variant="h6"
-            color="white"
             component="div"
-            sx={{
-              whiteSpace: "nowrap",
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-              maxWidth: "100%",
-              cursor: "pointer",
-            }}
+            className={styles.title}
           >
             {title}
           </Typography>
         </Tooltip>
-        <Typography variant="body2" color="white">
+        <Typography variant="body2" className={styles.category}>
           {category}
         </Typography>
       </CardContent>

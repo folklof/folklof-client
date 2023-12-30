@@ -1,0 +1,87 @@
+.libraryContainer {
+    background-color: transparent;
+    padding: 8vw;
+  
+    .title {
+      color: white;
+      margin-bottom: 1rem;
+    }
+  
+    .tab {
+      color: white;
+      
+      .tabItem {
+        text-transform: none;
+        color: white;
+      }
+    }
+  
+    .bookListContainer {
+      margin-top: 2rem;
+      padding-top: 2vw;
+  
+      .bookItem {
+        display: flex;
+        margin-bottom: 6rem;
+        color: white;
+  
+        .bookDetails {
+          margin-left: 2rem;
+  
+          .bookTitle {
+            font-size: 1rem;
+          }
+          
+          .bookDuration,
+          .bookReleaseDate {
+            font-size: 0.875rem;
+          }
+        }
+  
+        .buttonWrapper {
+          display: flex;
+          flex-direction: column;
+          align-items: start;
+          gap: 16px;
+        }
+      }
+  
+      .noBooksContainer {
+        text-align: center;
+        padding: 10vw;
+  
+        .noBooksText {
+          color: white;
+        }
+  
+        .findStoriesButton {
+          margin-top: 2rem;
+        }
+      }
+    }
+  
+    .skeletonContainer {
+      display: flex;
+      margin-bottom: 2rem;
+  
+      .skeletonDetails {
+        margin-left: 2rem;
+        flex: 1;
+      }
+  
+      .skeletonButtons {
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        gap: 16px;
+      }
+    }
+  
+    @media (max-width: 425px) {
+      .bookItem {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+  }
+  

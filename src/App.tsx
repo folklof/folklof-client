@@ -7,7 +7,7 @@ import AppRoutes from "./routes";
 const queryClient = new QueryClient();
 
 const App: React.FC = () => {
-  const isLargeScreen = useMediaQuery("(min-width:1024px)");
+  const isLargeScreen = useMediaQuery("(min-width:324px)");
 
   return (
     <>
