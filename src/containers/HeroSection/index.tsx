@@ -1,11 +1,12 @@
 import React from "react";
 import { Box, Typography } from "@mui/material";
-import { PrimaryButton } from "../../components";
+import { PrimaryButton, LoadingImages } from "../../components";
 import { useNavigate } from "react-router-dom";
 import styles from "./HeroSection.module.scss";
 
 const HeroSection: React.FC = () => {
   const navigate = useNavigate();
+  // const [ loading, setLoading ] = useState(true)
 
   const handleTryNowClick = () => {
     navigate("/signin");
@@ -14,25 +15,13 @@ const HeroSection: React.FC = () => {
   return (
     <Box className={styles.heroContainer}>
       <Box className={styles.imageContainerLeft}>
-        <img
-          className={styles.imgLeftTop}
-          src="https://folklof.s3.ap-southeast-1.amazonaws.com/images/heroleft-a.webp"
-          alt="Hero Image"
-        />
-        <img
-          className={styles.imgLeftBottom}
-          src="https://folklof.s3.ap-southeast-1.amazonaws.com/images/heroleft-b.webp"
-          alt="Hero Image"
-        />
+        <LoadingImages imgUrl="https://folklof.s3.ap-southeast-1.amazonaws.com/images/heroleft-a.webp" styleName="imgLeftTop" />
+        <LoadingImages imgUrl="https://folklof.s3.ap-southeast-1.amazonaws.com/images/heroleft-b.webp" styleName="imgLeftBottom" />
       </Box>
 
       <Box className={styles.middContainer}>
         <Box className={styles.imageContainerMiddle}>
-          <img
-            className={styles.imgMiddle}
-            src="https://folklof.s3.ap-southeast-1.amazonaws.com/images/heromiddle.webp"
-            alt="Hero Image"
-          />
+          <LoadingImages imgUrl="https://folklof.s3.ap-southeast-1.amazonaws.com/images/heromiddle.webp" styleName="imgMiddle" />
         </Box>
 
         <Box className={styles.wordContainer}>
@@ -48,11 +37,7 @@ const HeroSection: React.FC = () => {
       </Box>
 
       <Box className={styles.imageContainerRight}>
-        <img
-          className={styles.bigHero}
-          src="https://folklof.s3.ap-southeast-1.amazonaws.com/images/heroright.webp"
-          alt="Hero Image"
-        />
+        <LoadingImages imgUrl="https://folklof.s3.ap-southeast-1.amazonaws.com/images/heroright.webp" styleName="bigHero" />
       </Box>
     </Box>
   );
