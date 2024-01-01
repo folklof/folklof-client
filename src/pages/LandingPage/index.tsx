@@ -4,7 +4,6 @@ import { Footer, LPNavbar } from '../../components';
 
 
 const LandingPage: React.FC = () => {
-
     return (
         <>
         <LPNavbar />
