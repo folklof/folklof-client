@@ -11,6 +11,8 @@
   
   .featureImage {
     border-radius: 20px;
+    width: 15vw;
+    height: 15vw !important;
     transform: rotate(2deg);
     opacity: 0.77;
     @media (max-width: 425px) {

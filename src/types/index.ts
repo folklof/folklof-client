@@ -171,3 +171,9 @@ export interface FeatureCardProps {
   imageUrl: string;
   imageAlt: string;
 }
+
+export interface ImageProps {
+  imgUrl : string;
+  styleName: string;
+  alt: string;
+}
