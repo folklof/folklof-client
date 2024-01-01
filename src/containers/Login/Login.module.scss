@@ -37,6 +37,7 @@
     .loginCard {
       position: relative;
       height: 60vh;
+      width: 60%;
       z-index: 2;
       margin: auto;
       padding: 20px;
@@ -60,6 +61,7 @@
       left: 50%; // Center the image by setting the left edge to 50% of the parent
       transform: translateX(-50%) rotate(15deg); // Shift the image back by 50% of its width to center it and rotate
       width: 25vw; // Adjust the width as necessary
+      height: 25vw;
       z-index: 3; // Ensure the z-index is higher than .imageBox to overlap it
     }
   

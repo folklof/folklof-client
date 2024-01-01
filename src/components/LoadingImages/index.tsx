@@ -1,40 +1,29 @@
 import { useEffect, useState } from "react";
-import { Skeleton} from "@mui/material";
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import styles from "../../containers/HeroSection/HeroSection.module.scss"
+import { Skeleton } from "@mui/material";
+import { ImageProps } from "../../types";
 
-interface ImageProps {
-    imgUrl : string;
-    styleName: string;
-}
+const LoadingImages: React.FC<ImageProps> = ({ imgUrl, styleName, alt }) => {
+  const [loading, setLoading] = useState(true);
 
+  useEffect(() => {
+    const image = new Image();
+    image.src = imgUrl;
+    image.onload = () => setLoading(false);
+  }, [imgUrl]);
 
-const LoadingImages: React.FC <ImageProps> = ({imgUrl, styleName})=> {
-    const [ loading, setLoading ] = useState(true)
+  return (
+    <>
+      {loading ? (
+        <Skeleton
+          className={styleName}
+          variant="rounded"
+          sx={{ bgcolor: "#15202B" }}
+        />
+      ) : (
+        <img className={styleName} src={imgUrl} alt={alt} />
+      )}
+    </>
+  );
+};
 
-    useEffect(()=> {
-      const image = new Image()
-      image.src= imgUrl
-      image.onload= ()=> setLoading(false)
-  }, [imgUrl])
-
-    return (
-        <>
-            {loading ? (
-            <Skeleton
-                className={styles[styleName]}
-                variant="rounded"
-                sx={{bgcolor: '#15202B'}}
-            />
-            ) : (
-            <img
-                className={styles[styleName]}
-                src= {imgUrl}
-                alt="Hero Image"
-            />
-            )}
-        </>
-    )
-}
-
-export default LoadingImages
+export default LoadingImages;
