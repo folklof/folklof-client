@@ -88,13 +88,16 @@ const LibraryPage: React.FC<LibraryProps> = ({ onLoaded }) => {
     return [...Array(3)].map((_, index) => (
       <Box key={index} sx={{ display: "flex", mb: 2 }}>
         <Skeleton variant="rectangular" width={100} height={100} sx={{ bgcolor: "#f1f1f13d" }} />
-        <Box sx={{ ml: 2, flex: 1 }}>
-          <Skeleton variant="text" width="60%" sx={{ bgcolor: "#f1f1f13d" }}/>
+        <Box sx={{ ml: 2, flex: 1, display: "flex", flexDirection: "column", justifyContent: "space-between", paddingTop: "0.5rem", paddingBottom: "0.5rem"}}>
           <Skeleton variant="text" width="40%" sx={{ bgcolor: "#f1f1f13d" }}/>
+          <Box>
+            <Skeleton variant="text" width="15%" sx={{ bgcolor: "#f1f1f13d" }}/>
+            <Skeleton variant="text" width="15%" sx={{ bgcolor: "#f1f1f13d" }}/>
+          </Box>
         </Box>
         <Box sx={{ display: "flex", flexDirection: "column", alignItems: "start", gap: "16px" }}>
-          <Skeleton variant="rectangular" width={100} height={36} sx={{ bgcolor: "#f1f1f13d" }}/>
-          <Skeleton variant="rectangular" width={100} height={36} sx={{ bgcolor: "#f1f1f13d" }}/>
+          <Skeleton variant="rounded" width={180} height={36} sx={{ bgcolor: "#f1f1f13d" }}/>
+          <Skeleton variant="rounded" width={180} height={36} sx={{ bgcolor: "#f1f1f13d" }}/>
         </Box>
       </Box>
     ));

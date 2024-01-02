@@ -31,11 +31,11 @@ const AllBooks: React.FC<{ searchQuery: string | null, onLoaded: () => void }> =
     };
 
     initializeData();
-  }, []);
+  }, [onLoaded]);
 
   const effectiveSearchQuery = searchQuery || '';
 
-  const { data, isLoading, isError, error, fetchNextPage } = useInfiniteQuery<
+  const { data, isError, error, fetchNextPage } = useInfiniteQuery<
     BooksResponse,
     Error,
     BooksResponse,
@@ -74,28 +74,7 @@ const AllBooks: React.FC<{ searchQuery: string | null, onLoaded: () => void }> =
         />
       </Grid>
       <Grid item xs={12} md={8} lg={9}>
-        {isLoading ? (
-          <Box>
-            {Array.from(new Array(3)).map((_, index) => (
-              <Box key={index} sx={{ marginBottom: 2 }}>
-                {/* <Skeleton
-                  variant="rectangular"
-                  height={118}
-                  animation="wave"
-                  sx={{ backgroundColor: '#f1f1f13d' }}
-                />
-                <Skeleton
-                  variant="text"
-                  sx={{ backgroundColor: '#f1f1f13d' }}
-                />
-                <Skeleton
-                  variant="text"
-                  sx={{ backgroundColor: '#f1f1f13d' }}
-                /> */}
-              </Box>
-            ))}
-          </Box>
-        ) : isError ? (
+        {isError ? (
           <Box>
             Error: {error instanceof Error ? error.message : "Unknown error occurred"}
           </Box>
@@ -105,7 +84,6 @@ const AllBooks: React.FC<{ searchQuery: string | null, onLoaded: () => void }> =
               books={data?.pages.flatMap(page => page.data as BookAttributes[]) ?? []}
               sort={sort}
               handleSortChange={handleSortChange}
-              isLoading={isLoading}
             />
             <Box textAlign="left" my={2} padding={"6vh"}>
               <SecondaryButton
