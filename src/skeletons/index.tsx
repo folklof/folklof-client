@@ -1,1 +1,0 @@
-export { default as HeroSectionSkeleton } from "./HeroSectionSkeleton"
