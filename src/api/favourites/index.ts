@@ -43,6 +43,7 @@ export const removeFavouriteBook = async (favouriteId: string) => {
 };
 
 export const addToFavourite = async (bookId: string) => {
+  // eslint-disable-next-line no-useless-catch
   try {
     const userProfile = await getUserProfile();
     const payload = {

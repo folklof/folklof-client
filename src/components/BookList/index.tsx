@@ -68,6 +68,8 @@ const BookList: React.FC<BookListProps> = ({ books, sort, handleSortChange}) => 
 
     if (bookListWithRatings.length > 0) {
       loadImages();
+    }else {
+      setIsLoading(false);
     }
   }, [bookListWithRatings]);
 

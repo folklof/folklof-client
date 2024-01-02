@@ -20,7 +20,7 @@ const FavouritePage: React.FC<FavouriteProps> = ({ onLoaded }) => {
       }
     };
     loadFavouriteBooks();
-  }, []);
+  }, [onLoaded]);
 
   useEffect(() => {
     const loadImage = (src: string) => {
@@ -39,6 +39,8 @@ const FavouritePage: React.FC<FavouriteProps> = ({ onLoaded }) => {
 
     if (favouriteBooks.length > 0) {
       loadImages();
+    } else {
+      setIsLoading(false);
     }
   }, [favouriteBooks]);
 
@@ -52,6 +54,7 @@ const FavouritePage: React.FC<FavouriteProps> = ({ onLoaded }) => {
       setFavouriteBooks(prevBooks => prevBooks.filter(book => book.ID !== favouriteId));
     } catch (error) {
       console.error("Error while removing book:", error);
+      setIsLoading(false);
     }
   };
 
@@ -90,19 +93,23 @@ const FavouritePage: React.FC<FavouriteProps> = ({ onLoaded }) => {
 
   return (
     <Box className={styles.favouriteContainer}>
-      <Typography variant="h5" gutterBottom className={styles.title}>
-        Favourites
-      </Typography>
-      {isLoading ? renderSkeletons() : (favouriteBooks.length > 0 ? renderBooks() : (
-        <Box sx={{ textAlign: 'center', padding: '10vw' }}>
-          <Typography variant="body1" sx={{ color: 'white' }}>
-            Your Favourite Stories
-            <br />
-            Find and add your favourite stories to see them here.
-          </Typography>
-        </Box>
-      ))}
-    </Box>
+    <Typography variant="h5" gutterBottom className={styles.title}>
+      Favourites
+    </Typography>
+    {isLoading ? (
+      renderSkeletons()
+    ) : favouriteBooks.length > 0 ? (
+      renderBooks()
+    ) : (
+      <Box sx={{ textAlign: 'center', padding: '10vw' }}>
+        <Typography variant="body1" sx={{ color: 'white' }}>
+          Your Favourite Stories
+          <br />
+          Find and add your favourite stories to see them here.
+        </Typography>
+      </Box>
+    )}
+  </Box>
   );
 };
 
