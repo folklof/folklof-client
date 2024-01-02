@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Grid, Box, SelectChangeEvent } from "@mui/material";
+import { Grid, Box, SelectChangeEvent, Typography } from "@mui/material";
 import { useInfiniteQuery } from "react-query";
 import { SideBar, BookList, SecondaryButton } from "../../components";
 import {
@@ -18,6 +18,7 @@ const AllBooks: React.FC<{ searchQuery: string | null, onLoaded: () => void }> =
   const [selectedAgeGroup, setSelectedAgeGroup] = useState<string>("");
   const [categories, setCategories] = useState<ICategory[]>([]);
   const [ageGroups, setAgeGroups] = useState<IAgeGroup[]>([]);
+
 
   useEffect(() => {
     const initializeData = async () => {
@@ -63,38 +64,45 @@ const AllBooks: React.FC<{ searchQuery: string | null, onLoaded: () => void }> =
 
   return (
     <Grid container spacing={2} className={styles.booksContainer}>
-      <Grid item xs={12} md={4} lg={3}>
-        <SideBar
-          onCategoryChange={setSelectedCategory}
-          onAgeGroupChange={setSelectedAgeGroup}
-          categories={categories}
-          ageGroups={ageGroups}
-          selectedCategory={selectedCategory}
-          selectedAgeGroup={selectedAgeGroup}
-        />
-      </Grid>
-      <Grid item xs={12} md={8} lg={9}>
-        {isError ? (
-          <Box>
-            Error: {error instanceof Error ? error.message : "Unknown error occurred"}
-          </Box>
-        ) : (
-          <>
-            <BookList
-              books={data?.pages.flatMap(page => page.data as BookAttributes[]) ?? []}
-              sort={sort}
-              handleSortChange={handleSortChange}
-            />
-            <Box textAlign="left" my={2} padding={"6vh"}>
-              <SecondaryButton
-                text="Load More"
-                onClick={() => fetchNextPage()}
-              />
-            </Box>
-          </>
-        )}
-      </Grid>
+    <Grid item xs={12} md={4} lg={3}>
+      <SideBar
+        onCategoryChange={setSelectedCategory}
+        onAgeGroupChange={setSelectedAgeGroup}
+        categories={categories}
+        ageGroups={ageGroups}
+        selectedCategory={selectedCategory}
+        selectedAgeGroup={selectedAgeGroup}
+      />
     </Grid>
+    <Grid item xs={12} md={8} lg={9}>
+      {isError ? (
+        <Box>
+          <Typography variant="h6">
+            Error: {error instanceof Error ? error.message : "Unknown error occurred"}
+          </Typography>
+        </Box>
+      ) : (
+        <>
+          {categories.length === 1 ? (
+            <Box sx={{height: "10vh"}}>
+              <Typography sx={{color: "white", marginTop:"100px", fontSize: 16, paddingLeft: "10vw"}}>No data available for book list.</Typography>
+            </Box>
+          ) : (
+            <>
+              <BookList
+                books={data?.pages.flatMap((page) => page.data as BookAttributes[]) ?? []}
+                sort={sort}
+                handleSortChange={handleSortChange}
+              />
+              <Box textAlign="left" my={2} padding={"6vh"}>
+                <SecondaryButton text="Load More" onClick={() => fetchNextPage()} />
+              </Box>
+            </>
+          )}
+        </>
+      )}
+    </Grid>
+  </Grid>
   );
 };
 
