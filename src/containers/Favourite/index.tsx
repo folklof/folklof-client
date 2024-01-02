@@ -13,17 +13,34 @@ const FavouritePage: React.FC<FavouriteProps> = ({ onLoaded }) => {
 
   useEffect(() => {
     const loadFavouriteBooks = async () => {
-      setIsLoading(true);
       const books = await fetchFavouriteBooks();
       setFavouriteBooks(books);
-      setIsLoading(false);
       if (onLoaded) {
         onLoaded();
       }
     };
-
     loadFavouriteBooks();
   }, []);
+
+  useEffect(() => {
+    const loadImage = (src: string) => {
+      return new Promise<void>((resolve) => {
+        const image = new Image();
+        image.src = src;
+        image.onload = () => resolve();
+      });
+    };
+
+    const loadImages = async () => {
+      const promises = favouriteBooks.map((book) => loadImage(book.book.cover_image));
+      await Promise.all(promises);
+      setIsLoading(false);
+    };
+
+    if (favouriteBooks.length > 0) {
+      loadImages();
+    }
+  }, [favouriteBooks]);
 
   const handleListenNow = (bookId: string) => {
     navigate(`/book/${bookId}`);
@@ -56,14 +73,17 @@ const FavouritePage: React.FC<FavouriteProps> = ({ onLoaded }) => {
 
   const renderSkeletons = () => [...Array(3)].map((_, index) => (
     <Box key={index} className={styles.bookItem}>
-      <Skeleton variant="rectangular" width={100} height={100} />
-      <Box className={styles.bookDetails}>
-        <Skeleton variant="text" width="60%"/>
-        <Skeleton variant="text" width="40%"/>
-      </Box>
+      <Skeleton variant="rectangular" width={100} height={100} style={{ backgroundColor: "#f1f1f13d" }}/>
+        <Box className={styles.bookDetails}>
+          <Skeleton variant="text" width="50%" style={{ backgroundColor: "#f1f1f13d" }}/>
+          <Box>
+            <Skeleton variant="text" width="15%" style={{ backgroundColor: "#f1f1f13d" }}/>
+            <Skeleton variant="text" width="15%" style={{ backgroundColor: "#f1f1f13d" }}/>
+          </Box>
+        </Box>
       <Box className={styles.buttonWrapper}>
-        <Skeleton variant="rectangular" width={100} height={36} />
-        <Skeleton variant="rectangular" width={100} height={36} />
+        <Skeleton variant="rounded" width={180} height={36} style={{ backgroundColor: "#f1f1f13d" }}/>
+        <Skeleton variant="rounded" width={180} height={36} style={{ backgroundColor: "#f1f1f13d" }}/>
       </Box>
     </Box>
   ));

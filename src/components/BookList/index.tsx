@@ -23,11 +23,11 @@ interface BookListProps {
   books: BookAttributes[];
   sort: string;
   handleSortChange: (event: SelectChangeEvent<string>) => void;
-  isLoading: boolean; // Added isLoading to the interface
 }
 
-const BookList: React.FC<BookListProps> = ({ books, sort, handleSortChange, isLoading,}) => {
+const BookList: React.FC<BookListProps> = ({ books, sort, handleSortChange}) => {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true)
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] =useState<AlertColor>("success");
@@ -50,6 +50,26 @@ const BookList: React.FC<BookListProps> = ({ books, sort, handleSortChange, isLo
       fetchRatingsForBooks();
     }
   }, [books]);
+
+  useEffect(() => {
+    const loadImage = (src: string) => {
+      return new Promise<void>((resolve) => {
+        const image = new Image();
+        image.src = src;
+        image.onload = () => resolve();
+      });
+    };
+
+    const loadImages = async () => {
+      const promises = bookListWithRatings.map((book) => loadImage(book.cover_image));
+      await Promise.all(promises);
+      setIsLoading(false);
+    };
+
+    if (bookListWithRatings.length > 0) {
+      loadImages();
+    }
+  }, [bookListWithRatings]);
 
   const handleAddToFavourite = async (bookId: string) => {
     try {
@@ -176,6 +196,11 @@ const BookList: React.FC<BookListProps> = ({ books, sort, handleSortChange, isLo
                   />
                 </Box>
               </Box>
+            <Box sx={{ display: "flex", flexDirection: "column", alignItems: "start", gap: "16px" }}>
+              <Skeleton variant="rounded" width={170} height={36} sx={{ bgcolor: "#f1f1f13d" }}/>
+              <Skeleton variant="rounded" width={170} height={36} sx={{ bgcolor: "#f1f1f13d" }}/>
+              <Skeleton variant="rounded" width={170} height={36} sx={{ bgcolor: "#f1f1f13d" }}/>
+            </Box>
             </Box>
           ))
         : // Display books when data is loaded
