@@ -83,7 +83,7 @@ const AllBooks: React.FC<{ searchQuery: string | null, onLoaded: () => void }> =
         </Box>
       ) : (
         <>
-          {categories.length <= 1 ? (
+          {data?.pages?.length && data.pages.length < 1 ? (
             <Box sx={{textAlign: "center", paddingTop:"10vh", paddingRight: "15vw"}}>
               <Typography sx={{color: "white", fontSize: 16, textAlign: "center"}}>No data available for book list.</Typography>
             </Box>
