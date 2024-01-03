@@ -15,7 +15,7 @@
     transform: rotate(1deg);
   }
 
-  @media (max-width: 425px) {
+  @media (max-width: 768px) {
     flex-direction: column;
     height: auto;
     .bigHero {
@@ -52,7 +52,7 @@
     height: 12vw;
   }
 
-  @media (max-width: 425px) {
+  @media (max-width: 768px) {
     padding-top: 10vh;
     flex-direction: row;
     max-width: 100%;
@@ -98,7 +98,7 @@
     margin-bottom: 2rem;
   }
 
-  @media (max-width: 425px) {
+  @media (max-width: 768px) {
     height: auto;
     .imageContainerMiddle, 
     .wordContainer {

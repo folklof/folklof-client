@@ -8,7 +8,7 @@
   height: 60vh;
   margin-bottom: 20vh;
 
-  @media (max-width: 425px) {
+  @media (max-width: 768px) {
     flex-direction: column;
     height: auto;
     margin-bottom: 10vh;
@@ -22,7 +22,7 @@
     text-align: center;
     color: #fff;
 
-    @media (max-width: 425px) {
+    @media (max-width: 768px) {
       margin-top: 25vh;
       margin-bottom: 5vh;
       font-size: 1.5rem; // Adjust font size for mobile

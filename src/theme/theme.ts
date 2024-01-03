@@ -28,7 +28,7 @@ const theme = createTheme({
     h4: {
       fontFamily: "eixample-dip, sans-serif",
       fontWeight: 700,
-      '@media (max-width:425px)': {
+      '@media (max-width:768px)': {
         fontSize: '1.2rem',
       }
     },
@@ -37,7 +37,7 @@ const theme = createTheme({
       fontFamily: "eixample-dip, sans-serif",
       fontWeight: 700,
       fontSize: "1.5rem",
-      '@media (max-width:425px)': {
+      '@media (max-width:768px)': {
         fontSize: '1.2rem',
       }
     },
@@ -46,7 +46,7 @@ const theme = createTheme({
       fontFamily: "elza-text, sans-serif",
       fontWeight: 400,
       fontSize: "1.5rem",
-      '@media (max-width:425px)': {
+      '@media (max-width:768px)': {
         fontSize: '1rem',
       }
     },

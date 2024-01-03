@@ -14,7 +14,7 @@
   width: 100%;
   height: 60vh;
 
-  @media (max-width: 425px) {
+  @media (max-width: 768px) {
     flex-direction: column;
     height: 85vh;
   }
@@ -29,7 +29,7 @@
   border-radius: 15px;
   backdrop-filter: blur(40px);
 
-  @media (max-width: 425px) {
+  @media (max-width: 768px) {
     max-width: 100%;
   }
 }
@@ -47,7 +47,7 @@
   background-color: rgba(242, 242, 242, 0.9);
   border-radius: 20px;
 
-  @media (max-width: 425px) {
+  @media (max-width: 768px) {
     padding: 20px;
   }
 }
@@ -60,7 +60,7 @@
   padding-right: 6rem; // paddingRight: 6
   overflow: auto;
 
-  @media (max-width: 425px) {
+  @media (max-width: 768px) {
     width: 65vw;
     height: 40vh;
     padding-right: 1rem; // paddingRight: 6
@@ -91,7 +91,7 @@
   border-radius: 15px;
   margin-bottom: 1rem;
 
-  @media (max-width: 425px) {
+  @media (max-width: 768px) {
     width: 75vw;
     height: 30vw;
   }

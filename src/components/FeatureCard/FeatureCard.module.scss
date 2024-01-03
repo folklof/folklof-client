@@ -3,7 +3,7 @@
     background-color: transparent;
     color: #fff;
     box-shadow: none;
-    @media (max-width: 425px) {
+    @media (max-width: 768px) {
       max-width: 80vw;
       margin-bottom: 10vh;
     }
@@ -15,7 +15,7 @@
     height: 15vw !important;
     transform: rotate(2deg);
     opacity: 0.77;
-    @media (max-width: 425px) {
+    @media (max-width: 768px) {
       max-height: 20vh;
       margin-bottom: 2vh;
     }

@@ -4,7 +4,7 @@
     box-shadow: none;
     padding: 0 10vw;
 
-    @media (max-width: 425px) {
+    @media (max-width: 768px) {
         padding: 0;
     }
   
@@ -57,7 +57,7 @@
       }
     }
   
-    @media (max-width: 425px) {
+    @media (max-width: 768px) {
     
       .toolbar .navItem {
         display: none;
