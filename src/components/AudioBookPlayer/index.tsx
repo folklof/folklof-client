@@ -23,11 +23,19 @@ const AudioBookPlayer: React.FC = () => {
   } = useQuery(["bookData", id], () => fetchBookData(id!), { enabled: !!id });
 
   const FormattedText = ({ text }: { text: string }) => {
-    const cleanText = text.replace(/\\"/g, '"');
+    // Function to decode the text
+    const decodeModelText = (modelText: string) => {
+      // Replace escaped newlines and quotes
+      let decodedText = modelText.replace(/\\n/g, "\n").replace(/\\"/g, '"');
+      return decodedText;
+    };
+
+    // Decode the text
+    const cleanText = decodeModelText(text);
 
     return (
       <>
-        {cleanText.split("\\n").map((line, index) => (
+        {cleanText.split("\n").map((line, index) => (
           <React.Fragment key={index}>
             {line}
             <br />
@@ -146,7 +154,8 @@ const AudioBookPlayer: React.FC = () => {
         {/* Main container for media player and text */}
         <Box className={styles.widget}>
           {/* Media Player Container */}
-          <Box className={styles.mediaPlayerContainer}
+          <Box
+            className={styles.mediaPlayerContainer}
             // sx={{
             //   display: "flex",
             //   flexDirection: "column",
@@ -157,8 +166,7 @@ const AudioBookPlayer: React.FC = () => {
             //   backdropFilter: "blur(40px)",
             // }}
           >
-            <Box className={styles.imgContainer}
-            >
+            <Box className={styles.imgContainer}>
               <img
                 src={bookData?.cover_image}
                 alt={bookData?.title}
@@ -208,7 +216,8 @@ const AudioBookPlayer: React.FC = () => {
           </Box>
 
           {/* Text Container */}
-          <Box className={styles.textContainer}
+          <Box
+            className={styles.textContainer}
             // sx={{
             //   Width: "100%",
             //   overflow: "hidden",
@@ -221,9 +230,13 @@ const AudioBookPlayer: React.FC = () => {
             <Typography variant="h4" noWrap sx={{ textAlign: "center" }}>
               {bookData?.title}
             </Typography>
-            <Typography variant="h6" letterSpacing={-0.25} className={styles.typographyCustom}>
-      <FormattedText text={bookData ? bookData.desc : ""} />
-    </Typography>
+            <Typography
+              variant="h6"
+              letterSpacing={-0.25}
+              className={styles.typographyCustom}
+            >
+              <FormattedText text={bookData ? bookData.desc : ""} />
+            </Typography>
           </Box>
         </Box>
       </Widget>
