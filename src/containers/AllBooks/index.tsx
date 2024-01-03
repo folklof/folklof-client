@@ -76,16 +76,16 @@ const AllBooks: React.FC<{ searchQuery: string | null, onLoaded: () => void }> =
     </Grid>
     <Grid item xs={12} md={8} lg={9}>
       {isError ? (
-        <Box>
+        <Box className={styles.booksContainer}>
           <Typography variant="h6">
             Error: {error instanceof Error ? error.message : "Unknown error occurred"}
           </Typography>
         </Box>
       ) : (
         <>
-          {categories.length === 1 ? (
-            <Box sx={{height: "10vh"}}>
-              <Typography sx={{color: "white", marginTop:"100px", fontSize: 16, paddingLeft: "10vw"}}>No data available for book list.</Typography>
+          {categories.length <= 1 ? (
+            <Box sx={{textAlign: "center", paddingTop:"10vh", paddingRight: "15vw"}}>
+              <Typography sx={{color: "white", fontSize: 16, textAlign: "center"}}>No data available for book list.</Typography>
             </Box>
           ) : (
             <>
