@@ -5,6 +5,7 @@ import './SecondaryButton.scss'
 type SecondaryButtonProps = {
   text: string;
   onClick: () => void;
+  disabled?: boolean;
 };
 
 const SecondaryButton: React.FC<SecondaryButtonProps> = ({ text, onClick }) => {
