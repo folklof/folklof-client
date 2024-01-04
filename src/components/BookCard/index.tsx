@@ -40,6 +40,7 @@ const BookCard: React.FC<BookCardProps> = ({ id, title, imageUrl, category }) =>
             className={styles.bookCardMedia}
             image={imageUrl}
             alt={title}
+            onClick={handleClick}
           />
         )}
       <CardContent className={styles.bookCardContent}>
