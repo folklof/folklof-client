@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Grid, Box, SelectChangeEvent } from "@mui/material";
+import { Grid, Box, SelectChangeEvent, Typography } from "@mui/material";
 import { useInfiniteQuery } from "react-query";
 import { SideBar, BookList } from "../../components";
 import {
@@ -32,7 +32,7 @@ const SearchLists: React.FC<{ searchQuery: string | null }> = ({ searchQuery }) 
     initializeData();
   }, []);
 
-  const effectiveSearchQuery = searchQuery || '';
+  const effectiveSearchQuery = searchQuery || "";
 
   const { data, isLoading, isError, error } = useInfiniteQuery<
     BooksResponse,
@@ -59,6 +59,8 @@ const SearchLists: React.FC<{ searchQuery: string | null }> = ({ searchQuery }) 
     setSort(event.target.value);
   };
 
+  const hasBooks = data && data.pages.some((page) => page.data.length > 0);
+
   return (
     <Grid container spacing={2} className={styles.booksContainer}>
       <Grid item xs={12} md={4} lg={3}>
@@ -71,41 +73,26 @@ const SearchLists: React.FC<{ searchQuery: string | null }> = ({ searchQuery }) 
           selectedAgeGroup={selectedAgeGroup}
         />
       </Grid>
-      <Grid item xs={12} md={8} lg={9} marginBottom={15}>
+      <Grid item xs={12} md={8} lg={9}>
         {isLoading ? (
-          <Box>
-            {Array.from(new Array(3)).map((_, index) => (
-              <Box key={index} sx={{ marginBottom: 2 }}>
-                {/* <Skeleton
-                  variant="rectangular"
-                  height={118}
-                  animation="wave"
-                  sx={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }}
-                />
-                <Skeleton
-                  variant="text"
-                  sx={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }}
-                />
-                <Skeleton
-                  variant="text"
-                  sx={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }}
-                /> */}
-              </Box>
-            ))}
-          </Box>
+          <Typography variant="body1">Loading books...</Typography>
         ) : isError ? (
           <Box>
             Error: {error instanceof Error ? error.message : "Unknown error occurred"}
           </Box>
+        ) : hasBooks ? (
+          <BookList
+            books={data.pages.flatMap((page) => page.data as BookAttributes[])}
+            sort={sort}
+            handleSortChange={handleSortChange}
+          />
         ) : (
-          <>
-            <BookList
-              books={data?.pages.flatMap(page => page.data as BookAttributes[]) ?? []}
-              sort={sort}
-              handleSortChange={handleSortChange}
-              isLoading={isLoading}
-            />
-          </>
+          <Box className={styles.noBooksContainer}>
+            <Typography variant="h5" className={styles.noBooksText}>No Books Found</Typography>
+            <Typography variant="body1" sx={{color:"white"}}>
+              We couldn't find any books matching your criteria. <br/> Try adjusting your filters, or browse our broader collection to discover more.
+            </Typography>
+          </Box>
         )}
       </Grid>
     </Grid>

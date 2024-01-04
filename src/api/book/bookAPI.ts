@@ -10,7 +10,6 @@ export interface BooksResponse {
   error?: string;
 }
 
-// categories page
 export const fetchBooks = async ({
   pageParam = 1,
   queryKey,
@@ -28,7 +27,6 @@ export const fetchBooks = async ({
     agegroup_id: ageGroupId,
   });
 
-  // Add the 'title' to the query parameters if it's provided
   if (title) {
     queryParams.append("title", title);
   }
@@ -37,14 +35,22 @@ export const fetchBooks = async ({
     const response = await axios.get<BooksResponse>(
       `${baseURL}/books?${queryParams}`
     );
-    return response.data;
-  } catch (error) {
-    if (axios.isAxiosError(error) && error.response?.status === 404) {
-      return { data: [], error: "No more books available." };
+
+    // Check if the response is successful and the data array is not empty
+    if (response.data && response.data.data.length > 0) {
+      return response.data;
+    } else {
+      // Return an empty array with a generic message if no data is found
+      return { data: [], error: "No books found matching the criteria." };
     }
-    throw error;
+  } catch (error) {
+    console.error("Error fetching books:", error);
+    // Return an empty array and a generic error message for all errors
+    return { data: [], error: "An error occurred while fetching books." };
   }
 };
+
+
 
 export const fetchCategories = async () => {
   try {

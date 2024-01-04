@@ -11,12 +11,13 @@ import {
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import styles from './DashboardNavbar.module.scss';
 
 const DashboardNavbar: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
+  const location = useLocation();
   const [debounceTimer, setDebounceTimer] = useState<NodeJS.Timeout | null>(null);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -74,6 +75,8 @@ const DashboardNavbar: React.FC = () => {
     };
   }, [searchTerm]);
 
+  const isActive = (path: string) => location.pathname === path;
+
   return (
     <AppBar position="static" sx={{ backgroundColor: 'transparent', boxShadow: 'none' }} className={styles.dashboardNavbar}>
       <Toolbar className={styles.toolbar}>
@@ -108,13 +111,25 @@ const DashboardNavbar: React.FC = () => {
         </Menu>
 
         <Box sx={{ display: { xs: 'none', sm: 'flex' } }}>
-          <Typography variant="body1" className={styles.navItem} onClick={navigateToLibrary}>
+          <Typography 
+            variant="body1" 
+            className={`${styles.navItem} ${isActive('/library') ? styles.activeNavItem : ''}`} 
+            onClick={navigateToLibrary}
+          >
             Library
           </Typography>
-          <Typography variant="body1" className={styles.navItem} onClick={navigateToCategories}>
+          <Typography 
+            variant="body1" 
+            className={`${styles.navItem} ${isActive('/categories') ? styles.activeNavItem : ''}`} 
+            onClick={navigateToCategories}
+          >
             Categories
           </Typography>
-          <Typography variant="body1" className={styles.navItem} onClick={navigateToFavourites}>
+          <Typography 
+            variant="body1" 
+            className={`${styles.navItem} ${isActive('/favourites') ? styles.activeNavItem : ''}`} 
+            onClick={navigateToFavourites}
+          >
             Favourites
           </Typography>
         </Box>
