@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { fetchQuizData, submitQuizAnswer } from "../../api";
+import { fetchQuizData, getUserProfile, submitQuizAnswer } from "../../api";
 import {
   Box,
   Typography,
@@ -19,6 +19,7 @@ import {
 import { PrimaryButton } from "..";
 import { QuizQuestion, QuizProps } from "../../types";
 import styles from "./Quiz.module.scss";
+import { quizResult } from "../../api/quiz";
 
 const Quiz: React.FC<QuizProps> = ({ bookId }) => {
   const [quizData, setQuizData] = useState<QuizQuestion[]>([]);
@@ -27,6 +28,8 @@ const Quiz: React.FC<QuizProps> = ({ bookId }) => {
   const [answer, setAnswer] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
+  const [isCorrect, setIsCorrect] = useState(false)
+  const [userId, setUserId] = useState("")
 
   useEffect(() => {
     const fetchData = async () => {
@@ -40,7 +43,18 @@ const Quiz: React.FC<QuizProps> = ({ bookId }) => {
       }
     };
 
+    const fetchUser = async () => {
+      try {
+        const userData = await getUserProfile()
+        setUserId(userData.ID)
+      } catch (err) {
+        console.log(err)
+      }
+    }
+
     fetchData();
+    fetchUser();
+
   }, [bookId]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -58,6 +72,9 @@ const Quiz: React.FC<QuizProps> = ({ bookId }) => {
       const response = await submitQuizAnswer(quizId, answer);
       setModalMessage(response.message);
       setIsModalOpen(true);
+      if (response.success) {
+        setIsCorrect(true)
+      }
     } catch (error) {
       setModalMessage(
         error instanceof Error ? error.message : "An unexpected error occurred"
@@ -69,6 +86,33 @@ const Quiz: React.FC<QuizProps> = ({ bookId }) => {
   const handleCloseModal = () => {
     setIsModalOpen(false);
   };
+
+  const handleCorrectAnswer = async () => {
+    try {
+      const scores = 1
+      const response = await quizResult(userId, quizData[0].ID, scores)
+      console.log(' ',response)
+        if(response.status === 200){
+          alert("you got score 1 point");
+        }
+    } catch (error) {
+      if (error == "Error: 400") {
+        alert("cannot proceed, because you have already taken the quiz")
+      }
+    }    
+  }
+
+  // const handleWrongAnswer = async () => {
+  //   try {
+  //     const scores = 0
+  //     await quizResult(userId, quizData[0].ID, scores)      
+  //   } catch (error) {
+  //   console.log(' ',error);    
+  //     if (error == "Error: 400") {
+  //       alert("you already take the quiz")
+  //     }
+  //   }    
+  // }
 
   if (isLoading) {
     return (
@@ -151,9 +195,15 @@ const Quiz: React.FC<QuizProps> = ({ bookId }) => {
         <DialogContent>
           <DialogContentText>{modalMessage}</DialogContentText>
         </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseModal}>Close</Button>
-        </DialogActions>
+        {isCorrect ? (
+          <DialogActions>
+            <Button onClick={() => { handleCloseModal(); handleCorrectAnswer(); }}>Close</Button>
+          </DialogActions>
+        ):(
+          <DialogActions>
+            <Button onClick={handleCloseModal}>Close</Button>
+          </DialogActions>
+        )}        
       </Dialog>
     </Box>
   );
