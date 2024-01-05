@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { AppBar, Toolbar, Typography, Button, Container, Menu, MenuItem, Avatar } from '@mui/material';
+import { AppBar, Toolbar, Typography, Button, Container, Menu, MenuItem } from '@mui/material';
 import { useNavigate } from "react-router-dom";
 import { useQuery, useQueryClient } from 'react-query';
 import { getUserProfile, logoutUser } from '../../api/auth';
