@@ -177,3 +177,9 @@ export interface ImageProps {
   styleName: string;
   alt: string;
 }
+
+export interface UserRootState {
+  user: {
+    user: UserProfile | null;
+  };
+}
