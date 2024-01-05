@@ -1,4 +1,4 @@
-import { createTheme } from "@mui/material/styles";
+import { createTheme } from "@mui/material";
 
 // Extending the TypographyVariants interface
 declare module "@mui/material/styles" {
