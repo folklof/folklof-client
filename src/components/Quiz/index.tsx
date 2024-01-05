@@ -16,10 +16,15 @@ import {
   Skeleton,
   FormLabel,
 } from "@mui/material";
-import { PrimaryButton } from "..";
+import { AlertBar, PrimaryButton } from "..";
 import { QuizQuestion, QuizProps } from "../../types";
 import styles from "./Quiz.module.scss";
 import { quizResult } from "../../api/quiz";
+import { Slide, SlideProps } from '@mui/material';
+
+
+
+type TransitionProps = Omit<SlideProps, 'direction'>;
 
 const Quiz: React.FC<QuizProps> = ({ bookId }) => {
   const [quizData, setQuizData] = useState<QuizQuestion[]>([]);
@@ -30,6 +35,7 @@ const Quiz: React.FC<QuizProps> = ({ bookId }) => {
   const [modalMessage, setModalMessage] = useState("");
   const [isCorrect, setIsCorrect] = useState(false)
   const [userId, setUserId] = useState("")
+  const [alertModal, setAlertModal] = useState(0)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -79,6 +85,7 @@ const Quiz: React.FC<QuizProps> = ({ bookId }) => {
       setModalMessage(
         error instanceof Error ? error.message : "An unexpected error occurred"
       );
+      setIsCorrect(false)
       setIsModalOpen(true);
     }
   };
@@ -87,32 +94,40 @@ const Quiz: React.FC<QuizProps> = ({ bookId }) => {
     setIsModalOpen(false);
   };
 
+  const transitionDown = (props: TransitionProps) => {
+    return <Slide {...props} direction="right" />;
+  }
+
   const handleCorrectAnswer = async () => {
     try {
       const scores = 1
       const response = await quizResult(userId, quizData[0].ID, scores)
-      console.log(' ',response)
         if(response.status === 200){
-          alert("you got score 1 point");
+          setAlertModal(1)
         }
     } catch (error) {
       if (error == "Error: 400") {
-        alert("cannot proceed, because you have already taken the quiz")
+        setAlertModal(2)
       }
     }    
   }
 
-  // const handleWrongAnswer = async () => {
-  //   try {
-  //     const scores = 0
-  //     await quizResult(userId, quizData[0].ID, scores)      
-  //   } catch (error) {
-  //   console.log(' ',error);    
-  //     if (error == "Error: 400") {
-  //       alert("you already take the quiz")
-  //     }
-  //   }    
-  // }
+  const handleWrongAnswer = async () => {
+    try {
+      setAlertModal(3)
+    } catch (error) {    
+      if (error == "Error: 409") {
+        const scores = 0
+        await quizResult(userId, quizData[0].ID, scores)  
+      }
+    }    
+  }
+
+  const handleCloseAlertBar = () => {
+    setTimeout(() => {
+      setAlertModal(0);
+    }, 2000);
+  };
 
   if (isLoading) {
     return (
@@ -129,6 +144,30 @@ const Quiz: React.FC<QuizProps> = ({ bookId }) => {
 
   return (
     <Box className={styles.quizBox}>
+      {alertModal == 1 && (
+        <AlertBar
+          newState={{ vertical: "bottom", horizontal: "left" }}
+          message={"you got scores 1 point"}
+          transition={transitionDown}
+          severity="success"
+        />
+      )}
+      {alertModal == 2 && (
+        <AlertBar
+          newState={{ vertical: "bottom", horizontal: "left" }}
+          message={"cannot proceed, you already taken the quiz"}
+          transition={transitionDown}
+          severity="error"
+        />
+      )}
+      {alertModal == 3 && (
+        <AlertBar
+          newState={{ vertical: "bottom", horizontal: "left" }}
+          message={"you dont get score point"}
+          transition={transitionDown}
+          severity="info"
+        />
+      )}
       <Typography variant="h4" className={styles.quizTitle}>
         Mystical Quest
       </Typography>
@@ -197,11 +236,11 @@ const Quiz: React.FC<QuizProps> = ({ bookId }) => {
         </DialogContent>
         {isCorrect ? (
           <DialogActions>
-            <Button onClick={() => { handleCloseModal(); handleCorrectAnswer(); }}>Close</Button>
+            <Button onClick={() => { handleCloseModal(); handleCorrectAnswer(); handleCloseAlertBar(); }}>Close</Button>
           </DialogActions>
         ):(
           <DialogActions>
-            <Button onClick={handleCloseModal}>Close</Button>
+            <Button onClick={() => { handleCloseModal(); handleWrongAnswer(); handleCloseAlertBar(); }}>Close</Button>
           </DialogActions>
         )}        
       </Dialog>

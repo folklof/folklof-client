@@ -13,3 +13,4 @@ export { default as Quiz } from './Quiz'
 export { default as UserAuth } from './AuthSuccess'
 export { default as LPNavbar } from './LandingPageNavbar';
 export { default as LoadingImages } from './LoadingImages';
+export { default as AlertBar } from './AlertBar';
