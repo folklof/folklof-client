@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import { AppBar, Toolbar, Typography, Button, Container, Menu, MenuItem } from '@mui/material';
+import { AppBar, Toolbar, Typography, Button, Container, Menu, MenuItem, Avatar } from '@mui/material';
 import { useNavigate } from "react-router-dom";
 import { useQuery, useQueryClient } from 'react-query';
 import { getUserProfile, logoutUser } from '../../api/auth';
 import VerifiedIcon from '@mui/icons-material/Verified';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 
 const TopNavbar: React.FC = () => {
@@ -53,7 +52,7 @@ const TopNavbar: React.FC = () => {
                 sx={{ color: '#FFFFFF', fontWeight: 'bold', textTransform: 'none' }}
                 onClick={handleMenuClick}
               >
-                <AccountCircleIcon sx={{fontSize: "35px"}}/>&ensp;
+                <Avatar src={userProfile.avatar} sx={{width:40, height:40}}/>&ensp;
                 {userProfile.username}&ensp;
                 {userProfile.role_id === 3 && <VerifiedIcon sx={{color: "#448aff"}} />}
               </Button>
