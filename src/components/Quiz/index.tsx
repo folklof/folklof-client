@@ -239,7 +239,6 @@ const Quiz: React.FC<QuizProps> = ({ bookId }) => {
 
   return (
     <Box className={styles.quizBox}>
-<<<<<<< Updated upstream
       {isAllowedToAnswer == false && <QuizBackdrop message="You have already completed quiz for this book."/>}
       {maxAttempt == false && <QuizBackdrop message="You have reached the maximum attempt quiz. Please try again later !"/>}
       <Box className={styles.quizHead}>
@@ -254,12 +253,6 @@ const Quiz: React.FC<QuizProps> = ({ bookId }) => {
           Wrong Attempts : {answerAttempt}/2
         </Typography>
       </Box>
-=======
-      {isAllowedToAnswer == false && <QuizBackdrop />}
-      <Typography variant="h4" className={styles.quizTitle}>
-        Mystical Quest
-      </Typography>
->>>>>>> Stashed changes
       {singleQuestion && (
         <FormControl component="fieldset">
           <Box sx={{ mb: 6, padding: 3 }}>
