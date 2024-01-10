@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { fetchQuizData, getUserProfile, submitQuizAnswer } from "../../api";
+/* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
+import React, { useState, useEffect, useCallback } from "react";
+import { fetchQuizData, submitQuizAnswer } from "../../api";
 import {
   Box,
   Typography,
@@ -16,11 +17,13 @@ import {
   Skeleton,
   FormLabel,
 } from "@mui/material";
-import { AlertBar, PrimaryButton } from "..";
+import { AlertBar, PrimaryButton, QuizBackdrop } from "..";
 import { QuizQuestion, QuizProps } from "../../types";
 import styles from "./Quiz.module.scss";
-import { quizResult } from "../../api/quiz";
+import { quizAttempt, quizResult } from "../../api/quiz";
 import { Slide, SlideProps } from '@mui/material';
+import { useSelector } from "react-redux";
+import { UserRootState } from "../../types";
 
 
 
@@ -34,34 +37,50 @@ const Quiz: React.FC<QuizProps> = ({ bookId }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
   const [isCorrect, setIsCorrect] = useState(false)
-  const [userId, setUserId] = useState("")
+  const [answerAttempt, setAnswerAttempt] = useState(0)
+  const [isAllowedToAnswer, setIsAllowedToAnswer] = useState(true)
   const [alertModal, setAlertModal] = useState(0)
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await fetchQuizData(bookId);
-        setQuizData(data);
-        setLoading(false);
-      } catch (err) {
-        setError(true);
-        setLoading(false);
-      }
-    };
+console.log('current attempt',answerAttempt )
 
-    const fetchUser = async () => {
-      try {
-        const userData = await getUserProfile()
-        setUserId(userData.ID)
-      } catch (err) {
-        console.log(err)
+  const userData = useSelector((state: UserRootState) => state.user.user);
+
+  const fetchData = useCallback(async () => {
+    try {
+      const data = await fetchQuizData(bookId);
+      setQuizData(data);
+      setLoading(false);
+    } catch (err) {
+      setError(true);
+      setLoading(false);
+    }
+  }, [bookId]);
+
+  const fetchQuizAttempt = useCallback(async () => {
+    try {
+      const quizId = quizData?.[0]?.ID;
+      if (quizId) {
+        const attempt = await quizAttempt(userData?.ID!, quizId);
+        console.log('attempt', attempt)
+        setAnswerAttempt(attempt.data.data.attempt_quiz_failed);
+        setIsAllowedToAnswer(attempt.data.isAllowed);
+      }
+    } catch (error) {
+      if (error == "Error: 409") {
+        setIsAllowedToAnswer(false);
       }
     }
+  }, [quizData, userData?.ID]);
 
+  useEffect(() => {
     fetchData();
-    fetchUser();
+  }, [fetchData]);
 
-  }, [bookId]);
+  useEffect(() => {
+    if (quizData) {
+      fetchQuizAttempt();
+    }
+  }, [quizData, fetchQuizAttempt]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setAnswer(event.target.value);
@@ -94,36 +113,45 @@ const Quiz: React.FC<QuizProps> = ({ bookId }) => {
     setIsModalOpen(false);
   };
 
-  const transitionDown = (props: TransitionProps) => {
+  const transitionSide = (props: TransitionProps) => {
     return <Slide {...props} direction="right" />;
   }
 
   const handleCorrectAnswer = async () => {
     try {
       const scores = 1
-      const response = await quizResult(userId, quizData[0].ID, scores)
+      const attempt = 0
+      const response = await quizResult(userData?.ID!, quizData[0].ID, scores, attempt)
         if(response.status === 200){
           setAlertModal(1)
         }
     } catch (error) {
-      if (error == "Error: 400") {
-        setAlertModal(2)
-      }
+      console.log(error)
     }    
   }
 
   const handleWrongAnswer = async () => {
     try {
-      setAlertModal(3)
+      setAlertModal(2)
     } catch (error) {    
-      if (error == "Error: 409") {
-        const scores = 0
-        await quizResult(userId, quizData[0].ID, scores)  
+      try {
+        if (error === "Error : 400" && answerAttempt >= 0 && answerAttempt < 2) {
+          const newAttempt = answerAttempt + 1;
+          setAnswerAttempt(newAttempt);
+  
+          const scores = 0;
+          const attempt = newAttempt;
+  
+          await quizResult(userData?.ID!, quizData?.[0]?.ID, scores, attempt);
+          fetchQuizAttempt();
+        }
+      } catch (innerError) {
+        console.error("Error in handleWrongAnswer:", innerError);
       }
     }    
   }
 
-  const handleCloseAlertBar = () => {
+  const handleCloseAlertBar = () => {    
     setTimeout(() => {
       setAlertModal(0);
     }, 2000);
@@ -144,33 +172,15 @@ const Quiz: React.FC<QuizProps> = ({ bookId }) => {
 
   return (
     <Box className={styles.quizBox}>
-      {alertModal == 1 && (
-        <AlertBar
-          newState={{ vertical: "bottom", horizontal: "left" }}
-          message={"you got scores 1 point"}
-          transition={transitionDown}
-          severity="success"
-        />
-      )}
-      {alertModal == 2 && (
-        <AlertBar
-          newState={{ vertical: "bottom", horizontal: "left" }}
-          message={"cannot proceed, you already taken the quiz"}
-          transition={transitionDown}
-          severity="error"
-        />
-      )}
-      {alertModal == 3 && (
-        <AlertBar
-          newState={{ vertical: "bottom", horizontal: "left" }}
-          message={"you dont get score point"}
-          transition={transitionDown}
-          severity="info"
-        />
-      )}
-      <Typography variant="h4" className={styles.quizTitle}>
-        Mystical Quest
-      </Typography>
+      {isAllowedToAnswer == false && <QuizBackdrop />}
+        <Box className={styles.quizHead}>
+          <Typography variant="h4" className={styles.quizTitle}>
+            Mystical Quest
+          </Typography>      
+          <Typography variant="h4" sx={{fontSize: "1.1rem"}} className={styles.quizTitle}>
+            Wrong Attempts : {answerAttempt}/2
+          </Typography>
+        </Box>
       {singleQuestion && (
         <FormControl component="fieldset">
           <Box sx={{ mb: 6, padding: 3 }}>
@@ -236,7 +246,7 @@ const Quiz: React.FC<QuizProps> = ({ bookId }) => {
         </DialogContent>
         {isCorrect ? (
           <DialogActions>
-            <Button onClick={() => { handleCloseModal(); handleCorrectAnswer(); handleCloseAlertBar(); }}>Close</Button>
+            <Button onClick={() => { handleCloseModal(); handleCorrectAnswer(); handleCloseAlertBar(); setIsAllowedToAnswer(false)}}>Close</Button>
           </DialogActions>
         ):(
           <DialogActions>
@@ -244,6 +254,22 @@ const Quiz: React.FC<QuizProps> = ({ bookId }) => {
           </DialogActions>
         )}        
       </Dialog>
+      {alertModal == 1 && (
+        <AlertBar
+          newState={{ vertical: "bottom", horizontal: "left" }}
+          message={"you got scores 1 point"}
+          transition={transitionSide}
+          severity="success"
+        />
+      )}
+      {alertModal == 2 && (
+        <AlertBar
+          newState={{ vertical: "bottom", horizontal: "left" }}
+          message={"you dont get score point"}
+          transition={transitionSide}
+          severity="info"
+        />
+      )}
     </Box>
   );
 };
