@@ -21,7 +21,11 @@ import { AlertBar, PrimaryButton, QuizBackdrop } from "..";
 import { QuizQuestion, QuizProps } from "../../types";
 import styles from "./Quiz.module.scss";
 import { quizAttempt, quizResult } from "../../api/quiz";
+<<<<<<< Updated upstream
 import { Slide, SlideProps } from "@mui/material";
+=======
+import { Slide, SlideProps } from '@mui/material';
+>>>>>>> Stashed changes
 import { useSelector } from "react-redux";
 import { UserRootState } from "../../types";
 
@@ -33,6 +37,7 @@ const Quiz: React.FC<QuizProps> = ({ bookId }) => {
   const [error, setError] = useState(false);
   const [answer, setAnswer] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
+<<<<<<< Updated upstream
   const [isCorrect, setIsCorrect] = useState(false);
   const [answerAttempt, setAnswerAttempt] = useState(2);
   const [isAllowedToAnswer, setIsAllowedToAnswer] = useState(true);
@@ -41,17 +46,43 @@ const Quiz: React.FC<QuizProps> = ({ bookId }) => {
 
   const userData = useSelector((state: UserRootState) => state.user.user);
 
+=======
+  const [modalMessage, setModalMessage] = useState("");
+  const [isCorrect, setIsCorrect] = useState(false)
+  const [answerAttempt, setAnswerAttempt] = useState(0)
+  const [isAllowedToAnswer, setIsAllowedToAnswer] = useState(true)
+  const [alertModal, setAlertModal] = useState(0)
+
+  const userData = useSelector((state: UserRootState) => state.user.user);
+
+  const fetchData = useCallback(async () => {
+    try {
+      const data = await fetchQuizData(bookId);
+      setQuizData(data);
+      setLoading(false);
+    } catch (err) {
+      setError(true);
+      setLoading(false);
+    }
+  }, [bookId]);
+
+>>>>>>> Stashed changes
   const fetchQuizAttempt = useCallback(async () => {
     try {
       const quizId = quizData?.[0]?.ID;
       if (quizId) {
         const attempt = await quizAttempt(userData?.ID!, quizId);
+<<<<<<< Updated upstream
         setAnswerAttempt(attempt.data.data.attempt_quiz_failed);
+=======
+        setAnswerAttempt(attempt.data.attempt_quiz_failed);
+>>>>>>> Stashed changes
         setIsAllowedToAnswer(attempt.data.isAllowed);
       }
     } catch (error) {
       if (error == "Error: 409") {
         setIsAllowedToAnswer(false);
+<<<<<<< Updated upstream
       }
       if (answerAttempt == 2) {
         setMaxAttempt(false)
@@ -69,6 +100,21 @@ const Quiz: React.FC<QuizProps> = ({ bookId }) => {
       setLoading(false);
     }
   }, [bookId]);
+=======
+      }
+    }
+  }, [quizData, userData?.ID]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
+
+  useEffect(() => {
+    if (quizData) {
+      fetchQuizAttempt();
+    }
+  }, [quizData, fetchQuizAttempt]);
+>>>>>>> Stashed changes
 
   useEffect(() => {
     if (quizData) {
@@ -118,6 +164,7 @@ const Quiz: React.FC<QuizProps> = ({ bookId }) => {
 
   const handleCorrectAnswer = async () => {
     try {
+<<<<<<< Updated upstream
       const scores = 1;
       const attempt = 0;
       const response = await quizResult(
@@ -144,8 +191,32 @@ const Quiz: React.FC<QuizProps> = ({ bookId }) => {
       console.log(error);
     }
   };
+=======
+      const scores = 1
+      const attempt = 0
+      const response = await quizResult(userData?.ID!, quizData[0].ID, scores, attempt)
+        if(response.status === 200){
+          setAlertModal(1)
+        }
+    } catch (error) {
+      console.log(error)
+    }    
+  }
 
-  const handleCloseAlertBar = () => {
+  const handleWrongAnswer = async () => {
+    try {
+      setAlertModal(2)
+    } catch (error) {    
+      if (error == "Error: 409") {
+        const scores = 0
+        const attempt = 1
+        await quizResult(userData?.ID!, quizData[0].ID, scores, attempt)  
+      }
+    }    
+  }
+>>>>>>> Stashed changes
+
+  const handleCloseAlertBar = () => {    
     setTimeout(() => {
       setAlertModal(0);
     }, 2000);
@@ -168,6 +239,7 @@ const Quiz: React.FC<QuizProps> = ({ bookId }) => {
 
   return (
     <Box className={styles.quizBox}>
+<<<<<<< Updated upstream
       {isAllowedToAnswer == false && <QuizBackdrop message="You have already completed quiz for this book."/>}
       {maxAttempt == false && <QuizBackdrop message="You have reached the maximum attempt quiz. Please try again later !"/>}
       <Box className={styles.quizHead}>
@@ -182,6 +254,12 @@ const Quiz: React.FC<QuizProps> = ({ bookId }) => {
           Wrong Attempts : {answerAttempt}/2
         </Typography>
       </Box>
+=======
+      {isAllowedToAnswer == false && <QuizBackdrop />}
+      <Typography variant="h4" className={styles.quizTitle}>
+        Mystical Quest
+      </Typography>
+>>>>>>> Stashed changes
       {singleQuestion && (
         <FormControl component="fieldset">
           <Box sx={{ mb: 6, padding: 3 }}>
@@ -252,6 +330,7 @@ const Quiz: React.FC<QuizProps> = ({ bookId }) => {
               : "Oops! That wasn't the right answer. Keep trying, you'll get it!"}
           </DialogContentText>
         </DialogContent>
+<<<<<<< Updated upstream
         <DialogActions>
         <Button
         onClick={() => {
@@ -271,6 +350,17 @@ const Quiz: React.FC<QuizProps> = ({ bookId }) => {
         Close
       </Button>
         </DialogActions>
+=======
+        {isCorrect ? (
+          <DialogActions>
+            <Button onClick={() => { handleCloseModal(); handleCorrectAnswer(); handleCloseAlertBar(); setIsAllowedToAnswer(false)}}>Close</Button>
+          </DialogActions>
+        ):(
+          <DialogActions>
+            <Button onClick={() => { handleCloseModal(); handleWrongAnswer(); handleCloseAlertBar(); }}>Close</Button>
+          </DialogActions>
+        )}        
+>>>>>>> Stashed changes
       </Dialog>
       {alertModal == 1 && (
         <AlertBar
