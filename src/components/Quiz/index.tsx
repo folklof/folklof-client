@@ -277,7 +277,7 @@ const Quiz: React.FC<QuizProps> = ({ bookId }) => {
       {alertModal == 2 && (
         <AlertBar
           newState={{ vertical: "bottom", horizontal: "left" }}
-          message={"Unfortunately, you didn't receive any additional points."}
+          message={"Unfortunately, you didn't receive any additional points."}
           transition={transitionSide}
           severity="info"
         />
