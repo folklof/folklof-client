@@ -2,8 +2,11 @@ import React from 'react';
 import Backdrop from '@mui/material/Backdrop';
 import { Typography } from '@mui/material';
 
+interface MesageBackdrop {
+  message: string;
+}
 
-const QuizBackdrop = ()=> {
+const QuizBackdrop: React.FC <MesageBackdrop> = ({message})=> {
   const [open] = React.useState(true);  
 
   return (
@@ -32,7 +35,7 @@ const QuizBackdrop = ()=> {
           borderRadius: 2
           }}
         >
-        You have already completed quiz for this book.
+        {message}
       </Typography>
     </Backdrop>
   );

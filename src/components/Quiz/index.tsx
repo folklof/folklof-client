@@ -21,13 +21,11 @@ import { AlertBar, PrimaryButton, QuizBackdrop } from "..";
 import { QuizQuestion, QuizProps } from "../../types";
 import styles from "./Quiz.module.scss";
 import { quizAttempt, quizResult } from "../../api/quiz";
-import { Slide, SlideProps } from '@mui/material';
+import { Slide, SlideProps } from "@mui/material";
 import { useSelector } from "react-redux";
 import { UserRootState } from "../../types";
 
-
-
-type TransitionProps = Omit<SlideProps, 'direction'>;
+type TransitionProps = Omit<SlideProps, "direction">;
 
 const Quiz: React.FC<QuizProps> = ({ bookId }) => {
   const [quizData, setQuizData] = useState<QuizQuestion[]>([]);
@@ -35,15 +33,27 @@ const Quiz: React.FC<QuizProps> = ({ bookId }) => {
   const [error, setError] = useState(false);
   const [answer, setAnswer] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalMessage, setModalMessage] = useState("");
-  const [isCorrect, setIsCorrect] = useState(false)
-  const [answerAttempt, setAnswerAttempt] = useState(0)
-  const [isAllowedToAnswer, setIsAllowedToAnswer] = useState(true)
-  const [alertModal, setAlertModal] = useState(0)
-
-console.log('current attempt',answerAttempt )
+  const [isCorrect, setIsCorrect] = useState(false);
+  const [answerAttempt, setAnswerAttempt] = useState(2);
+  const [isAllowedToAnswer, setIsAllowedToAnswer] = useState(true);
+  const [alertModal, setAlertModal] = useState(0);
 
   const userData = useSelector((state: UserRootState) => state.user.user);
+
+  const fetchQuizAttempt = useCallback(async () => {
+    try {
+      const quizId = quizData?.[0]?.ID;
+      if (quizId) {
+        const attempt = await quizAttempt(userData?.ID!, quizId);
+        setAnswerAttempt(attempt.data.data.attempt_quiz_failed);
+        setIsAllowedToAnswer(attempt.data.isAllowed);
+      }
+    } catch (error) {
+      if (error == "Error: 409") {
+        setIsAllowedToAnswer(false);
+      }
+    }
+  }, [quizData, userData?.ID]);
 
   const fetchData = useCallback(async () => {
     try {
@@ -56,31 +66,15 @@ console.log('current attempt',answerAttempt )
     }
   }, [bookId]);
 
-  const fetchQuizAttempt = useCallback(async () => {
-    try {
-      const quizId = quizData?.[0]?.ID;
-      if (quizId) {
-        const attempt = await quizAttempt(userData?.ID!, quizId);
-        console.log('attempt', attempt)
-        setAnswerAttempt(attempt.data.data.attempt_quiz_failed);
-        setIsAllowedToAnswer(attempt.data.isAllowed);
-      }
-    } catch (error) {
-      if (error == "Error: 409") {
-        setIsAllowedToAnswer(false);
-      }
-    }
-  }, [quizData, userData?.ID]);
-
-  useEffect(() => {
-    fetchData();
-  }, [fetchData]);
-
   useEffect(() => {
     if (quizData) {
       fetchQuizAttempt();
     }
   }, [quizData, fetchQuizAttempt]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setAnswer(event.target.value);
@@ -95,17 +89,28 @@ console.log('current attempt',answerAttempt )
     try {
       const quizId = quizData[0].ID;
       const response = await submitQuizAnswer(quizId, answer);
-      setModalMessage(response.message);
       setIsModalOpen(true);
+      console.log(response);
       if (response.success) {
-        setIsCorrect(true)
+        setIsCorrect(true);
       }
     } catch (error) {
-      setModalMessage(
-        error instanceof Error ? error.message : "An unexpected error occurred"
-      );
-      setIsCorrect(false)
+      setIsCorrect(false);
       setIsModalOpen(true);
+      if (error == "Error: 400" && answerAttempt >= 0 && answerAttempt < 2) {
+        const newAttempt = answerAttempt + 1;
+        setAnswerAttempt(newAttempt);
+
+        const scores = 0;
+        const attempt = newAttempt;
+
+        console.log("attempt", attempt);
+
+        await quizResult(userData?.ID!, quizData?.[0]?.ID, scores, attempt);
+        fetchQuizAttempt();
+      } else {
+        console.log(error);
+      }
     }
   };
 
@@ -115,43 +120,35 @@ console.log('current attempt',answerAttempt )
 
   const transitionSide = (props: TransitionProps) => {
     return <Slide {...props} direction="right" />;
-  }
+  };
 
   const handleCorrectAnswer = async () => {
     try {
-      const scores = 1
-      const attempt = 0
-      const response = await quizResult(userData?.ID!, quizData[0].ID, scores, attempt)
-        if(response.status === 200){
-          setAlertModal(1)
-        }
+      const scores = 1;
+      const attempt = 0;
+      const response = await quizResult(
+        userData?.ID!,
+        quizData[0].ID,
+        scores,
+        attempt
+      );
+      if (response.status === 200) {
+        setAlertModal(1);
+      }
     } catch (error) {
-      console.log(error)
-    }    
-  }
+      console.log(error);
+    }
+  };
 
   const handleWrongAnswer = async () => {
     try {
-      setAlertModal(2)
-    } catch (error) {    
-      try {
-        if (error === "Error : 400" && answerAttempt >= 0 && answerAttempt < 2) {
-          const newAttempt = answerAttempt + 1;
-          setAnswerAttempt(newAttempt);
-  
-          const scores = 0;
-          const attempt = newAttempt;
-  
-          await quizResult(userData?.ID!, quizData?.[0]?.ID, scores, attempt);
-          fetchQuizAttempt();
-        }
-      } catch (innerError) {
-        console.error("Error in handleWrongAnswer:", innerError);
-      }
-    }    
-  }
+      setAlertModal(2);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-  const handleCloseAlertBar = () => {    
+  const handleCloseAlertBar = () => {
     setTimeout(() => {
       setAlertModal(0);
     }, 2000);
@@ -172,15 +169,20 @@ console.log('current attempt',answerAttempt )
 
   return (
     <Box className={styles.quizBox}>
-      {isAllowedToAnswer == false && <QuizBackdrop />}
-        <Box className={styles.quizHead}>
-          <Typography variant="h4" className={styles.quizTitle}>
-            Mystical Quest
-          </Typography>      
-          <Typography variant="h4" sx={{fontSize: "1.1rem"}} className={styles.quizTitle}>
-            Wrong Attempts : {answerAttempt}/2
-          </Typography>
-        </Box>
+      {isAllowedToAnswer == false && <QuizBackdrop message="You have already completed quiz for this book."/>}
+      {answerAttempt == 2 && <QuizBackdrop message="You have reached the maximum attempt quiz. Please try again later !"/>}
+      <Box className={styles.quizHead}>
+        <Typography variant="h4" className={styles.quizTitle}>
+          Mystical Quest
+        </Typography>
+        <Typography
+          variant="h4"
+          sx={{ fontSize: "1.1rem" }}
+          className={styles.quizTitle}
+        >
+          Wrong Attempts : {answerAttempt}/2
+        </Typography>
+      </Box>
       {singleQuestion && (
         <FormControl component="fieldset">
           <Box sx={{ mb: 6, padding: 3 }}>
@@ -234,25 +236,35 @@ console.log('current attempt',answerAttempt )
               mb: 3,
             }}
           >
-            <PrimaryButton text="Submit" onClick={handleSubmit} disabled={answer === ""} />
+            <PrimaryButton
+              text="Submit"
+              onClick={handleSubmit}
+              disabled={answer === ""}
+            />
           </Box>
         </FormControl>
       )}
-
       <Dialog open={isModalOpen} onClose={handleCloseModal}>
         <DialogTitle>Quest Outcome</DialogTitle>
         <DialogContent>
-          <DialogContentText>{modalMessage}</DialogContentText>
+          <DialogContentText>
+            {isCorrect
+              ? "You have answered correctly! Good job!"
+              : "Oops! That wasn't the right answer. Keep trying, you'll get it!"}
+          </DialogContentText>
         </DialogContent>
-        {isCorrect ? (
-          <DialogActions>
-            <Button onClick={() => { handleCloseModal(); handleCorrectAnswer(); handleCloseAlertBar(); setIsAllowedToAnswer(false)}}>Close</Button>
-          </DialogActions>
-        ):(
-          <DialogActions>
-            <Button onClick={() => { handleCloseModal(); handleWrongAnswer(); handleCloseAlertBar(); }}>Close</Button>
-          </DialogActions>
-        )}        
+        <DialogActions>
+          <Button
+            onClick={() => {
+              handleCloseModal();
+              isCorrect ? handleCorrectAnswer() : handleWrongAnswer();
+              handleCloseAlertBar();
+              isCorrect && setIsAllowedToAnswer(false);
+            }}
+          >
+            Close
+          </Button>
+        </DialogActions>
       </Dialog>
       {alertModal == 1 && (
         <AlertBar

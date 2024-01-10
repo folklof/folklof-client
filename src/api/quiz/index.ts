@@ -3,7 +3,6 @@ import axios from 'axios';
 
 const baseURL = import.meta.env.VITE_BASE_URL;
 
-
 export const fetchQuizData = async (bookId: string) => {
   try {
     const { data } = await axios.get(`${baseURL}/book-quiz/book/${bookId}`);
@@ -18,12 +17,10 @@ export const submitQuizAnswer = async (quizId: string, answer: string) => {
       const response = await axios.post(`${baseURL}/book-quiz/answer/${quizId}`, {
         user_answer: answer
       });
-      console.log('test',response )
       return response.data;
     } catch (error: any) {
       if (axios.isAxiosError(error) && error.response) {
-        const errorMessage = error.response.data.message || "An error occurred";
-        throw new Error(errorMessage);
+        throw new Error(error.response.status.toString());
       } else {
         throw new Error("An unexpected error occurred");
       }
@@ -47,9 +44,9 @@ export const quizResult = async (userId: string, bookId: string, score: number, 
       scores: score,
       attempt_failed: attempt
     });
+  console.log('res', response)
     return response
   } catch (error : any) {
-      console.log('status', error.res )
       throw new Error(error.response.status)
   }
 }
