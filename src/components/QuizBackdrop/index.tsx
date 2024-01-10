@@ -1,10 +1,8 @@
 import React from 'react';
 import Backdrop from '@mui/material/Backdrop';
 import { Typography } from '@mui/material';
+import { MesageBackdrop } from '../../types';
 
-interface MesageBackdrop {
-  message: string;
-}
 
 const QuizBackdrop: React.FC <MesageBackdrop> = ({message})=> {
   const [open] = React.useState(true);  

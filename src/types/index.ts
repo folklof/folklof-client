@@ -183,3 +183,7 @@ export interface UserRootState {
     user: UserProfile | null;
   };
 }
+
+export interface MesageBackdrop {
+  message: string;
+}

@@ -36,6 +36,7 @@ const Quiz: React.FC<QuizProps> = ({ bookId }) => {
   const [isCorrect, setIsCorrect] = useState(false);
   const [answerAttempt, setAnswerAttempt] = useState(2);
   const [isAllowedToAnswer, setIsAllowedToAnswer] = useState(true);
+  const [maxAttempt, setMaxAttempt] = useState(true);
   const [alertModal, setAlertModal] = useState(0);
 
   const userData = useSelector((state: UserRootState) => state.user.user);
@@ -52,15 +53,18 @@ const Quiz: React.FC<QuizProps> = ({ bookId }) => {
       if (error == "Error: 409") {
         setIsAllowedToAnswer(false);
       }
+      if (answerAttempt == 2) {
+        setMaxAttempt(false)
+      }
     }
-  }, [quizData, userData?.ID]);
+  }, [answerAttempt, quizData, userData?.ID]);
 
   const fetchData = useCallback(async () => {
     try {
       const data = await fetchQuizData(bookId);
       setQuizData(data);
       setLoading(false);
-    } catch (err) {
+    } catch (error) {
       setError(true);
       setLoading(false);
     }
@@ -68,13 +72,17 @@ const Quiz: React.FC<QuizProps> = ({ bookId }) => {
 
   useEffect(() => {
     if (quizData) {
-      fetchQuizAttempt();
+      fetchQuizAttempt();    
     }
   }, [quizData, fetchQuizAttempt]);
 
   useEffect(() => {
     fetchData();
   }, [fetchData]);
+
+  // if (answerAttempt === 2) {
+  //   setMaxAttempt(false);
+  // }
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setAnswer(event.target.value);
@@ -90,27 +98,13 @@ const Quiz: React.FC<QuizProps> = ({ bookId }) => {
       const quizId = quizData[0].ID;
       const response = await submitQuizAnswer(quizId, answer);
       setIsModalOpen(true);
-      console.log(response);
       if (response.success) {
         setIsCorrect(true);
       }
     } catch (error) {
       setIsCorrect(false);
       setIsModalOpen(true);
-      if (error == "Error: 400" && answerAttempt >= 0 && answerAttempt < 2) {
-        const newAttempt = answerAttempt + 1;
-        setAnswerAttempt(newAttempt);
-
-        const scores = 0;
-        const attempt = newAttempt;
-
-        console.log("attempt", attempt);
-
-        await quizResult(userData?.ID!, quizData?.[0]?.ID, scores, attempt);
-        fetchQuizAttempt();
-      } else {
-        console.log(error);
-      }
+      console.log(error);
     }
   };
 
@@ -142,7 +136,10 @@ const Quiz: React.FC<QuizProps> = ({ bookId }) => {
 
   const handleWrongAnswer = async () => {
     try {
-      setAlertModal(2);
+      const scores = 0;
+      const attempt = answerAttempt + 1;  
+      await quizResult(userData?.ID!, quizData?.[0]?.ID, scores, attempt);
+      setAnswerAttempt(attempt);
     } catch (error) {
       console.log(error);
     }
@@ -165,12 +162,14 @@ const Quiz: React.FC<QuizProps> = ({ bookId }) => {
 
   if (error) return <div>An error has occurred</div>;
 
+  
+
   const singleQuestion = quizData.length > 0 ? quizData[0] : null;
 
   return (
     <Box className={styles.quizBox}>
       {isAllowedToAnswer == false && <QuizBackdrop message="You have already completed quiz for this book."/>}
-      {answerAttempt == 2 && <QuizBackdrop message="You have reached the maximum attempt quiz. Please try again later !"/>}
+      {maxAttempt == false && <QuizBackdrop message="You have reached the maximum attempt quiz. Please try again later !"/>}
       <Box className={styles.quizHead}>
         <Typography variant="h4" className={styles.quizTitle}>
           Mystical Quest
@@ -254,16 +253,23 @@ const Quiz: React.FC<QuizProps> = ({ bookId }) => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button
-            onClick={() => {
-              handleCloseModal();
-              isCorrect ? handleCorrectAnswer() : handleWrongAnswer();
-              handleCloseAlertBar();
-              isCorrect && setIsAllowedToAnswer(false);
-            }}
-          >
-            Close
-          </Button>
+        <Button
+        onClick={() => {
+          handleCloseModal();
+          if (isCorrect) {
+            handleCorrectAnswer();
+            setIsAllowedToAnswer(false);
+          } else {
+            handleWrongAnswer();
+          }
+          handleCloseAlertBar();
+          if (answerAttempt === 2 && !isCorrect) {
+            setMaxAttempt(false);
+          }
+        }}
+      >
+        Close
+      </Button>
         </DialogActions>
       </Dialog>
       {alertModal == 1 && (
