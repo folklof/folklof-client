@@ -19,6 +19,10 @@ export interface BookAttributes {
     name: string;
     desc: string;
   };
+  user: {
+    username: string;
+  }
+
   isLoading?: boolean; // Optional isLoading attribute
 }
 

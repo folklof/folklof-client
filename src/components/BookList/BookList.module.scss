@@ -42,6 +42,21 @@
     justify-content: space-between;
 }
 
+.ratingContainer {
+    display: flex;
+    gap: 10px;
+}
+
+.boxTypography {
+    display: grid;
+    grid-template-columns: max-content 1fr; 
+    gap: 5px; 
+  }
+  
+  .boxTypography > * {
+    white-space: nowrap;
+  }
+
 .bookTitle {
     display: -webkit-box;
     -webkit-line-clamp: 2; // Number of lines to show
@@ -89,6 +104,10 @@
     //   // Additional styling for the pagination component if needed
     // }
   }
+
+.bookRatings {
+    display: flex;
+}
 
 
 // Additional styles for buttons and other elements can be added here
