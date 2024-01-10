@@ -51,13 +51,14 @@ const Quiz: React.FC<QuizProps> = ({ bookId }) => {
       }
     } catch (error) {
       if (error == "Error: 409") {
+        setAnswerAttempt(0)
         setIsAllowedToAnswer(false);
       }
-      if (answerAttempt == 2) {
+      if (error == "Error: 400") {        
         setMaxAttempt(false)
       }
     }
-  }, [answerAttempt, quizData, userData?.ID]);
+  }, [quizData, userData?.ID]);
 
   const fetchData = useCallback(async () => {
     try {
@@ -268,7 +269,7 @@ const Quiz: React.FC<QuizProps> = ({ bookId }) => {
       {alertModal == 1 && (
         <AlertBar
           newState={{ vertical: "bottom", horizontal: "left" }}
-          message={"you got scores 1 point"}
+          message={"Congratulations! You've earned 1 score point."}
           transition={transitionSide}
           severity="success"
         />
@@ -276,7 +277,7 @@ const Quiz: React.FC<QuizProps> = ({ bookId }) => {
       {alertModal == 2 && (
         <AlertBar
           newState={{ vertical: "bottom", horizontal: "left" }}
-          message={"you dont get score point"}
+          message={"Unfortunately, you didn't receive any additional points."}
           transition={transitionSide}
           severity="info"
         />

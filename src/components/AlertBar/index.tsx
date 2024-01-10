@@ -36,7 +36,7 @@ const AlertBar: React.FC<AlertBarProps> = ({ newState, message, transition, seve
   };
 
   return (
-    <Box sx={{ maxWidth: 500 }}>
+    <Box sx={{width: "auto"}}>
       <Snackbar
         anchorOrigin={{ vertical, horizontal }}
         open={open}

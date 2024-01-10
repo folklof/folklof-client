@@ -1,8 +1,4 @@
 /* eslint-disable no-useless-catch */
-<<<<<<< Updated upstream
-=======
-/* eslint-disable @typescript-eslint/no-explicit-any */
->>>>>>> Stashed changes
 import axios from 'axios';
 
 const baseURL = import.meta.env.VITE_BASE_URL;
