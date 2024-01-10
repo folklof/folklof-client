@@ -33,7 +33,7 @@ const Quiz: React.FC<QuizProps> = ({ bookId }) => {
   const [error, setError] = useState(false);
   const [answer, setAnswer] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isCorrect, setIsCorrect] = useState(false);
+  const [isCorrect, setIsCorrect] = useState(true);
   const [answerAttempt, setAnswerAttempt] = useState(2);
   const [isAllowedToAnswer, setIsAllowedToAnswer] = useState(true);
   const [maxAttempt, setMaxAttempt] = useState(true);
@@ -52,12 +52,13 @@ const Quiz: React.FC<QuizProps> = ({ bookId }) => {
     } catch (error) {
       if (error == "Error: 409") {
         setIsAllowedToAnswer(false);
+        setAnswerAttempt(0)
       }
-      if (answerAttempt == 2) {
+      if (error == "Error: 400") {
         setMaxAttempt(false)
       }
     }
-  }, [answerAttempt, quizData, userData?.ID]);
+  }, [quizData, userData?.ID]);
 
   const fetchData = useCallback(async () => {
     try {
@@ -72,17 +73,19 @@ const Quiz: React.FC<QuizProps> = ({ bookId }) => {
 
   useEffect(() => {
     if (quizData) {
-      fetchQuizAttempt();    
+      fetchQuizAttempt();  
     }
-  }, [quizData, fetchQuizAttempt]);
+  }, [quizData, answerAttempt, fetchQuizAttempt]);
 
   useEffect(() => {
     fetchData();
   }, [fetchData]);
 
-  // if (answerAttempt === 2) {
-  //   setMaxAttempt(false);
-  // }
+  useEffect(() => {
+    if (answerAttempt === 2 && !isCorrect) {
+      setMaxAttempt(false);
+    }
+  }, [answerAttempt, isCorrect]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setAnswer(event.target.value);
@@ -110,6 +113,14 @@ const Quiz: React.FC<QuizProps> = ({ bookId }) => {
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
+    if (isCorrect) {
+      handleCorrectAnswer();
+      setIsAllowedToAnswer(false);
+    } else {
+      handleWrongAnswer();
+    }
+
+    handleCloseAlertBar();
   };
 
   const transitionSide = (props: TransitionProps) => {
@@ -140,6 +151,7 @@ const Quiz: React.FC<QuizProps> = ({ bookId }) => {
       const attempt = answerAttempt + 1;  
       await quizResult(userData?.ID!, quizData?.[0]?.ID, scores, attempt);
       setAnswerAttempt(attempt);
+      setAlertModal(2);
     } catch (error) {
       console.log(error);
     }
@@ -161,9 +173,6 @@ const Quiz: React.FC<QuizProps> = ({ bookId }) => {
   }
 
   if (error) return <div>An error has occurred</div>;
-
-  
-
   const singleQuestion = quizData.length > 0 ? quizData[0] : null;
 
   return (
@@ -256,16 +265,6 @@ const Quiz: React.FC<QuizProps> = ({ bookId }) => {
         <Button
         onClick={() => {
           handleCloseModal();
-          if (isCorrect) {
-            handleCorrectAnswer();
-            setIsAllowedToAnswer(false);
-          } else {
-            handleWrongAnswer();
-          }
-          handleCloseAlertBar();
-          if (answerAttempt === 2 && !isCorrect) {
-            setMaxAttempt(false);
-          }
         }}
       >
         Close
@@ -275,7 +274,7 @@ const Quiz: React.FC<QuizProps> = ({ bookId }) => {
       {alertModal == 1 && (
         <AlertBar
           newState={{ vertical: "bottom", horizontal: "left" }}
-          message={"you got scores 1 point"}
+          message={"Congratulations! You've earned 1 score point."}
           transition={transitionSide}
           severity="success"
         />
@@ -283,7 +282,7 @@ const Quiz: React.FC<QuizProps> = ({ bookId }) => {
       {alertModal == 2 && (
         <AlertBar
           newState={{ vertical: "bottom", horizontal: "left" }}
-          message={"you dont get score point"}
+          message={"Unfortunately, you didn't receive any additional points."}
           transition={transitionSide}
           severity="info"
         />
