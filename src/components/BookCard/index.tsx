@@ -6,12 +6,16 @@ import {
   CardContent,
   Tooltip,
   Skeleton,
+  Rating,
+  Box,
 } from "@mui/material";
+import StarBorderIcon from "@mui/icons-material/StarBorder";
+import PersonPinSharpIcon from '@mui/icons-material/PersonPinSharp';
 import { useNavigate } from "react-router-dom";
 import { BookCardProps } from "../../types";
-import styles from './BookCard.module.scss';
+import styles from "./BookCard.module.scss";
 
-const BookCard: React.FC<BookCardProps> = ({ id, title, imageUrl, category }) => {
+const BookCard: React.FC<BookCardProps> = ({ id, title, imageUrl, category, avgRating, author }) => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
 
@@ -21,33 +25,53 @@ const BookCard: React.FC<BookCardProps> = ({ id, title, imageUrl, category }) =>
     image.onload = () => setLoading(false);
   }, [imageUrl]);
 
-
   const handleClick = () => {
     navigate(`/book/${id}`);
   };
 
   return (
-    <Card  sx={{ backgroundColor: 'transparent'}} className={styles.bookCard}>
+    <Card sx={{ backgroundColor: "transparent" }} className={styles.bookCard}>
       {loading ? (
-          <Skeleton
-            variant="rectangular"
-            className={styles.bookCardMedia}
-            sx={{ bgcolor: "#15202B" }}
-          />
-        ) : (
-          <CardMedia
-            component="img"
-            className={styles.bookCardMedia}
-            image={imageUrl}
-            alt={title}
-            onClick={handleClick}
-          />
-        )}
+        <Skeleton
+          variant="rectangular"
+          className={styles.bookCardMedia}
+          sx={{ bgcolor: "#15202B" }}
+        />
+      ) : (
+        <CardMedia
+          component="img"
+          className={styles.bookCardMedia}
+          image={imageUrl}
+          alt={title}
+          onClick={handleClick}
+        />
+      )}
       <CardContent className={styles.bookCardContent}>
+        <Box className={styles.boxRating}>
+          <Rating
+            name="read-only"
+            value={avgRating || 0}
+            readOnly
+            precision={0.1}
+            emptyIcon={
+              <StarBorderIcon
+                style={{ color: "rgba(255, 255, 255, 0.5)" }}
+              />
+            }
+            sx={{
+              "& .MuiRating-iconFilled": { color: "gold" },
+              "& .MuiRating-iconEmpty": { color: "rgba(255, 255, 255, 0.5)" },
+              "& .MuiRating-iconHover": { color: "gold" },
+              marginRight: '5px'
+            }}
+          />
+          <Typography className={styles.ratingNumber}>
+            {avgRating ? `${avgRating.toFixed(1)}` : "0"}
+          </Typography>
+        </Box>
         <Tooltip title={title} placement="top" arrow>
           <Typography
             onClick={handleClick}
-            gutterBottom
             variant="h6"
             component="div"
             className={styles.title}
@@ -55,6 +79,12 @@ const BookCard: React.FC<BookCardProps> = ({ id, title, imageUrl, category }) =>
             {title}
           </Typography>
         </Tooltip>
+        <Box sx={{ display: 'flex' }}>
+          <Typography variant="body2" className={styles.author}>
+            {author}
+          </Typography>
+          <PersonPinSharpIcon sx={{ width: '26px', padding: '0px 0px 4px 5px' }} />
+        </Box>
         <Typography variant="body2" className={styles.category}>
           {category}
         </Typography>
