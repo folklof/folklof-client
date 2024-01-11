@@ -1,21 +1,46 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Typography, Grid, Skeleton } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "react-query";
 import { BookCard } from "../../components";
 import { fetchBestStoriesBooks } from "../../api/book/bookAPI";
-import { BookAttributes } from "../../types";
-import styles from './BestStories.module.scss';
+import { BookAttributes, RatingResponse } from "../../types";
+import styles from "./BestStories.module.scss";
+import { fetchRatings } from "../../api";
 
 const BestStories: React.FC = () => {
   const navigate = useNavigate();
-
+  const [ratings, setRatings] = useState<Record<string, RatingResponse | null>>({});
 
   const {
     data: books = [],
     isLoading,
     isError,
   } = useQuery<BookAttributes[]>("best-stories", fetchBestStoriesBooks);
+
+  useEffect(() => {
+    const fetchRating = async (bookId: string): Promise<RatingResponse | null> => {
+      try {
+        const response = await fetchRatings(bookId);
+        return response;
+      } catch (error) {
+        console.error("Error fetching rating for book ID:", bookId, error);
+        return null;
+      }
+    };
+
+    // Fetch ratings for each book and store in state
+    const fetchAllRatings = async () => {
+      const ratingsData: Record<string, RatingResponse | null> = {};
+      for (const book of books) {
+        const rating = await fetchRating(book.ID);
+        ratingsData[book.ID] = rating;
+      }
+      setRatings(ratingsData);
+    };
+
+    fetchAllRatings();
+  }, [books]);
 
   const handleSeeAllStoriesClick = () => {
     navigate("/categories");
@@ -50,6 +75,8 @@ const BestStories: React.FC = () => {
                   title={book.title}
                   category={book.category.name}
                   imageUrl={book.cover_image}
+                  avgRating={ratings[book.ID]?.data.avgRating || 0} // Use the rating from state
+                  author={book.user.username}
                 />
               ))
             )}

@@ -166,6 +166,8 @@ export interface BookCardProps {
   title: string;
   category: string;
   imageUrl: string;
+  author: string;
+  avgRating?: number;
 }
 
 // featured card
@@ -177,7 +179,7 @@ export interface FeatureCardProps {
 }
 
 export interface ImageProps {
-  imgUrl : string;
+  imgUrl: string;
   styleName: string;
   alt: string;
 }
