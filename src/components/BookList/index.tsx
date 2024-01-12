@@ -17,9 +17,7 @@ import { PrimaryButton, SecondaryButton } from "../../components";
 import styles from "./BookList.module.scss";
 import { BookAttributes, BookWithRating, RatingResponse } from "../../types";
 import { fetchRatings, addToLibrary, addToFavourite} from "../../api";
-import { getUserProfile} from '../../api/auth';
 import axios from "axios";
-import { useQuery } from 'react-query';
 import VerifiedIcon from '@mui/icons-material/Verified';
 
 interface BookListProps {
@@ -41,8 +39,9 @@ const BookList: React.FC<BookListProps> = ({ books, sort, handleSortChange}) => 
       const updatedBooks: BookWithRating[] = await Promise.all(
         books.map(async (book) => {
           const ratings: RatingResponse | null = await fetchRatings(book.ID);
+          const avgRatingAsString: string | undefined = ratings?.data.avgRating?.toString();
           return ratings
-            ? { ...book, avgRating: ratings.data.avgRating }
+            ? { ...book, avgRating: avgRatingAsString  }
             : { ...book };
         })
       );
@@ -53,9 +52,6 @@ const BookList: React.FC<BookListProps> = ({ books, sort, handleSortChange}) => 
       fetchRatingsForBooks();
     }
   }, [books]);
-
-  const { data: userProfile } = useQuery('userProfile', getUserProfile, {
-  });
 
   useEffect(() => {
     const loadImage = (src: string) => {
@@ -227,7 +223,7 @@ const BookList: React.FC<BookListProps> = ({ books, sort, handleSortChange}) => 
                   <Box className={styles.ratingContainer}>
                   <Rating
                     name="read-only"
-                    value={book.avgRating || 0}
+                    value={parseFloat(book.avgRating || "0")}
                     readOnly
                     precision={0.5}
                     emptyIcon={
@@ -254,7 +250,7 @@ const BookList: React.FC<BookListProps> = ({ books, sort, handleSortChange}) => 
                   </Typography>
                   <Typography variant="body2" sx={{ display: 'flex', alignItems: 'center' }}>
                     :  {book.user.username} 
-                    {userProfile && userProfile.role_id === 3 && <VerifiedIcon sx={{ color: "#448aff", height: "20px" }} />}
+                    {book.user.role_id === 3 && <VerifiedIcon sx={{ color: "#448aff", height: "20px" }} />}
                   </Typography>
                   <Typography variant="body2">
                     Category

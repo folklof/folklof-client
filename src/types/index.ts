@@ -20,6 +20,7 @@ export interface BookAttributes {
     desc: string;
   };
   user: {
+    role_id: number;
     username: string;
   }
 
@@ -51,7 +52,7 @@ export interface QuizProps {
 }
 
 export interface BookWithRating extends BookAttributes {
-  avgRating?: number;
+  avgRating?: string;
   totalBookReviews?: number;
 }
 
@@ -168,6 +169,7 @@ export interface BookCardProps {
   imageUrl: string;
   author: string;
   avgRating?: number;
+  iconRole?: number;
 }
 
 // featured card
