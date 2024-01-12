@@ -52,7 +52,7 @@ export interface QuizProps {
 }
 
 export interface BookWithRating extends BookAttributes {
-  avgRating?: number;
+  avgRating?: string;
   totalBookReviews?: number;
 }
 
