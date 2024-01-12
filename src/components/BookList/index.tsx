@@ -54,7 +54,7 @@ const BookList: React.FC<BookListProps> = ({ books, sort, handleSortChange}) => 
     }
   }, [books]);
 
-  const { data: userProfile } = useQuery('userProfile', getUserProfile, {
+  const { data: iconRole } = useQuery('userProfile', getUserProfile, {
   });
 
   useEffect(() => {
@@ -254,7 +254,7 @@ const BookList: React.FC<BookListProps> = ({ books, sort, handleSortChange}) => 
                   </Typography>
                   <Typography variant="body2" sx={{ display: 'flex', alignItems: 'center' }}>
                     :  {book.user.username} 
-                    {userProfile && userProfile.role_id === 3 && <VerifiedIcon sx={{ color: "#448aff", height: "20px" }} />}
+                    {iconRole && iconRole.role_id === 3 && <VerifiedIcon sx={{ color: "#448aff", height: "20px" }} />}
                   </Typography>
                   <Typography variant="body2">
                     Category
