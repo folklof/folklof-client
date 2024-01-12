@@ -66,7 +66,7 @@ const BookCard: React.FC<BookCardProps> = ({ id, title, imageUrl, category, avgR
             }}
           />
           <Typography className={styles.ratingNumber}>
-            {avgRating ? `${avgRating.toFixed(1)}` : "0"}
+            {avgRating ? `${avgRating}` : "0"}
           </Typography>
         </Box>
         <Tooltip title={title} placement="top" arrow>
