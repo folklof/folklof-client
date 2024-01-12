@@ -12,6 +12,7 @@ export interface BooksResponse {
 }
 
 export const fetchBooks = async ({ pageParam, limit, queryKey }: { pageParam?: number; limit?:string; queryKey: QueryKey;}): Promise<BooksResponse> => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, sort, categoryId, ageGroupId, title] = queryKey;
   const queryParams = new URLSearchParams({
     page: String(pageParam),

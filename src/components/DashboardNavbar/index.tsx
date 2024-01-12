@@ -79,6 +79,7 @@ const DashboardNavbar: React.FC = () => {
         clearTimeout(debounceTimer);
       }
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchTerm]);
 
   const isActive = (path: string) => location.pathname === path;

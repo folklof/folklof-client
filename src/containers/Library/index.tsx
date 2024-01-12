@@ -32,7 +32,7 @@ const LibraryPage: React.FC<LibraryProps> = ({ onLoaded }) => {
     };
 
     loadLibraryBooks();
-  }, []);
+  }, [onLoaded]);
 
   const handleTabChange = (_event: React.SyntheticEvent, newValue: string) => {
     setTabValue(newValue);
@@ -43,7 +43,7 @@ const LibraryPage: React.FC<LibraryProps> = ({ onLoaded }) => {
     if (bookToUpdate) {
       await updateLibraryStatus(bookToUpdate.ID, true);
       setLibraryBooks(prevBooks =>
-        prevBooks.map(book => 
+        prevBooks.map(book =>
           book.ID === bookToUpdate.ID ? { ...book, is_read: true } : book
         )
       );
@@ -68,8 +68,8 @@ const LibraryPage: React.FC<LibraryProps> = ({ onLoaded }) => {
 
   const renderBooks = () => {
     return filteredBooks.map((libraryBook) => (
-      <Box key={libraryBook.ID} sx={{ display: "flex", flexWrap:"wrap", mb: 6, gap:"20px", color: "white", justifyContent: "center" }}>
-        <img src={libraryBook.book.cover_image} alt={libraryBook.book.title} style={{ width: 120, height: 120, borderRadius:"10px" }} />
+      <Box key={libraryBook.ID} sx={{ display: "flex", flexWrap: "wrap", mb: 6, gap: "20px", color: "white", justifyContent: "center" }}>
+        <img src={libraryBook.book.cover_image} alt={libraryBook.book.title} style={{ width: 120, height: 120, borderRadius: "10px" }} />
         <Box sx={{ flex: 1 }}>
           <Typography variant="h6" sx={{ color: "white" }}>{libraryBook.book.title}</Typography>
           <Rating name="read-only" value={libraryBook.book.avgRating || 0} readOnly precision={0.5} />
@@ -88,16 +88,16 @@ const LibraryPage: React.FC<LibraryProps> = ({ onLoaded }) => {
     return [...Array(3)].map((_, index) => (
       <Box key={index} sx={{ display: "flex", mb: 2 }}>
         <Skeleton variant="rectangular" width={100} height={100} sx={{ bgcolor: "#f1f1f13d" }} />
-        <Box sx={{ ml: 2, flex: 1, display: "flex", flexDirection: "column", justifyContent: "space-between", paddingTop: "0.5rem", paddingBottom: "0.5rem"}}>
-          <Skeleton variant="text" width="40%" sx={{ bgcolor: "#f1f1f13d" }}/>
+        <Box sx={{ ml: 2, flex: 1, display: "flex", flexDirection: "column", justifyContent: "space-between", paddingTop: "0.5rem", paddingBottom: "0.5rem" }}>
+          <Skeleton variant="text" width="40%" sx={{ bgcolor: "#f1f1f13d" }} />
           <Box>
-            <Skeleton variant="text" width="15%" sx={{ bgcolor: "#f1f1f13d" }}/>
-            <Skeleton variant="text" width="15%" sx={{ bgcolor: "#f1f1f13d" }}/>
+            <Skeleton variant="text" width="15%" sx={{ bgcolor: "#f1f1f13d" }} />
+            <Skeleton variant="text" width="15%" sx={{ bgcolor: "#f1f1f13d" }} />
           </Box>
         </Box>
         <Box sx={{ display: "flex", flexDirection: "column", alignItems: "start", gap: "16px" }}>
-          <Skeleton variant="rounded" width={180} height={36} sx={{ bgcolor: "#f1f1f13d" }}/>
-          <Skeleton variant="rounded" width={180} height={36} sx={{ bgcolor: "#f1f1f13d" }}/>
+          <Skeleton variant="rounded" width={180} height={36} sx={{ bgcolor: "#f1f1f13d" }} />
+          <Skeleton variant="rounded" width={180} height={36} sx={{ bgcolor: "#f1f1f13d" }} />
         </Box>
       </Box>
     ));
