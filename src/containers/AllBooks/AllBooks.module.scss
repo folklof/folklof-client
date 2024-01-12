@@ -1,11 +1,94 @@
-.booksContainer {
-  // Apply your global container styles here
-  padding: 20px;
-  box-sizing: border-box;
-  overflow: hidden;
+.sortingContainer {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  align-items: center;
+  padding: 0 35px 0 50px;
+
+  @media (max-width: 655px) {
+    padding: 0 20px 0 20px;
+    align-items: flex-start;
+  }
+
+  .sorting {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+
+    @media (max-width: 500px) {
+      align-items: none;
+    }
+  }
 }
 
-.noBooksContainer{
+.paginationContainer {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+
+  @media (max-width: 655px) {
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-end;
+  }
+}
+
+.sortSelect {
+  background-color: #efefef;
+  border-radius: 4px;
+  padding: 0 10px;
+  max-height: 45px;
+
+  @media(max-width: 655px){
+    margin-top: 7px;
+  }
+}
+
+.sortSelect {
+  .MuiSelect-select {
+    padding-right: 5px;
+  }
+
+  .MuiSvgIcon-root {
+    color: #000000;
+  }
+}
+
+.limitSelect {
+  border-radius: 4px;
+  padding: 0 !important;
+  background-color: #efefef;
+  border: none;
+}
+
+.limitSelect {
+  .MuiSelect-select {
+    padding-right: 5px;
+  }
+
+  .MuiSvgIcon-root {
+    color: #000000;
+  }
+}
+
+.bookPageContainer::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  background-color: #f5f5f5;
+}
+
+.bookPageContainer::-webkit-scrollbar {
+  width: 12px;
+  background-color: #f5f5f5;
+}
+
+.bookPageContainer::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background-color: #555;
+}
+
+.noBooksContainer {
   padding: 30vh 15vh;
 }
 .noBooksText {
