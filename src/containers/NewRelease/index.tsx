@@ -1,16 +1,42 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Typography, Grid, Skeleton } from "@mui/material";
 import { BookCard } from "../../components";
 import { useQuery } from "react-query";
 import { fetchNewReleaseBooks } from "../../api/book/bookAPI";
-import { BookAttributes } from "../../types";
+import { BookAttributes, RatingResponse } from "../../types";
+import { fetchRatings } from "../../api";
 
 const NewRelease: React.FC = () => {
+  const [ratings, setRatings] = useState<Record<string, RatingResponse | null>>({});
   const {
     data: books = [],
     isLoading,
     isError,
   } = useQuery<BookAttributes[]>("new-release", fetchNewReleaseBooks);
+
+  useEffect(() => {
+    const fetchRating = async (bookId: string): Promise<RatingResponse | null> => {
+      try {
+        const response = await fetchRatings(bookId);
+        return response;
+      } catch (error) {
+        console.error("Error fetching rating for book ID:", bookId, error);
+        return null;
+      }
+    };
+
+    // Fetch ratings for each book and store in state
+    const fetchAllRatings = async () => {
+      const ratingsData: Record<string, RatingResponse | null> = {};
+      for (const book of books) {
+        const rating = await fetchRating(book.ID);
+        ratingsData[book.ID] = rating;
+      }
+      setRatings(ratingsData);
+    };
+
+    fetchAllRatings();
+  }, [books]);
 
   return (
     <Box
@@ -58,6 +84,8 @@ const NewRelease: React.FC = () => {
                   title={book.title}
                   category={book.category.name}
                   imageUrl={book.cover_image}
+                  avgRating={ratings[book.ID]?.data.avgRating || 0} // Use the rating from state
+                  author={book.user.username}
                 />
               ))
             )}

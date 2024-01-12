@@ -16,8 +16,11 @@ import { useNavigate } from "react-router-dom";
 import { PrimaryButton, SecondaryButton } from "../../components";
 import styles from "./BookList.module.scss";
 import { BookAttributes, BookWithRating, RatingResponse } from "../../types";
-import { fetchRatings, addToLibrary, addToFavourite } from "../../api";
+import { fetchRatings, addToLibrary, addToFavourite} from "../../api";
+import { getUserProfile} from '../../api/auth';
 import axios from "axios";
+import { useQuery } from 'react-query';
+import VerifiedIcon from '@mui/icons-material/Verified';
 
 interface BookListProps {
   books: BookAttributes[];
@@ -50,6 +53,9 @@ const BookList: React.FC<BookListProps> = ({ books, sort, handleSortChange}) => 
       fetchRatingsForBooks();
     }
   }, [books]);
+
+  const { data: userProfile } = useQuery('userProfile', getUserProfile, {
+  });
 
   useEffect(() => {
     const loadImage = (src: string) => {
@@ -218,6 +224,7 @@ const BookList: React.FC<BookListProps> = ({ books, sort, handleSortChange}) => 
                   <Typography variant="h5" className={styles.bookTitle}>
                     {book.title}
                   </Typography>
+                  <Box className={styles.ratingContainer}>
                   <Rating
                     name="read-only"
                     value={book.avgRating || 0}
@@ -235,15 +242,37 @@ const BookList: React.FC<BookListProps> = ({ books, sort, handleSortChange}) => 
                       },
                       "& .MuiRating-iconHover": { color: "gold" },
                     }}
-                  />
+                    />
+                <Typography>
+                 {book.avgRating}
+                </Typography>
                 </Box>
-                <Box>
+                </Box>
+                <Box className={styles.boxTypography}>
                   <Typography variant="body2">
-                    Duration: {book.duration}
+                    Author
+                  </Typography>
+                  <Typography variant="body2" sx={{ display: 'flex', alignItems: 'center' }}>
+                    :  {book.user.username} 
+                    {userProfile && userProfile.role_id === 3 && <VerifiedIcon sx={{ color: "#448aff", height: "20px" }} />}
                   </Typography>
                   <Typography variant="body2">
-                    Release date:{" "}
-                    {new Date(book.created_date).toLocaleDateString()}
+                    Category
+                  </Typography>
+                  <Typography variant="body2">
+                    :  {book.category.name}
+                  </Typography>
+                  <Typography variant="body2">
+                    Age Group
+                  </Typography>
+                  <Typography variant="body2">
+                    :  {book.agegroup.name}
+                  </Typography>
+                  <Typography variant="body2">
+                    Duration
+                  </Typography>
+                  <Typography variant="body2">
+                    :  {book.duration}
                   </Typography>
                 </Box>
               </Box>
