@@ -17,9 +17,7 @@ import { PrimaryButton, SecondaryButton } from "../../components";
 import styles from "./BookList.module.scss";
 import { BookAttributes, BookWithRating, RatingResponse } from "../../types";
 import { fetchRatings, addToLibrary, addToFavourite} from "../../api";
-import { getUserProfile} from '../../api/auth';
 import axios from "axios";
-import { useQuery } from 'react-query';
 import VerifiedIcon from '@mui/icons-material/Verified';
 
 interface BookListProps {
@@ -53,9 +51,6 @@ const BookList: React.FC<BookListProps> = ({ books, sort, handleSortChange}) => 
       fetchRatingsForBooks();
     }
   }, [books]);
-
-  const { data: iconRole } = useQuery('userProfile', getUserProfile, {
-  });
 
   useEffect(() => {
     const loadImage = (src: string) => {
@@ -254,7 +249,7 @@ const BookList: React.FC<BookListProps> = ({ books, sort, handleSortChange}) => 
                   </Typography>
                   <Typography variant="body2" sx={{ display: 'flex', alignItems: 'center' }}>
                     :  {book.user.username} 
-                    {iconRole && iconRole.role_id === 3 && <VerifiedIcon sx={{ color: "#448aff", height: "20px" }} />}
+                    {book.user.role_id === 3 && <VerifiedIcon sx={{ color: "#448aff", height: "20px" }} />}
                   </Typography>
                   <Typography variant="body2">
                     Category

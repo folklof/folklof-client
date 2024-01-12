@@ -20,6 +20,7 @@ export interface BookAttributes {
     desc: string;
   };
   user: {
+    role_id: number;
     username: string;
   }
 
