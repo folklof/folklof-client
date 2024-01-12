@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import {
   Box,
   Typography,
-  Select,
-  MenuItem,
   Rating,
   SelectChangeEvent,
   Skeleton,
@@ -26,7 +24,7 @@ interface BookListProps {
   handleSortChange: (event: SelectChangeEvent<string>) => void;
 }
 
-const BookList: React.FC<BookListProps> = ({ books, sort, handleSortChange}) => {
+const BookList: React.FC<BookListProps> = ({ books}) => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true)
   const [openSnackbar, setOpenSnackbar] = useState(false);
@@ -145,20 +143,6 @@ const BookList: React.FC<BookListProps> = ({ books, sort, handleSortChange}) => 
 
   return (
     <Box className={styles.bookList}>
-      <Box className={styles.sortByContainer}>
-        <Select
-          value={sort}
-          onChange={handleSortChange}
-          displayEmpty
-          className={styles.sortSelect}
-          sx={{ borderRadius: "50px" }}
-        >
-          <MenuItem value="">Default</MenuItem>
-          <MenuItem value="1">Oldest</MenuItem>
-          <MenuItem value="2">Latest</MenuItem>
-        </Select>
-      </Box>
-
       {isLoading
         ? // Display Skeletons when data is loading
           Array.from(new Array(5)).map((_, index) => (

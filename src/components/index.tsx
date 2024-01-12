@@ -15,3 +15,4 @@ export { default as LPNavbar } from './LandingPageNavbar';
 export { default as LoadingImages } from './LoadingImages';
 export { default as AlertBar } from './AlertBar';
 export { default as QuizBackdrop } from './QuizBackdrop';
+export { default as Pagination } from './Pagination';

@@ -160,7 +160,7 @@ const Quiz: React.FC<QuizProps> = ({ bookId }) => {
   const handleCloseAlertBar = () => {
     setTimeout(() => {
       setAlertModal(0);
-    }, 2000);
+    }, 3000);
   };
 
   if (isLoading) {

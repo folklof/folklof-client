@@ -6,22 +6,16 @@ const baseURL = import.meta.env.VITE_BASE_URL;
 export type QueryKey = [string, string, string, string, string];
 
 export interface BooksResponse {
+  totalBook: number;
   data: BookAttributes[];
   error?: string;
 }
 
-export const fetchBooks = async ({
-  pageParam = 1,
-  queryKey,
-}: {
-  pageParam?: number;
-  queryKey: QueryKey;
-}): Promise<BooksResponse> => {
+export const fetchBooks = async ({ pageParam, limit, queryKey }: { pageParam?: number; limit?:string; queryKey: QueryKey;}): Promise<BooksResponse> => {
   const [_, sort, categoryId, ageGroupId, title] = queryKey;
-
   const queryParams = new URLSearchParams({
     page: String(pageParam),
-    limit: "6",
+    limit: String(limit),
     sort: String(sort),
     category_id: categoryId,
     agegroup_id: ageGroupId,
@@ -36,17 +30,14 @@ export const fetchBooks = async ({
       `${baseURL}/books?${queryParams}`
     );
 
-    // Check if the response is successful and the data array is not empty
     if (response.data && response.data.data.length > 0) {
       return response.data;
     } else {
-      // Return an empty array with a generic message if no data is found
-      return { data: [], error: "No books found matching the criteria." };
+      return { totalBook: response.data.totalBook , data: [], error: "No books found matching the criteria." };
     }
   } catch (error) {
     console.error("Error fetching books:", error);
-    // Return an empty array and a generic error message for all errors
-    return { data: [], error: "An error occurred while fetching books." };
+    return { totalBook: 0, data: [], error: "An error occurred while fetching books." };
   }
 };
 
@@ -104,3 +95,20 @@ export const fetchNewReleaseBooks = async (): Promise<BookAttributes[]> => {
     throw error;
   }
 };
+
+
+export const fetchBookQuery = async (page: number, category_id :string, agegroup_id: string) => {
+  try {
+    const response = await axios.get(
+      `${baseURL}/books?page=${page}&limit=5$sort=2&category_id=${category_id}&agegroup_id=${agegroup_id}}`
+    );
+    if (response.data && response.data.data.length > 0) {
+      return response.data;
+    } else {
+      return { data: [], error: "No books found matching the criteria." };
+    }
+  } catch (error) {
+    console.error("Error fetching books:", error);
+    return { data: [], error: "An error occurred while fetching books." };
+  }
+}

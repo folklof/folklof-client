@@ -23,8 +23,8 @@ export interface BookAttributes {
     role_id: number;
     username: string;
   }
-
-  isLoading?: boolean; // Optional isLoading attribute
+  
+  isLoading?: boolean;
 }
 
 export interface ICategory {
