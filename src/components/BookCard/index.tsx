@@ -10,12 +10,12 @@ import {
   Box,
 } from "@mui/material";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
-import PersonPinSharpIcon from '@mui/icons-material/PersonPinSharp';
+import VerifiedIcon from '@mui/icons-material/Verified';
 import { useNavigate } from "react-router-dom";
 import { BookCardProps } from "../../types";
 import styles from "./BookCard.module.scss";
 
-const BookCard: React.FC<BookCardProps> = ({ id, title, imageUrl, category, avgRating, author }) => {
+const BookCard: React.FC<BookCardProps> = ({ id, title, imageUrl, category, avgRating, author, iconRole }) => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
 
@@ -83,7 +83,7 @@ const BookCard: React.FC<BookCardProps> = ({ id, title, imageUrl, category, avgR
           <Typography variant="body2" className={styles.author}>
             {author}
           </Typography>
-          <PersonPinSharpIcon sx={{ width: '26px', padding: '0px 0px 4px 5px' }} />
+            {iconRole === 3 && <VerifiedIcon sx={{ color: "#448aff", height: "20px" }} />}
         </Box>
         <Typography variant="body2" className={styles.category}>
           {category}
