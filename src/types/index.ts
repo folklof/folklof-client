@@ -169,6 +169,7 @@ export interface BookCardProps {
   imageUrl: string;
   author: string;
   avgRating?: number;
+  iconRole?: number;
 }
 
 // featured card
