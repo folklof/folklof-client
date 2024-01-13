@@ -1,0 +1,103 @@
+.profileContainer {
+  align-items: center;
+  justify-content: center;
+  margin: 50px 300px;
+  padding: 40px 60px 150px 60px;
+  background-color: #343541;
+  border-radius: 14px;
+
+  .gridDescription {
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+  }
+
+  .description {
+    color: white;
+    padding-left: 6px;
+  }
+
+  .boxText {
+    border: 1px solid white;
+    border-radius: 14px;
+    width: 100%;
+    padding: 0px 20px;
+    overflow: hidden;
+  }
+
+  .avatar {
+    position: relative;
+    width: 200px;
+    height: auto;
+  }
+
+  .iconButtonContainer {
+    background-color: #515CB1;
+    padding: 8px;
+    border-radius: 50px;
+    width: 40px;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.2s ease;
+  }
+
+  .iconButtonContainer:hover {
+    background-color: #1976d2;
+  }
+
+  .iconButton {
+    position: absolute;
+    transform: translate(-110%, 80%);
+    color: white;
+  }
+
+  .profileText {
+    color: white;
+    overflow: hidden;
+    padding: 4px 0 0 0;
+  }
+
+  .buttonContainer {
+    margin-top: 50px;
+    right: 100;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .textFieldContainer {
+    & .MuiInputBase-input {
+      color: white; // Set the text color to white
+    }
+
+    & .MuiOutlinedInput-notchedOutline {
+      border: none; // Remove the black border
+    }
+
+    &:hover .MuiOutlinedInput-notchedOutline {
+      border: none; // Remove the black border on hover
+    }
+
+    &.Mui-focused .MuiOutlinedInput-notchedOutline {
+      border: none; // Remove the black border when focused
+    }
+  }
+}
+
+@media (max-width: 1300px) {
+  .profileContainer {
+    padding: 70px 60px 150px 60px;
+    margin: 50px 100px;
+  }
+}
+
+@media (max-width: 900px) {
+  .profileContainer {
+    padding: 70px 20px 150px 20px;
+    margin: 50px 10px;
+  }
+}

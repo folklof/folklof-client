@@ -23,7 +23,7 @@ export interface BookAttributes {
     role_id: number;
     username: string;
   }
-  
+
   isLoading?: boolean;
 }
 
@@ -159,6 +159,9 @@ export interface UserProfile {
   age: number | null;
   avatar: string;
   created_date: string;
+  role?: {
+    name: string
+  }
 }
 
 //book card
