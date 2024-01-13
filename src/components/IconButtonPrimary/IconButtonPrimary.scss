@@ -1,0 +1,11 @@
+.component-wrapper .iconButtonPrimary {
+    background-color: #515CB1;
+    width: 5rem;
+    border-radius: 50px 10px 10px 50px;
+    cursor: pointer;
+    &:hover {
+      background-color: #115293;
+      color: white;
+    }
+  }
+  

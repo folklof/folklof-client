@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
 import { useNavigate } from "react-router-dom";
-import { PrimaryButton, SecondaryButton } from "../../components";
+import { PrimaryButton, SecondaryButton, IconButtonSecondary, IconButtonPrimary } from "../../components";
 import styles from "./BookList.module.scss";
 import {
   BookAttributes,
@@ -301,6 +301,22 @@ const BookList: React.FC<BookListProps> = ({ books}) => {
                 />
                 <SecondaryButton
                   text="Add to Library"
+                  onClick={() => handleAddToLibrary(book.ID)}
+                  icon={<BookmarkOutlinedIcon />}
+                />
+              </Box>
+              <Box className={styles.buttonWrapper1}>
+                <IconButtonPrimary
+                  onClick={() => navigate(`/book/${book.ID}`)}
+                  icon={<HeadsetIcon />}
+                />
+                <IconButtonSecondary
+                  style="iconButtonSecondary1"
+                  onClick={() => handleAddToFavourite(book.ID)}
+                  icon={<FavoriteIcon />}
+                />
+                <IconButtonSecondary
+                  style="iconButtonSecondary2"
                   onClick={() => handleAddToLibrary(book.ID)}
                   icon={<BookmarkOutlinedIcon />}
                 />

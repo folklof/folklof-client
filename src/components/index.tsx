@@ -16,3 +16,5 @@ export { default as LoadingImages } from './LoadingImages';
 export { default as AlertBar } from './AlertBar';
 export { default as QuizBackdrop } from './QuizBackdrop';
 export { default as Pagination } from './Pagination';
+export { default as IconButtonSecondary } from './IconButtonSecondary'
+export { default as IconButtonPrimary } from './IconButtonPrimary'
