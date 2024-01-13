@@ -85,7 +85,7 @@ const BookCard: React.FC<BookCardProps> = ({ id, title, imageUrl, category, avgR
             {author}
           </Typography>
           {iconRole === 3 && (
-            <Tooltip title="Verified" placement="right">
+            <Tooltip title="Verified Account" placement="right">
               <VerifiedIcon sx={{ color: "#448aff", height: "20px" }} />
             </Tooltip>
           )}
