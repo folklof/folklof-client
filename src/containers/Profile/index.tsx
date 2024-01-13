@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Avatar, Typography, Grid, Box, TextField, CircularProgress, IconButton } from "@mui/material";
+import { Avatar, Typography, Grid, Box, TextField, CircularProgress, IconButton, Snackbar } from "@mui/material";
+import MuiAlert from "@mui/material/Alert";
 import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
 import axios from 'axios';
 
@@ -11,11 +12,14 @@ import styles from './Profile.module.scss';
 import { setUserProfile } from "../../store/userSlice";
 import Tooltip from "@mui/material/Tooltip";
 
-
 const Profile: React.FC = () => {
   const userProfile = useSelector((state: UserRootState) => state.user.user);
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
+
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState<"success" | "error">("success");
 
   const [usernameError, setUsernameError] = useState("");
   const [ageError, setAgeError] = useState("");
@@ -72,21 +76,18 @@ const Profile: React.FC = () => {
 
         if (response.data.success) {
           dispatch(setUserProfile(response.data.data));
-          alert('Success');
+          handleSnackbarOpen('Profile updated successfully', 'success');
         } else {
           console.error("Error updating user:", response.data.message);
-          alert('Error updating user');
+          handleSnackbarOpen('Error updating user', 'error');
         }
       } catch (error) {
         console.log("Error updating user:", error);
       } finally {
         setIsLoading(false);
       }
-    } else {
-      setIsLoading(false);
     }
-  };
-
+  }
   const getDatePart = (timestamp: string | undefined) => {
     if (timestamp) {
       const datePart = timestamp.split("T")[0];
@@ -115,16 +116,16 @@ const Profile: React.FC = () => {
 
         if (response.data.success) {
           dispatch(setUserProfile(response.data.data));
-          alert('Avatar updated successfully');
+          handleSnackbarOpen('Avatar updated successfully', 'success');
         } else {
           console.error('Error updating avatar:', response.data.message);
-          alert('Error updating avatar');
+          handleSnackbarOpen('Error updating avatar', 'error');
         }
       } catch (error) {
         console.log('Error updating avatar:', error);
       }
     }
-  };
+  }
 
   const [editableUsername, setEditableUsername] = useState(userProfile?.username || "");
   const [editableEmail, setEditableEmail] = useState(userProfile?.email || "");
@@ -141,6 +142,16 @@ const Profile: React.FC = () => {
     setter: React.Dispatch<React.SetStateAction<string | number>>
   ) => (event: React.ChangeEvent<HTMLInputElement>) => setter(event.target.value);
 
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
+  };
+
+  const handleSnackbarOpen = (message: string, severity: "success" | "error") => {
+    setSnackbarMessage(message);
+    setSnackbarSeverity(severity);
+    setSnackbarOpen(true);
+  };
+
   const createTextField = (
     label: string,
     value: string | number,
@@ -149,7 +160,7 @@ const Profile: React.FC = () => {
     error: string = ""
   ) => {
     const isReadOnlyField = ["Email", "Role", "Join Date"].includes(label);
-  
+
     return (
       <Grid item xs={12} sm={6} className={styles.gridDescription}>
         <Typography className={styles.description}>{label}</Typography>
@@ -191,7 +202,7 @@ const Profile: React.FC = () => {
       </Grid>
     );
   };
-  
+
   return (
     <>
       {isLoading ? <CircularProgress /> : null}
@@ -233,6 +244,16 @@ const Profile: React.FC = () => {
           <PrimaryButton text="Update" onClick={handleUpdateUser} />
         </Box>
       </Box>
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={3000}
+        onClose={handleSnackbarClose}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+      >
+        <MuiAlert elevation={6} variant="filled" severity={snackbarSeverity}>
+          {snackbarMessage}
+        </MuiAlert>
+      </Snackbar>
     </>
   );
 }
