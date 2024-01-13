@@ -85,6 +85,7 @@ const NewRelease: React.FC = () => {
                   category={book.category.name}
                   imageUrl={book.cover_image}
                   avgRating={ratings[book.ID]?.data.avgRating || 0} // Use the rating from state
+                  iconRole={book.user.role_id}
                   author={book.user.username}
                 />
               ))
