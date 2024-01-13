@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import {
   Grid,
   Box,
@@ -91,6 +91,14 @@ const AllBooks: React.FC<{
     }
   }, [page, sort, limit, refetchData, data?.totalBook]);
 
+  const bottomRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (bottomRef.current) {
+      bottomRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [page]);
+
   const handleSortChange = (event: SelectChangeEvent<string>) => {
     setSort(event.target.value);
   };
@@ -145,6 +153,31 @@ const AllBooks: React.FC<{
             <MenuItem value="1">Oldest</MenuItem>
             <MenuItem value="2">Latest</MenuItem>
           </Select>
+        </Box>
+        {isLoading || isFetchingInitialData ? (
+          <Box className={styles.noBooksContainer}>
+            <Typography variant="h5" className={styles.noBooksText}>
+              Please wait
+            </Typography>
+            <Typography variant="body1" sx={{ color: "white" }}>
+              We are casting spell to find your books...
+            </Typography>
+          </Box>
+        ) : hasBooks ? (
+          <>
+            <Box className={styles.bookPageContainer}>
+              <BookList
+                books={data.data as BookAttributes[]}
+                sort={sort}
+                handleSortChange={handleSortChange}
+              />    
+            </Box>                    
+          </>
+        ) : (
+          shouldRenderNoBooksMessage && renderNoBooksMessage()
+        )}
+        {/* <Box sx={{display: "flex", width: "70vw", justifyContent: "center"}}> */}
+        <Box className={styles.paginationWrapper}>
           <Box className={styles.paginationContainer}>
             <Box sx={{ display: "flex", alignItems: "center", gap: "5px" }}>
               <Typography sx={{ color: "white" }}>Show</Typography>
@@ -161,6 +194,7 @@ const AllBooks: React.FC<{
                 </Select>
               </FormControl>
             </Box>
+          <Box sx={{ width: "200px", alignSelf: "center"}}>
             <Pagination
               pageCount={
                 Math.max(Math.ceil((data?.totalBook ?? 0) / Number(limit)), 1)
@@ -168,28 +202,10 @@ const AllBooks: React.FC<{
               currentPage={page}
               onPageChange={handlePageChange}
             />
-          </Box>
+            <div ref={bottomRef}></div>
+          </Box>            
         </Box>
-        {isLoading || isFetchingInitialData ? (
-          <Box className={styles.noBooksContainer}>
-            <Typography variant="h5" className={styles.noBooksText}>
-              Please wait
-            </Typography>
-            <Typography variant="body1" sx={{ color: "white" }}>
-              We are casting spell to find your books...
-            </Typography>
-          </Box>
-        ) : hasBooks ? (
-          <>
-            <BookList
-              books={data.data as BookAttributes[]}
-              sort={sort}
-              handleSortChange={handleSortChange}
-            />
-          </>
-        ) : (
-          shouldRenderNoBooksMessage && renderNoBooksMessage()
-        )}
+        </Box>
       </Grid>
     </Grid>
   );

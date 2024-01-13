@@ -24,14 +24,14 @@ const UserAuth: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
   const [age, setAge] = useState("");
   const [ageError, setAgeError] = useState(false);
-  const [snackbarOpen, setSnackbarOpen] = useState(false); // State for Snackbar
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
 
-  const dispatch = useDispatch(); // Dispatcher, just like a setState
+  const dispatch = useDispatch();
 
   // Fetch user profile
   const { isLoading } = useQuery<UserProfile>("userProfile", getUserProfile, {
     onSuccess: (data) => {
-      dispatch(setUserProfile(data)); // Set user profile in redux
+      dispatch(setUserProfile(data));
       setUser(data);
       if (data.age === null || data.age === undefined) {
         setShowModal(true);
@@ -55,7 +55,7 @@ const UserAuth: React.FC = () => {
       const updatedUser = await updateUserAge(user?.ID || "", ageNum);
       queryClient.setQueryData("userProfile", updatedUser);
       setShowModal(false);
-      setSnackbarOpen(true); // Open the Snackbar
+      setSnackbarOpen(true);
 
       // Redirect to dashboard after a delay
       setTimeout(() => {

@@ -12,8 +12,16 @@
     width: 30px;
   }
 
+  .outRangePageNumber {
+    color: #fff;
+    background-color: transparent;
+    border: none;
+    width: 15px;
+    text-align: center;
+  }
+
   .pageButton {
-    color: #448AFF;
+    color: #7a89fa;
     cursor: pointer;
     background-color: transparent;
     border: none;
@@ -27,7 +35,7 @@
     }
 
     &:active {
-      background-color: #515CB1;
+      background-color: #448AFF;
     }
 
     &:disabled {
