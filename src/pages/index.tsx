@@ -10,3 +10,4 @@ export { default as AuthPage } from './Auth';
 export { default as AboutUsPage } from './AboutUsPage';
 export { default as TermsOfUsePage } from './TermsOfUsePage';
 export { default as ProfilePage } from './ProfilePage';
+export { default as OurTeamPage } from './OurTeamPage';

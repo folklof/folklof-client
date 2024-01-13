@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { DashboardPage, LandingPage, LoginPage, AllCategoriesPage, BookDetailsPage, LibraryPage, FavouritePage, AuthPage, SearchPage, AboutUsPage, TermsOfUsePage, ProfilePage } from "../pages";
+import { DashboardPage, LandingPage, LoginPage, AllCategoriesPage, BookDetailsPage, LibraryPage, FavouritePage, AuthPage, SearchPage, AboutUsPage, TermsOfUsePage, ProfilePage, OurTeamPage } from "../pages";
 import { ProtectedRoute } from '../services';
 import PrivacyPolicyPage from "../pages/PrivacyPolicy";
 
@@ -14,6 +14,7 @@ const AppRoutes: React.FC = () => {
         <Route path="/about-us" element={<AboutUsPage />} />
         <Route path="/terms-of-use" element={<TermsOfUsePage />} />
         <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+        <Route path="/our-team" element={<OurTeamPage />} />
 
 
         {/* Wrap the protected routes */}
