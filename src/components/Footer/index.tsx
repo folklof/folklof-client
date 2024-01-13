@@ -15,6 +15,9 @@ const Footer: React.FC = () => {
         <Link href="/terms-of-use" color="inherit" className={styles.footerLink}>
           Terms of Use
         </Link>
+        <Link href="/our-team" color="inherit" className={styles.footerLink}>
+          Our Team
+        </Link>
       </Box>
       <Typography variant="body2" className={styles.copyRight}>
         © 2023 Folklof
