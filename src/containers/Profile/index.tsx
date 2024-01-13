@@ -1,6 +1,14 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Avatar, Typography, Grid, Box, TextField, CircularProgress, IconButton, Snackbar } from "@mui/material";
+import {
+  Avatar,
+  Typography,
+  Grid,
+  Box,
+  TextField,
+  IconButton,
+  Snackbar
+} from "@mui/material";
 import MuiAlert from "@mui/material/Alert";
 import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
 import axios from 'axios';
@@ -15,7 +23,7 @@ import Tooltip from "@mui/material/Tooltip";
 const Profile: React.FC = () => {
   const userProfile = useSelector((state: UserRootState) => state.user.user);
   const dispatch = useDispatch();
-  const [isLoading, setIsLoading] = useState(false);
+  const [, setIsLoading] = useState(false);
 
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
@@ -205,7 +213,6 @@ const Profile: React.FC = () => {
 
   return (
     <>
-      {isLoading ? <CircularProgress /> : null}
       <Box className={styles.profileContainer}>
         <Typography className={styles.description} sx={{ fontSize: '60px' }} variant='h4'>
           Profile Page
