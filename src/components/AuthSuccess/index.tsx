@@ -53,7 +53,8 @@ const UserAuth: React.FC = () => {
     try {
       setAgeError(false);
       const updatedUser = await updateUserAge(user?.ID || "", ageNum);
-      queryClient.setQueryData("userProfile", updatedUser);
+      dispatch(setUserProfile(updatedUser.data));
+      queryClient.setQueryData("userProfile", updatedUser.data);
       setShowModal(false);
       setSnackbarOpen(true);
 
