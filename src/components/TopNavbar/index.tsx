@@ -65,11 +65,11 @@ const TopNavbar: React.FC = () => {
                 {userProfile.role_id === 3 && <VerifiedIcon sx={{ color: "#448aff" }} />}
               </Button>
               <Menu
+                disableScrollLock
                 anchorEl={anchorEl}
                 open={menuOpen}
                 onClose={handleMenuClose}
               >
-                {/* <MenuItem onClick={() => navigate('/profile')}>Profile</MenuItem> */}
                 <MenuItem onClick={handleProfile} >Profile Setting</MenuItem>
                 <MenuItem onClick={handleLogout}>Sign Out</MenuItem>
               </Menu>
