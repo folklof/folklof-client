@@ -3,19 +3,22 @@
     height: 10vh;
     background-color: #2E2E2E;
     color: #fff;
-    padding: 20px 50px;
+    padding: 15px 50px 20px 50px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     border-radius: 20px;
-    margin-top: 10vh;
-    bottom: 0;
+    margin-top: 15vh;
+    position: absolute;
+    right: 0;
+    bottom: -150px;
+    left: 0;
     @media (max-width: 768px) {
-      padding: 20px;
+      bottom: -400px;
       flex-direction: column;
-      height: 25vh;
+      height: 50vh;
       justify-content: space-around;
-      margin-top: 10vh;
+      border-radius: 0;
     }
 
   
@@ -24,6 +27,15 @@
       gap: 24px;
       @media (max-width: 768px) {
         flex-direction: column;
+        gap: 20px;
+      }
+
+      .linkSpacer{
+        @media (max-width: 768px) {
+          border: .1px solid #424242;
+          width: 100vw;
+          margin: 0;
+        }
       }
   
       .footerLink {
@@ -31,9 +43,20 @@
         font-weight: 300;
         color: inherit;
         text-decoration: none;
+        text-align: center;
         @media (max-width: 768px) {
+          color: #cac7c7;
           font-size: 16px;
         }
+      }
+    }
+
+    .copyRight {
+      @media (max-width: 768px) {
+        color: #A2A2A2;
+        margin-top: 10px;
+        height: 70px;
+        padding-top: 50px;
       }
     }
   
