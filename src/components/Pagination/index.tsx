@@ -126,7 +126,9 @@ const Pagination: React.FC<PaginationProps> = ({
       >
         <ArrowLeftIcon sx={{ fontSize: 30 }} />
       </button>
-      {renderPageButtons()}
+      <Box className={styles.pageNavigation}>
+        {renderPageButtons()}
+      </Box>
       <button
         disabled={currentPage === pageCount}
         onClick={() => onPageChange(currentPage + 1)}

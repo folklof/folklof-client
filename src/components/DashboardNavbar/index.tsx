@@ -111,6 +111,7 @@ const DashboardNavbar: React.FC = () => {
           }}
           open={open}
           onClose={handleClose}
+          disableScrollLock
         >
           <MenuItem onClick={navigateToLibrary}>Library</MenuItem>
           <MenuItem onClick={navigateToCategories}>Categories</MenuItem>
