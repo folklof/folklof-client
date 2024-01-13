@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   Grid,
   Box,
@@ -91,14 +91,6 @@ const AllBooks: React.FC<{
     }
   }, [page, sort, limit, refetchData, data?.totalBook]);
 
-  const bottomRef = useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    if (bottomRef.current) {
-      bottomRef.current.scrollIntoView({ behavior: "smooth" });
-    }
-  }, [page]);
-
   const handleSortChange = (event: SelectChangeEvent<string>) => {
     setSort(event.target.value);
   };
@@ -169,8 +161,7 @@ const AllBooks: React.FC<{
               <BookList
                 books={data.data as BookAttributes[]}
                 sort={sort}
-                handleSortChange={handleSortChange}
-              />    
+                handleSortChange={handleSortChange} />    
             </Box>                    
           </>
         ) : (
@@ -202,7 +193,6 @@ const AllBooks: React.FC<{
               currentPage={page}
               onPageChange={handlePageChange}
             />
-            <div ref={bottomRef}></div>
           </Box>            
         </Box>
         </Box>
