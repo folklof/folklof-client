@@ -7,6 +7,7 @@ import { fetchBestStoriesBooks } from "../../api/book/bookAPI";
 import { BookAttributes, RatingResponse } from "../../types";
 import styles from "./BestStories.module.scss";
 import { fetchRatings } from "../../api";
+import { getFirstAndSecondName } from "../../utils/Helper/GetFirstAndSecondName";
 
 const BestStories: React.FC = () => {
   const navigate = useNavigate();
@@ -30,7 +31,7 @@ const BestStories: React.FC = () => {
       enabled: !!books.length, // Only fetch ratings when books are available
     }
   );
-
+    
   const handleSeeAllStoriesClick = () => {
     navigate("/categories");
   };
@@ -66,7 +67,7 @@ const BestStories: React.FC = () => {
                   imageUrl={book.cover_image}
                   avgRating={ratings[book.ID]?.data.avgRating || 0}
                   iconRole={book.user.role_id}
-                  author={book.user.username}
+                  author={getFirstAndSecondName(book.user.username)}
                 />
               ))
             )}

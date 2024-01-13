@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { useQueryClient } from 'react-query';
 import { logoutUser } from '../../api/auth';
 import VerifiedIcon from '@mui/icons-material/Verified';
+import { getFirstAndSecondName } from '../../utils/Helper/GetFirstAndSecondName';
 
 const TopNavbar: React.FC = () => {
   const navigate = useNavigate();
@@ -35,6 +36,10 @@ const TopNavbar: React.FC = () => {
     setAnchorEl(null);
   };
 
+  const handleProfile = async () => {
+    navigate('/profile');
+  };
+
   const handleLogout = async () => {
     await logoutUser();
     dispatch(logoutUserRedux());
@@ -56,7 +61,7 @@ const TopNavbar: React.FC = () => {
                 onClick={handleMenuClick}
               >
                 <Avatar src={userProfile.avatar} sx={{ width: 40, height: 40 }} />&ensp;
-                {userProfile.username}&ensp;
+                {getFirstAndSecondName(userProfile.username)}&ensp;
                 {userProfile.role_id === 3 && <VerifiedIcon sx={{ color: "#448aff" }} />}
               </Button>
               <Menu
@@ -65,6 +70,7 @@ const TopNavbar: React.FC = () => {
                 onClose={handleMenuClose}
               >
                 {/* <MenuItem onClick={() => navigate('/profile')}>Profile</MenuItem> */}
+                <MenuItem onClick={handleProfile} >Profile Setting</MenuItem>
                 <MenuItem onClick={handleLogout}>Sign Out</MenuItem>
               </Menu>
             </>

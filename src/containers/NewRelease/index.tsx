@@ -5,6 +5,7 @@ import { useQuery } from "react-query";
 import { fetchNewReleaseBooks } from "../../api/book/bookAPI";
 import { BookAttributes, RatingResponse } from "../../types";
 import { fetchRatings } from "../../api";
+import { getFirstAndSecondName } from "../../utils/Helper/GetFirstAndSecondName";
 
 const NewRelease: React.FC = () => {
   const [ratings, setRatings] = useState<Record<string, RatingResponse | null>>({});
@@ -86,7 +87,7 @@ const NewRelease: React.FC = () => {
                   imageUrl={book.cover_image}
                   avgRating={ratings[book.ID]?.data.avgRating || 0} // Use the rating from state
                   iconRole={book.user.role_id}
-                  author={book.user.username}
+                  author={getFirstAndSecondName(book.user.username)}
                 />
               ))
             )}

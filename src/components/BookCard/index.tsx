@@ -79,12 +79,18 @@ const BookCard: React.FC<BookCardProps> = ({ id, title, imageUrl, category, avgR
             {title}
           </Typography>
         </Tooltip>
+
         <Box sx={{ display: 'flex' }}>
           <Typography variant="body2" className={styles.author}>
             {author}
           </Typography>
-            {iconRole === 3 && <VerifiedIcon sx={{ color: "#448aff", height: "20px" }} />}
+          {iconRole === 3 && (
+            <Tooltip title="Verified" placement="right">
+              <VerifiedIcon sx={{ color: "#448aff", height: "20px" }} />
+            </Tooltip>
+          )}
         </Box>
+
         <Typography variant="body2" className={styles.category}>
           {category}
         </Typography>
