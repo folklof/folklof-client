@@ -13,33 +13,48 @@ import StarBorderIcon from "@mui/icons-material/StarBorder";
 import { useNavigate } from "react-router-dom";
 import { PrimaryButton, SecondaryButton } from "../../components";
 import styles from "./BookList.module.scss";
-import { BookAttributes, BookWithRating, RatingResponse } from "../../types";
-import { fetchRatings, addToLibrary, addToFavourite} from "../../api";
+import {
+  BookAttributes,
+  BookWithRating,
+  LibraryBook,
+  RatingResponse,
+} from "../../types";
+import { fetchRatings, addToLibrary, addToFavourite } from "../../api";
 import axios from "axios";
-import VerifiedIcon from '@mui/icons-material/Verified';
+import VerifiedIcon from "@mui/icons-material/Verified";
+import HeadsetIcon from '@mui/icons-material/Headset';
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import BookmarkOutlinedIcon from "@mui/icons-material/BookmarkOutlined";
+import { getFirstAndSecondName } from "../../utils/Helper/GetFirstAndSecondName";
 
 interface BookListProps {
   books: BookAttributes[];
   sort: string;
+  library: LibraryBook;
   handleSortChange: (event: SelectChangeEvent<string>) => void;
 }
 
 const BookList: React.FC<BookListProps> = ({ books}) => {
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(true);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
-  const [snackbarSeverity, setSnackbarSeverity] =useState<AlertColor>("success");
-  const [bookListWithRatings, setBookListWithRatings] = useState<BookWithRating[]>([]);
+  const [snackbarSeverity, setSnackbarSeverity] =
+    useState<AlertColor>("success");
+  const [bookListWithRatings, setBookListWithRatings] = useState<
+    BookWithRating[]
+  >([]);
+  const [isFavorite, setIsFavorite] = useState(false);
 
   useEffect(() => {
     const fetchRatingsForBooks = async () => {
       const updatedBooks: BookWithRating[] = await Promise.all(
         books.map(async (book) => {
           const ratings: RatingResponse | null = await fetchRatings(book.ID);
-          const avgRatingAsString: string | undefined = ratings?.data.avgRating?.toString();
+          const avgRatingAsString: string | undefined =
+            ratings?.data.avgRating?.toString();
           return ratings
-            ? { ...book, avgRating: avgRatingAsString  }
+            ? { ...book, avgRating: avgRatingAsString }
             : { ...book };
         })
       );
@@ -61,14 +76,16 @@ const BookList: React.FC<BookListProps> = ({ books}) => {
     };
 
     const loadImages = async () => {
-      const promises = bookListWithRatings.map((book) => loadImage(book.cover_image));
+      const promises = bookListWithRatings.map((book) =>
+        loadImage(book.cover_image)
+      );
       await Promise.all(promises);
       setIsLoading(false);
     };
 
     if (bookListWithRatings.length > 0) {
       loadImages();
-    }else {
+    } else {
       setIsLoading(false);
     }
   }, [bookListWithRatings]);
@@ -81,6 +98,7 @@ const BookList: React.FC<BookListProps> = ({ books}) => {
         setSnackbarMessage("Book added to favourites successfully!");
         setSnackbarSeverity("success");
         setOpenSnackbar(true);
+        setIsFavorite(true);
       } else {
         console.error(
           "Failed to add book to favourites:",
@@ -108,6 +126,8 @@ const BookList: React.FC<BookListProps> = ({ books}) => {
       }
     }
   };
+
+  console.log(isFavorite);
 
   const handleAddToLibrary = async (bookId: string) => {
     try {
@@ -139,7 +159,6 @@ const BookList: React.FC<BookListProps> = ({ books}) => {
     }
     setOpenSnackbar(true);
   };
-  
 
   return (
     <Box className={styles.bookList}>
@@ -184,11 +203,33 @@ const BookList: React.FC<BookListProps> = ({ books}) => {
                   />
                 </Box>
               </Box>
-            <Box sx={{ display: "flex", flexDirection: "column", alignItems: "start", gap: "16px" }}>
-              <Skeleton variant="rounded" width={170} height={36} sx={{ bgcolor: "#f1f1f13d" }}/>
-              <Skeleton variant="rounded" width={170} height={36} sx={{ bgcolor: "#f1f1f13d" }}/>
-              <Skeleton variant="rounded" width={170} height={36} sx={{ bgcolor: "#f1f1f13d" }}/>
-            </Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "start",
+                  gap: "16px",
+                }}
+              >
+                <Skeleton
+                  variant="rounded"
+                  width={170}
+                  height={36}
+                  sx={{ bgcolor: "#f1f1f13d" }}
+                />
+                <Skeleton
+                  variant="rounded"
+                  width={170}
+                  height={36}
+                  sx={{ bgcolor: "#f1f1f13d" }}
+                />
+                <Skeleton
+                  variant="rounded"
+                  width={170}
+                  height={36}
+                  sx={{ bgcolor: "#f1f1f13d" }}
+                />
+              </Box>
             </Box>
           ))
         : // Display books when data is loaded
@@ -205,69 +246,65 @@ const BookList: React.FC<BookListProps> = ({ books}) => {
                     {book.title}
                   </Typography>
                   <Box className={styles.ratingContainer}>
-                  <Rating
-                    name="read-only"
-                    value={parseFloat(book.avgRating || "0")}
-                    readOnly
-                    precision={0.5}
-                    emptyIcon={
-                      <StarBorderIcon
-                        style={{ color: "rgba(255, 255, 255, 0.5)" }}
-                      />
-                    }
-                    sx={{
-                      "& .MuiRating-iconFilled": { color: "gold" },
-                      "& .MuiRating-iconEmpty": {
-                        color: "rgba(255, 255, 255, 0.5)",
-                      },
-                      "& .MuiRating-iconHover": { color: "gold" },
-                    }}
+                    <Rating
+                      name="read-only"
+                      value={parseFloat(book.avgRating || "0")}
+                      readOnly
+                      precision={0.5}
+                      emptyIcon={
+                        <StarBorderIcon
+                          style={{ color: "rgba(255, 255, 255, 0.5)" }}
+                        />
+                      }
+                      sx={{
+                        "& .MuiRating-iconFilled": { color: "gold" },
+                        "& .MuiRating-iconEmpty": {
+                          color: "rgba(255, 255, 255, 0.5)",
+                        },
+                        "& .MuiRating-iconHover": { color: "gold" },
+                      }}
                     />
-                <Typography>
-                 {book.avgRating}
-                </Typography>
-                </Box>
+                    <Typography>{book.avgRating}</Typography>
+                  </Box>
                 </Box>
                 <Box className={styles.boxTypography}>
+                  <Typography variant="body2">Author</Typography>
+                  <Typography
+                    variant="body2"
+                    sx={{ display: "flex", alignItems: "center" }}
+                  >
+                    : {getFirstAndSecondName(book.user.username)}
+                    {book.user.role_id === 3 && (
+                      <VerifiedIcon sx={{ color: "#448aff", height: "20px" }} />
+                    )}
+                  </Typography>
+                  <Typography variant="body2">Category</Typography>
                   <Typography variant="body2">
-                    Author
+                    : {book.category.name}
                   </Typography>
-                  <Typography variant="body2" sx={{ display: 'flex', alignItems: 'center' }}>
-                    :  {book.user.username} 
-                    {book.user.role_id === 3 && <VerifiedIcon sx={{ color: "#448aff", height: "20px" }} />}
-                  </Typography>
+                  <Typography variant="body2">Age Group</Typography>
                   <Typography variant="body2">
-                    Category
+                    : {book.agegroup.name}
                   </Typography>
-                  <Typography variant="body2">
-                    :  {book.category.name}
-                  </Typography>
-                  <Typography variant="body2">
-                    Age Group
-                  </Typography>
-                  <Typography variant="body2">
-                    :  {book.agegroup.name}
-                  </Typography>
-                  <Typography variant="body2">
-                    Duration
-                  </Typography>
-                  <Typography variant="body2">
-                    :  {book.duration}
-                  </Typography>
+                  <Typography variant="body2">Duration</Typography>
+                  <Typography variant="body2">: {book.duration}</Typography>
                 </Box>
               </Box>
               <Box className={styles.buttonWrapper}>
                 <PrimaryButton
                   text="Listen Now"
                   onClick={() => navigate(`/book/${book.ID}`)}
+                  icon={<HeadsetIcon />}
                 />
                 <SecondaryButton
                   text="Add to Favourite"
                   onClick={() => handleAddToFavourite(book.ID)}
+                  icon={<FavoriteIcon />}
                 />
                 <SecondaryButton
                   text="Add to Library"
                   onClick={() => handleAddToLibrary(book.ID)}
+                  icon={<BookmarkOutlinedIcon />}
                 />
               </Box>
             </Box>
