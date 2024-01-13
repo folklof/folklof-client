@@ -97,6 +97,7 @@ const AllBooks: React.FC<{
 
   const handleShowPerItem = (event: SelectChangeEvent<string>) => {
     setLimit(event.target.value);
+    setPage(1)
   };
 
   const handlePageChange = (selectedPage: number) => {
