@@ -2,6 +2,7 @@
   padding: 20px;
   box-sizing: border-box;
   overflow: hidden;
+  margin-left: -6px !important;
 }
 
 .bookPageContainer {
@@ -52,8 +53,13 @@
     width: 100vw;
   }
 
+  @media(max-width: 768px){
+    width: 90vw;
+  }
+
+
   @media(max-width: 500px){
-    width: 85vw;
+    width: 86vw;
   }
 }
 
@@ -62,7 +68,7 @@
   margin-top: 20px;
   justify-content: center;
   align-self: center;
-  gap: 5px;
+  gap: 2px;
 
   @media (max-width: 655px) {
     justify-content: center;

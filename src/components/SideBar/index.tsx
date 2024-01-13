@@ -126,6 +126,7 @@ const Sidebar: React.FC<SidebarProps> = ({
     </Box>
 
       <Drawer
+        disableScrollLock
         variant="temporary"
         open={mobileOpen}
         onClose={handleDrawerToggle}

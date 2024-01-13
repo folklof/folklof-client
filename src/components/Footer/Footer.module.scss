@@ -1,6 +1,7 @@
 
 .footer {
     height: 10vh;
+    width: 96svw;
     background-color: #2E2E2E;
     color: #fff;
     padding: 20px 50px;
@@ -9,6 +10,7 @@
     align-items: center;
     border-radius: 20px;
     margin-top: 10vh;
+    bottom: -1;
     @media (max-width: 768px) {
       padding: 20px;
       flex-direction: column;

@@ -140,6 +140,7 @@ const AllBooks: React.FC<{
             displayEmpty
             className={styles.sortSelect}
             sx={{ borderRadius: "50px", bgcolor: "#F5F5F5" }}
+            inputProps={{MenuProps: {disableScrollLock: true}}}
           >
             <MenuItem value="">Default</MenuItem>
             <MenuItem value="1">Oldest</MenuItem>
@@ -185,7 +186,7 @@ const AllBooks: React.FC<{
                 </Select>
               </FormControl>
             </Box>
-          <Box sx={{ width: "200px", alignSelf: "center"}}>
+          <Box sx={{ width: "220px", alignSelf: "center"}}>
             <Pagination
               pageCount={
                 Math.max(Math.ceil((data?.totalBook ?? 0) / Number(limit)), 1)
