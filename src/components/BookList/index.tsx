@@ -16,7 +16,6 @@ import styles from "./BookList.module.scss";
 import {
   BookAttributes,
   BookWithRating,
-  LibraryBook,
   RatingResponse,
 } from "../../types";
 import { fetchRatings, addToLibrary, addToFavourite } from "../../api";
@@ -30,7 +29,6 @@ import { getFirstAndSecondName } from "../../utils/Helper/GetFirstAndSecondName"
 interface BookListProps {
   books: BookAttributes[];
   sort: string;
-  library: LibraryBook;
   handleSortChange: (event: SelectChangeEvent<string>) => void;
 }
 
