@@ -1,7 +1,6 @@
 import { Avatar, Box, Grid, IconButton, Typography } from "@mui/material";
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
-import WhatsAppIcon from '@mui/icons-material/WhatsApp';
-import MarkEmailReadIcon from '@mui/icons-material/MarkEmailRead';
+import EmailIcon from '@mui/icons-material/Email';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import styles from './OurTeam.module.scss';
 import avicena from '../../assets/avicena.jpeg'
@@ -20,7 +19,6 @@ const OurTeam: React.FC = () => {
       linkedIn: 'https://www.linkedin.com/in/muhammad-avicena/',
       github: 'https://github.com/muhammad-avicena',
       email: 'cenarahmant.dev@gmail.com',
-      phone: '+6281227057176'
     },
     {
       name: 'Sigit Wiranto',
@@ -29,7 +27,6 @@ const OurTeam: React.FC = () => {
       linkedIn: 'https://www.linkedin.com/in/sigit-wiranto-699247196/',
       github: 'https://github.com/sigitwie',
       email: 'wirsigit@gmail.com',
-      phone: '+6281279926741'
     },
     {
       name: 'Mohammad Hasan',
@@ -38,7 +35,6 @@ const OurTeam: React.FC = () => {
       linkedIn: 'https://www.linkedin.com/in/mohammad-hasan-451811212/',
       github: 'https://github.com/h-san8664',
       email: 'moh.hasfiy93@gmail.com',
-      phone: '+6285234005206'
     },
     {
       name: 'Alyuza Satrio Prayogo',
@@ -47,7 +43,6 @@ const OurTeam: React.FC = () => {
       linkedIn: 'https://www.linkedin.com/in/alyuzasp/',
       github: 'https://github.com/alyuza',
       email: 'alyuza.sat@gmail.com',
-      phone: '+6281216058360'
     },
     {
       name: 'Renaldi P. Basuki',
@@ -56,27 +51,19 @@ const OurTeam: React.FC = () => {
       linkedIn: 'https://www.linkedin.com/in/renaldi-prasetyo-basuki/',
       github: 'https://github.com/RPrasetyoB',
       email: 'rpbasuki.dev@gmail.com',
-      phone: '+6285236891709'
     },
     {
-      name: 'Muhamad Najmy',
+      name: 'Muhammad Najmy Tsaqiby',
       role: 'Front-end',
       img: najmy,
       linkedIn: 'https://www.linkedin.com/in/muhammad-najmy-tsaqiby-1b4561173/',
       github: 'https://github.com/mnajmytsss',
       email: 'najmytsaqiby22@gmail.com',
-      phone: '+6285794298826'
     },
   ];
 
   const redirectToLinkedIn = (url: string) => {
     window.open(url, '_blank');
-  };
-
-  const redirectToWhatsApp = (phone: string, name: string) => {
-    const message = encodeURIComponent(`Hello ${name}, Let's Connect!`);
-    const whatsappUrl = `https://wa.me/${phone}?text=${message}`;
-    window.open(whatsappUrl, '_blank');
   };
 
   const redirectToGitHub = (url: string) => {
@@ -101,17 +88,14 @@ const OurTeam: React.FC = () => {
                 <Typography className={styles.name} variant="h4">{member.name}</Typography>
                 <Typography className={styles.role}>{member.role}</Typography>
                 <Box sx={{ display: 'flex' }}>
-                  <IconButton sx={{ color: "#0a66c2", padding: '0', marginRight: '3px' }} onClick={() => redirectToLinkedIn(member.linkedIn)}>
-                    <LinkedInIcon sx={{ fontSize: '30px', padding: '0' }} />
+                  <IconButton sx={{ color: "#ffff", padding: '0', marginRight: '5px' }} onClick={() => redirectToLinkedIn(member.linkedIn)}>
+                    <LinkedInIcon sx={{ fontSize: '28px', padding: '0' }} />
                   </IconButton>
-                  <IconButton sx={{ color: "#f44336", padding: '0', marginRight: '3px' }} onClick={() => redirectToEmail(member.email)}>
-                    <MarkEmailReadIcon sx={{ fontSize: '30px' }} />
+                  <IconButton sx={{ color: "#ffff", padding: '0', marginRight: '5px' }} onClick={() => redirectToEmail(member.email)}>
+                    <EmailIcon sx={{ fontSize: '30px' }} />
                   </IconButton>
-                  <IconButton sx={{ color: "white", padding: '0', marginRight: '3px' }} onClick={() => redirectToGitHub(member.github)}>
+                  <IconButton sx={{ color: "#ffff", padding: '0', marginRight: '6px' }} onClick={() => redirectToGitHub(member.github)}>
                     <GitHubIcon sx={{ fontSize: '24px' }} />
-                  </IconButton>
-                  <IconButton sx={{ color: "#4caf50", padding: '0', marginRight: '3px' }} onClick={() => redirectToWhatsApp(member.phone, member.name)}>
-                    <WhatsAppIcon sx={{ fontSize: '27px' }} />
                   </IconButton>
                 </Box>
               </Box>
