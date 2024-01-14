@@ -1,6 +1,6 @@
 
 .footer {
-    height: 10vh;
+    height: 85px;
     background-color: #2E2E2E;
     color: #fff;
     padding: 15px 50px 20px 50px;
@@ -14,9 +14,9 @@
     bottom: -150px;
     left: 0;
     @media (max-width: 768px) {
-      bottom: -400px;
+      bottom: -420px;
       flex-direction: column;
-      height: 50vh;
+      height: 370px;
       justify-content: space-around;
       border-radius: 0;
     }
