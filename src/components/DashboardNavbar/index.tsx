@@ -13,8 +13,6 @@ import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import { useNavigate, useLocation } from "react-router-dom";
 import styles from './DashboardNavbar.module.scss';
-import { useSelector } from "react-redux";
-import { UserRootState } from "../../types";
 
 const DashboardNavbar: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -23,11 +21,7 @@ const DashboardNavbar: React.FC = () => {
   const [debounceTimer, setDebounceTimer] = useState<NodeJS.Timeout | null>(null);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-
-  const userData = useSelector((state: UserRootState) => state.user.user); // Example how to get data from redux using 'useSelector'
-
-  console.log(userData, "get data user by redux");
-
+  
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };

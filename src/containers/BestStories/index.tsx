@@ -31,7 +31,7 @@ const BestStories: React.FC = () => {
       enabled: !!books.length, // Only fetch ratings when books are available
     }
   );
-    
+
   const handleSeeAllStoriesClick = () => {
     navigate("/categories");
   };
@@ -65,7 +65,7 @@ const BestStories: React.FC = () => {
                   title={book.title}
                   category={book.category.name}
                   imageUrl={book.cover_image}
-                  avgRating={ratings[book.ID]?.data.avgRating || 0}
+                  avgRating={String(ratings[book.ID]?.data.avgRating) || "0"}
                   iconRole={book.user.role_id}
                   author={getFirstAndSecondName(book.user.username)}
                 />

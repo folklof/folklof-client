@@ -171,7 +171,7 @@ export interface BookCardProps {
   category: string;
   imageUrl: string;
   author: string;
-  avgRating?: number;
+  avgRating?: string;
   iconRole?: number;
 }
 

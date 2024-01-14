@@ -8,6 +8,7 @@ import {
   Snackbar,
   Alert,
   AlertColor,
+  Tooltip,
 } from "@mui/material";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
 import { useNavigate } from "react-router-dom";
@@ -32,7 +33,7 @@ interface BookListProps {
   handleSortChange: (event: SelectChangeEvent<string>) => void;
 }
 
-const BookList: React.FC<BookListProps> = ({ books}) => {
+const BookList: React.FC<BookListProps> = ({ books }) => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
   const [openSnackbar, setOpenSnackbar] = useState(false);
@@ -42,7 +43,6 @@ const BookList: React.FC<BookListProps> = ({ books}) => {
   const [bookListWithRatings, setBookListWithRatings] = useState<
     BookWithRating[]
   >([]);
-  const [isFavorite, setIsFavorite] = useState(false);
 
   useEffect(() => {
     const fetchRatingsForBooks = async () => {
@@ -96,7 +96,6 @@ const BookList: React.FC<BookListProps> = ({ books}) => {
         setSnackbarMessage("Book added to favourites successfully!");
         setSnackbarSeverity("success");
         setOpenSnackbar(true);
-        setIsFavorite(true);
       } else {
         console.error(
           "Failed to add book to favourites:",
@@ -124,8 +123,6 @@ const BookList: React.FC<BookListProps> = ({ books}) => {
       }
     }
   };
-
-  console.log(isFavorite);
 
   const handleAddToLibrary = async (bookId: string) => {
     try {
@@ -160,169 +157,170 @@ const BookList: React.FC<BookListProps> = ({ books}) => {
 
   return (
     <Box className={styles.bookList}>
-      {isLoading
-        ? // Display Skeletons when data is loading
-          Array.from(new Array(5)).map((_, index) => (
-            <Box key={index} className={styles.bookItem}>
+      {isLoading ?
+        Array.from(new Array(5)).map((_, index) => (
+          <Box key={index} className={styles.bookItem}>
+            <Skeleton
+              variant="rectangular"
+              animation="wave"
+              width={280}
+              height={280}
+              style={{ backgroundColor: "#f1f1f13d" }}
+            />
+            <Box className={styles.bookDetails}>
+              <Box>
+                <Skeleton
+                  variant="text"
+                  width="60%"
+                  animation="wave"
+                  style={{ backgroundColor: "#f1f1f13d" }}
+                />
+                <Skeleton
+                  variant="text"
+                  width="40%"
+                  animation="wave"
+                  style={{ backgroundColor: "#f1f1f13d" }}
+                />
+              </Box>
+              <Box>
+                <Skeleton
+                  variant="text"
+                  width="80%"
+                  animation="wave"
+                  style={{ backgroundColor: "#f1f1f13d" }}
+                />
+                <Skeleton
+                  variant="text"
+                  width="50%"
+                  animation="wave"
+                  style={{ backgroundColor: "#f1f1f13d" }}
+                />
+              </Box>
+            </Box>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "start",
+                gap: "16px",
+              }}
+            >
               <Skeleton
-                variant="rectangular"
-                animation="wave"
-                width={280}
-                height={280}
-                style={{ backgroundColor: "#f1f1f13d" }}
+                variant="rounded"
+                width={170}
+                height={36}
+                sx={{ bgcolor: "#f1f1f13d" }}
               />
-              <Box className={styles.bookDetails}>
-                <Box>
-                  <Skeleton
-                    variant="text"
-                    width="60%"
-                    animation="wave"
-                    style={{ backgroundColor: "#f1f1f13d" }}
-                  />
-                  <Skeleton
-                    variant="text"
-                    width="40%"
-                    animation="wave"
-                    style={{ backgroundColor: "#f1f1f13d" }}
-                  />
-                </Box>
-                <Box>
-                  <Skeleton
-                    variant="text"
-                    width="80%"
-                    animation="wave"
-                    style={{ backgroundColor: "#f1f1f13d" }}
-                  />
-                  <Skeleton
-                    variant="text"
-                    width="50%"
-                    animation="wave"
-                    style={{ backgroundColor: "#f1f1f13d" }}
-                  />
-                </Box>
-              </Box>
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "start",
-                  gap: "16px",
-                }}
-              >
-                <Skeleton
-                  variant="rounded"
-                  width={170}
-                  height={36}
-                  sx={{ bgcolor: "#f1f1f13d" }}
-                />
-                <Skeleton
-                  variant="rounded"
-                  width={170}
-                  height={36}
-                  sx={{ bgcolor: "#f1f1f13d" }}
-                />
-                <Skeleton
-                  variant="rounded"
-                  width={170}
-                  height={36}
-                  sx={{ bgcolor: "#f1f1f13d" }}
-                />
-              </Box>
+              <Skeleton
+                variant="rounded"
+                width={170}
+                height={36}
+                sx={{ bgcolor: "#f1f1f13d" }}
+              />
+              <Skeleton
+                variant="rounded"
+                width={170}
+                height={36}
+                sx={{ bgcolor: "#f1f1f13d" }}
+              />
             </Box>
-          ))
+          </Box>
+        ))
         : // Display books when data is loaded
-          bookListWithRatings.map((book) => (
-            <Box key={book.ID} className={styles.bookItem}>
-              <img
-                src={book.cover_image}
-                alt={book.title}
-                className={styles.bookCover}
-              />
-              <Box className={styles.bookDetails}>
-                <Box>
-                  <Typography variant="h5" className={styles.bookTitle}>
-                    {book.title}
-                  </Typography>
-                  <Box className={styles.ratingContainer}>
-                    <Rating
-                      name="read-only"
-                      value={parseFloat(book.avgRating || "0")}
-                      readOnly
-                      precision={0.5}
-                      emptyIcon={
-                        <StarBorderIcon
-                          style={{ color: "rgba(255, 255, 255, 0.5)" }}
-                        />
-                      }
-                      sx={{
-                        "& .MuiRating-iconFilled": { color: "gold" },
-                        "& .MuiRating-iconEmpty": {
-                          color: "rgba(255, 255, 255, 0.5)",
-                        },
-                        "& .MuiRating-iconHover": { color: "gold" },
-                      }}
-                    />
-                    <Typography>{book.avgRating}</Typography>
-                  </Box>
+        bookListWithRatings.map((book) => (
+          <Box key={book.ID} className={styles.bookItem}>
+            <img
+              src={book.cover_image}
+              alt={book.title}
+              className={styles.bookCover}
+            />
+            <Box className={styles.bookDetails}>
+              <Box>
+                <Typography variant="h5" className={styles.bookTitle}>
+                  {book.title}
+                </Typography>
+                <Box className={styles.ratingContainer}>
+                  <Rating
+                    name="read-only"
+                    value={parseFloat(book.avgRating || "0")}
+                    readOnly
+                    precision={0.5}
+                    emptyIcon={
+                      <StarBorderIcon
+                        style={{ color: "rgba(255, 255, 255, 0.5)" }}
+                      />
+                    }
+                    sx={{
+                      "& .MuiRating-iconFilled": { color: "gold" },
+                      "& .MuiRating-iconEmpty": {
+                        color: "rgba(255, 255, 255, 0.5)",
+                      },
+                      "& .MuiRating-iconHover": { color: "gold" },
+                    }}
+                  />
+                  <Typography>{book.avgRating}</Typography>
                 </Box>
-                <Box className={styles.boxTypography}>
-                  <Typography variant="body2">Author</Typography>
-                  <Typography
-                    variant="body2"
-                    sx={{ display: "flex", alignItems: "center" }}
-                  >
-                    : {getFirstAndSecondName(book.user.username)}
-                    {book.user.role_id === 3 && (
+              </Box>
+              <Box className={styles.boxTypography}>
+                <Typography variant="body2">Author</Typography>
+                <Typography
+                  variant="body2"
+                  sx={{ display: "flex", alignItems: "center" }}
+                >
+                  : {getFirstAndSecondName(book.user.username)}
+                  {book.user.role_id === 3 && (
+                    <Tooltip title="Admin Verified" placement="right">
                       <VerifiedIcon sx={{ color: "#448aff", height: "20px" }} />
-                    )}
-                  </Typography>
-                  <Typography variant="body2">Category</Typography>
-                  <Typography variant="body2">
-                    : {book.category.name}
-                  </Typography>
-                  <Typography variant="body2">Age Group</Typography>
-                  <Typography variant="body2">
-                    : {book.agegroup.name}
-                  </Typography>
-                  <Typography variant="body2">Duration</Typography>
-                  <Typography variant="body2">: {book.duration}</Typography>
-                </Box>
-              </Box>
-              <Box className={styles.buttonWrapper}>
-                <PrimaryButton
-                  text="Listen Now"
-                  onClick={() => navigate(`/book/${book.ID}`)}
-                  icon={<HeadsetIcon />}
-                />
-                <SecondaryButton
-                  text="Add to Favourite"
-                  onClick={() => handleAddToFavourite(book.ID)}
-                  icon={<FavoriteIcon />}
-                />
-                <SecondaryButton
-                  text="Add to Library"
-                  onClick={() => handleAddToLibrary(book.ID)}
-                  icon={<BookmarkOutlinedIcon />}
-                />
-              </Box>
-              <Box className={styles.buttonWrapper1}>
-                <IconButtonPrimary
-                  onClick={() => navigate(`/book/${book.ID}`)}
-                  icon={<HeadsetIcon />}
-                />
-                <IconButtonSecondary
-                  style="iconButtonSecondary1"
-                  onClick={() => handleAddToFavourite(book.ID)}
-                  icon={<FavoriteIcon />}
-                />
-                <IconButtonSecondary
-                  style="iconButtonSecondary2"
-                  onClick={() => handleAddToLibrary(book.ID)}
-                  icon={<BookmarkOutlinedIcon />}
-                />
+                    </Tooltip>
+                  )}
+                </Typography>
+                <Typography variant="body2">Category</Typography>
+                <Typography variant="body2">
+                  : {book.category.name}
+                </Typography>
+                <Typography variant="body2">Age Group</Typography>
+                <Typography variant="body2">
+                  : {book.agegroup.name}
+                </Typography>
+                <Typography variant="body2">Duration</Typography>
+                <Typography variant="body2">: {book.duration}</Typography>
               </Box>
             </Box>
-          ))}
+            <Box className={styles.buttonWrapper}>
+              <PrimaryButton
+                text="Listen Now"
+                onClick={() => navigate(`/book/${book.ID}`)}
+                icon={<HeadsetIcon />}
+              />
+              <SecondaryButton
+                text="Add to Favourite"
+                onClick={() => handleAddToFavourite(book.ID)}
+                icon={<FavoriteIcon />}
+              />
+              <SecondaryButton
+                text="Add to Library"
+                onClick={() => handleAddToLibrary(book.ID)}
+                icon={<BookmarkOutlinedIcon />}
+              />
+            </Box>
+            <Box className={styles.buttonWrapper1}>
+              <IconButtonPrimary
+                onClick={() => navigate(`/book/${book.ID}`)}
+                icon={<HeadsetIcon />}
+              />
+              <IconButtonSecondary
+                style="iconButtonSecondary1"
+                onClick={() => handleAddToFavourite(book.ID)}
+                icon={<FavoriteIcon />}
+              />
+              <IconButtonSecondary
+                style="iconButtonSecondary2"
+                onClick={() => handleAddToLibrary(book.ID)}
+                icon={<BookmarkOutlinedIcon />}
+              />
+            </Box>
+          </Box>
+        ))}
       <Snackbar
         open={openSnackbar}
         autoHideDuration={6000}

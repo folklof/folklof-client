@@ -50,7 +50,7 @@ const BookCard: React.FC<BookCardProps> = ({ id, title, imageUrl, category, avgR
         <Box className={styles.boxRating}>
           <Rating
             name="read-only"
-            value={avgRating || 0}
+            value={avgRating ? parseFloat(avgRating) : 0}
             readOnly
             precision={0.1}
             emptyIcon={
@@ -85,7 +85,7 @@ const BookCard: React.FC<BookCardProps> = ({ id, title, imageUrl, category, avgR
             {author}
           </Typography>
           {iconRole === 3 && (
-            <Tooltip title="Verified Account" placement="right">
+            <Tooltip title="Admin Verified" placement="right">
               <VerifiedIcon sx={{ color: "#448aff", height: "20px" }} />
             </Tooltip>
           )}
