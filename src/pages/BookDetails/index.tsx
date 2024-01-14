@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import { TopNavbar, DashboardNavbar, AudioBookPlayer, Quiz, Footer } from '../../components';
-import { ReviewList, FeedbackForm } from '../../containers';
+import { ReviewList, FeedbackForm, BookDetail } from '../../containers';
 
 const BookDetails: React.FC = () => {
   const { id: bookId } = useParams<{ id: string }>();
@@ -21,6 +21,7 @@ const BookDetails: React.FC = () => {
       <TopNavbar />
       <DashboardNavbar />
       <AudioBookPlayer />
+      {bookId && <BookDetail bookId={bookId} />}
       {bookId && <Quiz bookId={bookId} />}
       {bookId && <FeedbackForm bookId={bookId} onNewReview={handleNewReview} />}
       {bookId && <ReviewList key={bookId} bookId={bookId} refresh={refreshReviews} />}    

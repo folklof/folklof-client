@@ -14,3 +14,4 @@ export { default as TermsOfUse } from './TermsOfUse';
 export { default as PrivacyPolicy } from './PrivacyPolicy';
 export { default as Profile } from './Profile';
 export { default as OurTeam } from './OurTeam';
+export { default as BookDetail } from './BookDetail'
