@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import axios from 'axios';
 import {
   Avatar,
   Typography,
@@ -7,62 +8,73 @@ import {
   Box,
   TextField,
   IconButton,
-  Snackbar
+  Snackbar,
+  Tooltip,
 } from "@mui/material";
 import MuiAlert from "@mui/material/Alert";
 import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
-import axios from 'axios';
 
-const baseURL = import.meta.env.VITE_BASE_URL;
 import { UserRootState } from "../../types";
+import { setUserProfile } from "../../store/userSlice";
 import { PrimaryButton } from "../../components";
 import styles from './Profile.module.scss';
-import { setUserProfile } from "../../store/userSlice";
-import Tooltip from "@mui/material/Tooltip";
+
+const baseURL = import.meta.env.VITE_BASE_URL;
 
 const Profile: React.FC = () => {
+  // Redux state and dispatch
   const userProfile = useSelector((state: UserRootState) => state.user.user);
   const dispatch = useDispatch();
-  const [, setIsLoading] = useState(false);
 
+  // State for form data and loading indicators
+  const [isDataChanged, setIsDataChanged] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  // Snackbar state
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState<"success" | "error">("success");
 
+  // Validation error states
   const [usernameError, setUsernameError] = useState("");
   const [ageError, setAgeError] = useState("");
   const [phoneError, setPhoneError] = useState("");
 
-  const validateUsername = (username: string) => {
-    if (!/^[a-zA-Z\s]+$/.test(username)) {
-      setUsernameError("Username must contain only letters and spaces.");
-      return false;
+  // Editable profile fields
+  const [editableUsername, setEditableUsername] = useState(userProfile?.username || "");
+  const [editableEmail, setEditableEmail] = useState(userProfile?.email || "");
+  const [editableAge, setEditableAge] = useState<number | string>(userProfile?.age || "");
+  const [editablePhone, setEditablePhone] = useState(userProfile?.phone || "");
+  const [editableRole, setEditableRole] = useState<number | string>(userProfile?.role?.name || "");
+
+  // Handlers for input changes
+  const handleInputChange = (setter: React.Dispatch<React.SetStateAction<string>>) => (
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      setter(event.target.value);
+      setIsDataChanged(true);
     }
-    setUsernameError("");
-    return true;
+  );
+
+  const handleInputChangeAgePhone = (
+    setter: React.Dispatch<React.SetStateAction<string | number>>
+  ) => (event: React.ChangeEvent<HTMLInputElement>) => {
+    setter(event.target.value);
+    setIsDataChanged(true);
   };
 
-  const validateAge = (age: string) => {
-    if (!/^\d+$/.test(age)) {
-      setAgeError("Age must be a number.");
-      return false;
-    }
-    setAgeError("");
-    return true;
+  // Snackbar open and close handlers
+  const handleSnackbarOpen = (message: string, severity: "success" | "error") => {
+    setSnackbarMessage(message);
+    setSnackbarSeverity(severity);
+    setSnackbarOpen(true);
   };
 
-  const validatePhone = (phone: string) => {
-    if (!/^\d+$/.test(phone)) {
-      setPhoneError("Phone must contain only numbers.");
-      return false;
-    }
-    setPhoneError("");
-    return true;
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
   };
 
+  // Main update function
   const handleUpdateUser = async () => {
-    setIsLoading(true);
-
     const isUsernameValid = validateUsername(editableUsername);
     const isAgeValid = validateAge(editableAge as string);
     const isPhoneValid = validatePhone(editablePhone);
@@ -78,6 +90,8 @@ const Profile: React.FC = () => {
       };
 
       try {
+        setIsLoading(true);
+
         const response = await axios.put(`${baseURL}/users/${userProfile?.ID}`, {
           ...updatedUserData
         });
@@ -85,81 +99,84 @@ const Profile: React.FC = () => {
         if (response.data.success) {
           dispatch(setUserProfile(response.data.data));
           handleSnackbarOpen('Profile updated successfully', 'success');
+          setIsDataChanged(false);
         } else {
           console.error("Error updating user:", response.data.message);
           handleSnackbarOpen('Error updating user', 'error');
         }
       } catch (error) {
-        console.log("Error updating user:", error);
+        console.error("Error updating user:", error);
       } finally {
         setIsLoading(false);
       }
     }
-  }
-  const getDatePart = (timestamp: string | undefined) => {
-    if (timestamp) {
-      const datePart = timestamp.split("T")[0];
-      return datePart;
-    }
-    return "";
-  }
+  };
 
+  // Avatar change handler
   const handleAvatarChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-
     if (file) {
       const formData = new FormData();
-      formData.append('avatar', file);
-
-      console.log('FormData:', formData);
-
+      formData.append("image_file", file);
       try {
-        const response = await axios.put(`${baseURL}/users/${userProfile?.ID}`, formData, {
+        const awsResponse = await axios.post(`${baseURL}/users/profile/image/${userProfile?.ID}`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
         });
-
-        console.log('Server response:', response);
-
-        if (response.data.success) {
-          dispatch(setUserProfile(response.data.data));
+        if (awsResponse.data.success) {
+          const awsImageURL = awsResponse.data.data.image_link;
+          const updateUserResponse = await axios.put(`${baseURL}/users/${userProfile?.ID}`, {
+            avatar: awsImageURL,
+          });
+          dispatch(setUserProfile(updateUserResponse.data.data));
           handleSnackbarOpen('Avatar updated successfully', 'success');
-        } else {
-          console.error('Error updating avatar:', response.data.message);
-          handleSnackbarOpen('Error updating avatar', 'error');
+          setTimeout(() => {
+            window.location.reload();
+          }, 2500);
         }
       } catch (error) {
-        console.log('Error updating avatar:', error);
+        console.error('Error updating avatar:', error);
+        handleSnackbarOpen('Error updating avatar', 'error');
       }
     }
-  }
+  };
 
-  const [editableUsername, setEditableUsername] = useState(userProfile?.username || "");
-  const [editableEmail, setEditableEmail] = useState(userProfile?.email || "");
-  const [editableAge, setEditableAge] = useState<number | string>(userProfile?.age || "");
-  const [editablePhone, setEditablePhone] = useState(userProfile?.phone || "");
-  const [editableRole, setEditableRole] = useState<number | string>(userProfile?.role?.name || "");
+  // Utility function to extract date part
+  const getDatePart = (timestamp: string | undefined) => {
+    return timestamp ? timestamp.split("T")[0] : "";
+  };
   const [editableJoinDate, setEditableJoinDate] = useState(getDatePart(userProfile?.created_date) || "");
 
-  const handleInputChange = (setter: React.Dispatch<React.SetStateAction<string>>) => (
-    (event: React.ChangeEvent<HTMLInputElement>) => setter(event.target.value)
-  );
-
-  const handleInputChangeAgePhone = (
-    setter: React.Dispatch<React.SetStateAction<string | number>>
-  ) => (event: React.ChangeEvent<HTMLInputElement>) => setter(event.target.value);
-
-  const handleSnackbarClose = () => {
-    setSnackbarOpen(false);
+  // Validation functions
+  const validateUsername = (username: string) => {
+    if (!/^[a-zA-Z\s]+$/.test(username)) {
+      setUsernameError("Username must contain only letters and spaces.");
+      return false;
+    }
+    setUsernameError("");
+    return true;
   };
 
-  const handleSnackbarOpen = (message: string, severity: "success" | "error") => {
-    setSnackbarMessage(message);
-    setSnackbarSeverity(severity);
-    setSnackbarOpen(true);
+  const validateAge = (age: string) => {
+    if (!/^[1-9]\d*$/.test(age)) {
+      setAgeError("Age must be a positive number greater than zero.");
+      return false;
+    }
+    setAgeError("");
+    return true;
   };
 
+  const validatePhone = (phone: string) => {
+    if (!/^\d+$/.test(phone)) {
+      setPhoneError("Phone must contain only numbers.");
+      return false;
+    }
+    setPhoneError("");
+    return true;
+  };
+
+  // TextField creation function
   const createTextField = (
     label: string,
     value: string | number,
@@ -173,29 +190,13 @@ const Profile: React.FC = () => {
       <Grid item xs={12} sm={6} className={styles.gridDescription}>
         <Typography className={styles.description}>{label}</Typography>
         <Box className={styles.boxText}>
-          {isReadOnlyField ? (
-            <Tooltip title="Read Only" placement="right">
-              <TextField
-                className={styles.profileText}
-                InputProps={{
-                  readOnly: readOnly,
-                  style: { color: readOnly ? 'gray' : 'white' },
-                }}
-                value={value}
-                onChange={onChange}
-                sx={{
-                  "& .MuiOutlinedInput-notchedOutline": { border: 'none' }, padding: '0px'
-                }}
-                error={Boolean(error)}
-                helperText={error}
-              />
-            </Tooltip>
-          ) : (
+          <Tooltip title={isReadOnlyField ? "Read Only" : ""} placement="bottom">
             <TextField
               className={styles.profileText}
               InputProps={{
                 readOnly: readOnly,
                 style: { color: readOnly ? 'gray' : 'white' },
+                // endAdornment: <InputAdornment position="end" sx={{color:"white"}}>{isDataChanged && <EditIcon />}</InputAdornment>,
               }}
               value={value}
               onChange={onChange}
@@ -205,7 +206,7 @@ const Profile: React.FC = () => {
               error={Boolean(error)}
               helperText={error}
             />
-          )}
+          </Tooltip>
         </Box>
       </Grid>
     );
@@ -214,15 +215,20 @@ const Profile: React.FC = () => {
   return (
     <>
       <Box className={styles.profileContainer}>
-        <Typography className={styles.description} sx={{ fontSize: '60px' }} variant='h4'>
+        <Typography className={styles.title} sx={{ fontSize: '60px' }} variant='h4'>
           Profile Page
         </Typography>
-        <Typography className={styles.description} sx={{ fontSize: '18px' }} variant='h4'>
-          Set up your profile page here
+        <Typography className={styles.description} sx={{ fontSize: '18px' }}>
+          Unleash the enchantment and craft your mystical profile here!
         </Typography>
-
         <Box style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '40vh' }}>
-          <Avatar src={userProfile?.avatar} className={styles.avatar} />
+          {userProfile?.avatar ? (
+            <Avatar src={userProfile.avatar} className={styles.avatar} />
+          ) : (
+            <Typography variant="subtitle1">
+              Error
+            </Typography>
+          )}
           <input
             type="file"
             accept="image/*"
@@ -238,7 +244,6 @@ const Profile: React.FC = () => {
             </IconButton>
           </label>
         </Box>
-
         <Grid container spacing={3}>
           {createTextField("Username", editableUsername, handleInputChange(setEditableUsername), false, usernameError)}
           {createTextField("Email", editableEmail, handleInputChange(setEditableEmail), true)}
@@ -248,7 +253,11 @@ const Profile: React.FC = () => {
           {createTextField("Join Date", editableJoinDate, handleInputChange(setEditableJoinDate), true)}
         </Grid>
         <Box className={styles.buttonContainer}>
-          <PrimaryButton text="Update" onClick={handleUpdateUser} />
+          <PrimaryButton
+            text="Update"
+            onClick={handleUpdateUser}
+            disabled={!isDataChanged || isLoading}
+          />
         </Box>
       </Box>
       <Snackbar
