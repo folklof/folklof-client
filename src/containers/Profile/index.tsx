@@ -115,20 +115,31 @@ const Profile: React.FC = () => {
   // Avatar change handler
   const handleAvatarChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
+    console.log(file)
+
     if (file) {
+      // Check if the file size is greater than 1MB
+      if (file.size > 1024 * 1024) {
+        handleSnackbarOpen('Image size exceeds the maximum limit of 1MB. Please choose a smaller image.', 'error');
+        return;
+      }
       const formData = new FormData();
       formData.append("image_file", file);
+
       try {
         const awsResponse = await axios.post(`${baseURL}/users/profile/image/${userProfile?.ID}`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
         });
+
         if (awsResponse.data.success) {
           const awsImageURL = awsResponse.data.data.image_link;
           const updateUserResponse = await axios.put(`${baseURL}/users/${userProfile?.ID}`, {
             avatar: awsImageURL,
           });
+
+          console.log(awsImageURL)
           dispatch(setUserProfile(updateUserResponse.data.data));
           handleSnackbarOpen('Avatar updated successfully', 'success');
           setTimeout(() => {
@@ -141,6 +152,7 @@ const Profile: React.FC = () => {
       }
     }
   };
+
 
   // Utility function to extract date part
   const getDatePart = (timestamp: string | undefined) => {
@@ -243,6 +255,16 @@ const Profile: React.FC = () => {
               </Box>
             </IconButton>
           </label>
+          <Typography sx={{
+            position: 'absolute',
+            transform: 'translate(0%, 570%)',
+            color: '#9e9e9e',
+            fontSize: '14px',
+            fontWeight: '800'
+          }}>
+            max. upload size 1 Mb
+          </Typography>
+
         </Box>
         <Grid container spacing={3}>
           {createTextField("Username", editableUsername, handleInputChange(setEditableUsername), false, usernameError)}
