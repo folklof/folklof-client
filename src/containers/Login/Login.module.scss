@@ -47,12 +47,17 @@
   
     .title {
       max-width: 30vw;
-      padding: 5vw 0 2vw 5vw;
+      font-size: 40px;
+      padding: 5vw 0 2vw 2vw;
+
+      @media(min-width: 1024px) {
+        font-size: 35px;
+      }
     }
   
     .subtitle {
         max-width: 30vw;
-        padding: 0 5vw;
+        padding: 0 2vw 0 2vw;
     }
 
     .loginImage {
