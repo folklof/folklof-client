@@ -12,10 +12,23 @@
   .featureImage {
     border-radius: 20px;
     width: 15vw;
+    transform: rotate(2deg);
+    opacity: 0.77;
+    @media (max-width: 768px) {
+      max-height: 20vh;
+      margin-bottom: 2vh;
+    }
+  }
+
+  .featureImage2 {
+    border-radius: 20px;
+    width: 15vw;
     height: 15vw !important;
     transform: rotate(2deg);
     opacity: 0.77;
     @media (max-width: 768px) {
+      width: 80vw;
+      height: 28vw !important;
       max-height: 20vh;
       margin-bottom: 2vh;
     }
