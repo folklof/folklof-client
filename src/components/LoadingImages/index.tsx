@@ -15,7 +15,7 @@ const LoadingImages: React.FC<ImageProps> = ({ imgUrl, styleName, styleName2, al
     <>
       {loading ? (
         <Skeleton
-          className={styleName2}
+          className={styleName2 || ''}
           variant="rounded"
           sx={{ bgcolor: "#15202B" }}
         />

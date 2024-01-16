@@ -30,7 +30,9 @@ const HeroSection: React.FC = () => {
             Empowering Every Child's Journey Through Interactive, Inclusive, and
             Creative AI-Powered Storytelling.
           </Typography>
-          <PrimaryButton text="Try it now" onClick={handleTryNowClick} />
+          <Box className={styles.tryButton}>
+            <PrimaryButton text="Try it now" onClick={handleTryNowClick} />
+          </Box>
         </Box>
       </Box>
 
