@@ -74,13 +74,13 @@ const LibraryPage: React.FC<LibraryProps> = ({ onLoaded }) => {
         <img src={libraryBook.book.cover_image} alt={libraryBook.book.title} style={{ width: 120, height: 120, borderRadius: "10px" }} />
         <Box sx={{ flex: 1 }}>
           <Typography variant="h6" sx={{ color: "white" }}>{libraryBook.book.title}</Typography>
-          <Rating name="read-only" value={libraryBook.book.avgRating || 0} readOnly precision={0.5} />
+          <Rating name="read-only" value={parseFloat(libraryBook.book.avgRating ?? "") || 0} readOnly precision={0.5} />
           <Typography variant="body2" sx={{ color: "white" }}>Duration: {libraryBook.book.duration}</Typography>
           <Typography variant="body2" sx={{ color: "white" }}>Release date: {new Date(libraryBook.book.created_date).toLocaleDateString()}</Typography>
         </Box>
         <Box sx={{ display: "flex", flexDirection: "column", alignItems: "start", gap: "16px" }}>
-          <PrimaryButton icon={<HeadsetIcon />} text="Listen Now" onClick={() => handleListenNow(libraryBook.book.ID)} />
-          <SecondaryButton icon={<DeleteIcon />} text="Remove" onClick={() => handleRemoveBook(libraryBook.ID)} />
+          <PrimaryButton text="Listen Now" onClick={() => handleListenNow(libraryBook.book.ID)} icon={<HeadsetIcon />} />
+          <SecondaryButton text="Remove" onClick={() => handleRemoveBook(libraryBook.ID)} icon={<DeleteIcon />} />
         </Box>
       </Box>
     ));

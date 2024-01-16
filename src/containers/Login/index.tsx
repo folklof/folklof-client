@@ -3,8 +3,7 @@ import GoogleIcon from "@mui/icons-material/Google";
 import { LoadingImages, PrimaryButton } from "../../components";
 import styles from "./Login.module.scss";
 import { useEffect, useState } from "react";
-
-const baseURL = import.meta.env.VITE_BASE_URL;
+import { BASE_URL } from "../../utils/BaseURL";
 
 const LoginPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
@@ -13,9 +12,9 @@ const LoginPage: React.FC = () => {
     image.src = 'https://folklof.s3.ap-southeast-1.amazonaws.com/images/login-bg.webp';
     image.onload = () => setLoading(false);
   }, []);
-  
+
   const handleLogin = () => {
-    window.location.href = `${baseURL}/auth/login`;
+    window.location.href = `${BASE_URL}/auth/login`;
   };
 
   return (
@@ -28,13 +27,13 @@ const LoginPage: React.FC = () => {
           Just one click with your Google account, and you're ready to embark on
           an enchanting journey through a world of starlit stories.
         </Typography>
-        <LoadingImages imgUrl="https://folklof.s3.ap-southeast-1.amazonaws.com/images/login-char.webp" styleName= {styles.loginImage} alt="Login image" />
+        <LoadingImages imgUrl="https://folklof.s3.ap-southeast-1.amazonaws.com/images/login-char.webp" styleName={styles.loginImage} alt="Login image" styleName2={""} />
       </Box>
 
       <Box className={styles.rightContainer}>
-        {loading ? 
+        {loading ?
           <Skeleton className={styles.loginCard} height={"100vh"} />
-        :
+          :
           <>
             <Box className={styles.imageBox}></Box>
             <Card className={styles.loginCard}>
