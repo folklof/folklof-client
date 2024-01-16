@@ -18,7 +18,7 @@ const FeatureCard: React.FC<FeatureCardProps> = ({ title, description, imageUrl,
     <Card className={styles.featureCard}>
       {loading ? (
         <Skeleton
-          className={styles.featureImage}
+          className={styles.featureImage2}
           variant="rounded"
           sx={{ bgcolor: "#15202B" }}
         />

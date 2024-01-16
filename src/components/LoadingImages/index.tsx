@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Skeleton } from "@mui/material";
 import { ImageProps } from "../../types";
 
-const LoadingImages: React.FC<ImageProps> = ({ imgUrl, styleName, alt }) => {
+const LoadingImages: React.FC<ImageProps> = ({ imgUrl, styleName, styleName2, alt }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -15,7 +15,7 @@ const LoadingImages: React.FC<ImageProps> = ({ imgUrl, styleName, alt }) => {
     <>
       {loading ? (
         <Skeleton
-          className={styleName}
+          className={styleName2}
           variant="rounded"
           sx={{ bgcolor: "#15202B" }}
         />

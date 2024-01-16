@@ -13,13 +13,13 @@ const HeroSection: React.FC = () => {
   return (
     <Box className={styles.heroContainer}>
       <Box className={styles.imageContainerLeft}>
-        <LoadingImages imgUrl="https://folklof.s3.ap-southeast-1.amazonaws.com/images/heroleft-a.webp" styleName= {styles.imgLeftTop} alt="Hero image" />
-        <LoadingImages imgUrl="https://folklof.s3.ap-southeast-1.amazonaws.com/images/heroleft-b.webp" styleName= {styles.imgLeftBottom} alt="Hero image" />
+        <LoadingImages imgUrl="https://folklof.s3.ap-southeast-1.amazonaws.com/images/heroleft-a.webp" styleName= {styles.imgLeftTop} styleName2={styles.imgLeftTop2} alt="Hero image" />
+        <LoadingImages imgUrl="https://folklof.s3.ap-southeast-1.amazonaws.com/images/heroleft-b.webp" styleName= {styles.imgLeftBottom} styleName2={styles.imgLeftBottom2} alt="Hero image" />
       </Box>
 
-      <Box className={styles.middContainer}>
+      <Box className={styles.midContainer}>
         <Box className={styles.imageContainerMiddle}>
-          <LoadingImages imgUrl="https://folklof.s3.ap-southeast-1.amazonaws.com/images/heromiddle.webp" styleName= {styles.imgMiddle} alt="Hero image" />
+          <LoadingImages imgUrl="https://folklof.s3.ap-southeast-1.amazonaws.com/images/heromiddle.webp" styleName= {styles.imgMiddle} styleName2={styles.imgMiddle2} alt="Hero image" />
         </Box>
 
         <Box className={styles.wordContainer}>
@@ -35,7 +35,7 @@ const HeroSection: React.FC = () => {
       </Box>
 
       <Box className={styles.imageContainerRight}>
-        <LoadingImages imgUrl="https://folklof.s3.ap-southeast-1.amazonaws.com/images/heroright.webp" styleName={styles.bigHero} alt="Hero image" />
+        <LoadingImages imgUrl="https://folklof.s3.ap-southeast-1.amazonaws.com/images/heroright.webp" styleName={styles.bigHero} styleName2={styles.bigHero} alt="Hero image" />
       </Box>
     </Box>
   );
