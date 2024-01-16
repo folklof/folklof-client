@@ -12,6 +12,8 @@ import {
 import { fetchLibraryBooks, removeLibraryBook, updateLibraryStatus } from "../../api";
 import { LibraryBook, LibraryProps } from "../../types";
 import { PrimaryButton, SecondaryButton } from "../../components";
+import HeadsetIcon from '@mui/icons-material/Headset';
+import DeleteIcon from '@mui/icons-material/Delete';
 import styles from "./Library.module.scss";
 
 const LibraryPage: React.FC<LibraryProps> = ({ onLoaded }) => {
@@ -77,8 +79,8 @@ const LibraryPage: React.FC<LibraryProps> = ({ onLoaded }) => {
           <Typography variant="body2" sx={{ color: "white" }}>Release date: {new Date(libraryBook.book.created_date).toLocaleDateString()}</Typography>
         </Box>
         <Box sx={{ display: "flex", flexDirection: "column", alignItems: "start", gap: "16px" }}>
-          <PrimaryButton text="Listen Now" onClick={() => handleListenNow(libraryBook.book.ID)} />
-          <SecondaryButton text="Remove" onClick={() => handleRemoveBook(libraryBook.ID)} />
+          <PrimaryButton icon={<HeadsetIcon />} text="Listen Now" onClick={() => handleListenNow(libraryBook.book.ID)} />
+          <SecondaryButton icon={<DeleteIcon />} text="Remove" onClick={() => handleRemoveBook(libraryBook.ID)} />
         </Box>
       </Box>
     ));

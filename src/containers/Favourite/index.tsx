@@ -4,6 +4,8 @@ import { Box, Typography, Rating, Skeleton } from '@mui/material';
 import { fetchFavouriteBooks, removeFavouriteBook } from '../../api';
 import { PrimaryButton, SecondaryButton } from '../../components';
 import { FavouriteBook, FavouriteProps } from '../../types';
+import HeadsetIcon from '@mui/icons-material/Headset';
+import DeleteIcon from '@mui/icons-material/Delete';
 import styles from './Favourite.module.scss';
 
 const FavouritePage: React.FC<FavouriteProps> = ({ onLoaded }) => {
@@ -68,8 +70,8 @@ const FavouritePage: React.FC<FavouriteProps> = ({ onLoaded }) => {
         <Typography variant="body2">Release date: {new Date(book.book.created_date).toLocaleDateString()}</Typography>
       </Box>
       <Box className={styles.buttonWrapper}>
-        <PrimaryButton text="Listen Now" onClick={() => handleListenNow(book.book.ID)} />
-        <SecondaryButton text="Remove" onClick={() => handleRemoveBook(book.ID)} />
+        <PrimaryButton icon={<HeadsetIcon />} text="Listen Now" onClick={() => handleListenNow(book.book.ID)} />
+        <SecondaryButton icon={<DeleteIcon />} text="Remove" onClick={() => handleRemoveBook(book.ID)} />
       </Box>
     </Box>
   ));
