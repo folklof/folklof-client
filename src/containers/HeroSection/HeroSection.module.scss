@@ -15,7 +15,7 @@
     transform: rotate(1deg);
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 900px) {
     flex-direction: column;
     height: auto;
     .bigHero {
@@ -46,6 +46,11 @@
     border-radius: 20px;
     opacity: 0.77;
     
+    @media(max-width: 900px) {
+      max-width: 15vw;
+      width: 15vw;
+      height: 15vw;
+    }
     @media(max-width: 768px) {
       max-width: 25vw;
       width: 25vw;
@@ -68,6 +73,12 @@
     border-radius: 20px;
     opacity: 0.77;
 
+    @media(max-width: 900px) {
+      max-width: 15vw;
+      width: 15vw;
+      height: 15vw;
+    }
+
     @media(max-width: 768px) {
       max-width: 25vw;
       width: 25vw;
@@ -75,11 +86,18 @@
     }
   }
 
-  @media (max-width: 768px) {
-    padding-top: 10vh;
+  @media (max-width: 900px) {
+    padding-top: 8vh;
     flex-direction: row;
     max-width: 100%;
     min-height: auto;
+    .imgLeftTop,
+    .imgLeftBottom {
+      max-width: 15vw;
+    }
+  }
+  @media (max-width: 768px) {
+    padding-top: 10vh;
     .imgLeftTop,
     .imgLeftBottom {
       max-width: 25vw;
@@ -101,7 +119,7 @@
     text-align: left;
     max-width: 30vw;
     padding: 0 20px;
-    @media(max-width: 768px) {
+    @media(max-width: 900px) {
       align-items: center;
       text-align: center;
       max-width: 100%;
@@ -131,12 +149,18 @@
     transform: rotate(-2deg);
     opacity: 0.77;
 
+    @media(max-width: 900px) {
+      max-width: 20vw;
+      width: 20vw;
+      height: 20vw;
+      transform: translateX(80%);
+      margin-bottom: 5vh;
+    }
+
     @media(max-width: 768px) {
       max-width: 30vw;
       width: 30vw;
       height: 30vw;
-      transform: translateX(80%);
-      margin-bottom: 5vh;
     }
   }
 
@@ -148,7 +172,7 @@
     margin-bottom: 2rem;
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 900px) {
     height: auto;
     .wordContainer {
       align-items: flex-start;
@@ -163,7 +187,7 @@
     }
 
     .imgMiddle {
-      max-width: 30vw;
+      max-width: 20vw;
       margin-bottom: 5vh;
       transform: translateX(80%);
     }
@@ -181,6 +205,14 @@
 
     .tryButton {
       align-self: center;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .imgMiddle {
+      max-width: 30vw;
+      margin-bottom: 5vh;
+      transform: translateX(80%);
     }
   }
 
