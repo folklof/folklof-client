@@ -17,7 +17,7 @@
     width: 15vw;
     transform: rotate(2deg);
     opacity: 0.77;
-    @medi
+    @media (max-width: 900px) {
       max-height: 20vh;
       margin-bottom: 2vh;
     }
