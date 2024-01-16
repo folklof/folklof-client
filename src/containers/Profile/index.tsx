@@ -1,19 +1,10 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import axios from 'axios';
-import {
-  Avatar,
-  Typography,
-  Grid,
-  Box,
-  TextField,
-  IconButton,
-  Snackbar,
-  Tooltip,
-} from "@mui/material";
+import { Avatar, Typography, Grid, Box, TextField, IconButton, Snackbar, Tooltip } from "@mui/material";
 import MuiAlert from "@mui/material/Alert";
 import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
-
+import CloseIcon from '@mui/icons-material/Close';
 import { UserRootState } from "../../types";
 import { setUserProfile } from "../../store/userSlice";
 import { PrimaryButton } from "../../components";
@@ -22,32 +13,26 @@ import styles from './Profile.module.scss';
 const baseURL = import.meta.env.VITE_BASE_URL;
 
 const Profile: React.FC = () => {
-  // Redux state and dispatch
   const userProfile = useSelector((state: UserRootState) => state.user.user);
   const dispatch = useDispatch();
 
-  // State for form data and loading indicators
   const [isDataChanged, setIsDataChanged] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  // Snackbar state
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState<"success" | "error">("success");
 
-  // Validation error states
   const [usernameError, setUsernameError] = useState("");
   const [ageError, setAgeError] = useState("");
   const [phoneError, setPhoneError] = useState("");
 
-  // Editable profile fields
   const [editableUsername, setEditableUsername] = useState(userProfile?.username || "");
   const [editableEmail, setEditableEmail] = useState(userProfile?.email || "");
   const [editableAge, setEditableAge] = useState<number | string>(userProfile?.age || "");
   const [editablePhone, setEditablePhone] = useState(userProfile?.phone || "");
   const [editableRole, setEditableRole] = useState<number | string>(userProfile?.role?.name || "");
 
-  // Handlers for input changes
   const handleInputChange = (setter: React.Dispatch<React.SetStateAction<string>>) => (
     (event: React.ChangeEvent<HTMLInputElement>) => {
       setter(event.target.value);
@@ -62,7 +47,6 @@ const Profile: React.FC = () => {
     setIsDataChanged(true);
   };
 
-  // Snackbar open and close handlers
   const handleSnackbarOpen = (message: string, severity: "success" | "error") => {
     setSnackbarMessage(message);
     setSnackbarSeverity(severity);
@@ -73,7 +57,6 @@ const Profile: React.FC = () => {
     setSnackbarOpen(false);
   };
 
-  // Main update function
   const handleUpdateUser = async () => {
     const isUsernameValid = validateUsername(editableUsername);
     const isAgeValid = validateAge(editableAge as string);
@@ -91,7 +74,6 @@ const Profile: React.FC = () => {
 
       try {
         setIsLoading(true);
-
         const response = await axios.put(`${baseURL}/users/${userProfile?.ID}`, {
           ...updatedUserData
         });
@@ -112,20 +94,16 @@ const Profile: React.FC = () => {
     }
   };
 
-  // Avatar change handler
   const handleAvatarChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    console.log(file)
 
     if (file) {
-      // Check if the file size is greater than 1MB
       if (file.size > 1024 * 1024) {
         handleSnackbarOpen('Image size exceeds the maximum limit of 1MB. Please choose a smaller image.', 'error');
         return;
       }
       const formData = new FormData();
       formData.append("image_file", file);
-
       try {
         const awsResponse = await axios.post(`${baseURL}/users/profile/image/${userProfile?.ID}`, formData, {
           headers: {
@@ -135,32 +113,31 @@ const Profile: React.FC = () => {
 
         if (awsResponse.data.success) {
           const awsImageURL = awsResponse.data.data.image_link;
+
           const updateUserResponse = await axios.put(`${baseURL}/users/${userProfile?.ID}`, {
             avatar: awsImageURL,
           });
 
-          console.log(awsImageURL)
           dispatch(setUserProfile(updateUserResponse.data.data));
-          handleSnackbarOpen('Avatar updated successfully', 'success');
-          setTimeout(() => {
-            window.location.reload();
-          }, 2500);
+          handleSnackbarOpen(`Avatar updated successfully.`, 'success');
         }
-      } catch (error) {
-        console.error('Error updating avatar:', error);
-        handleSnackbarOpen('Error updating avatar', 'error');
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (error: any) {
+        if (error.response.status === 400) {
+          handleSnackbarOpen(error.response.data.message, 'error');
+        }
+        if (error.response.status === 500) {
+          handleSnackbarOpen('Internal server error, please try again.', 'error');
+        }
       }
     }
   };
 
-
-  // Utility function to extract date part
   const getDatePart = (timestamp: string | undefined) => {
     return timestamp ? timestamp.split("T")[0] : "";
   };
   const [editableJoinDate, setEditableJoinDate] = useState(getDatePart(userProfile?.created_date) || "");
 
-  // Validation functions
   const validateUsername = (username: string) => {
     if (!/^[a-zA-Z\s]+$/.test(username)) {
       setUsernameError("Username must contain only letters and spaces.");
@@ -188,7 +165,6 @@ const Profile: React.FC = () => {
     return true;
   };
 
-  // TextField creation function
   const createTextField = (
     label: string,
     value: string | number,
@@ -208,7 +184,6 @@ const Profile: React.FC = () => {
               InputProps={{
                 readOnly: readOnly,
                 style: { color: readOnly ? 'gray' : 'white' },
-                // endAdornment: <InputAdornment position="end" sx={{color:"white"}}>{isDataChanged && <EditIcon />}</InputAdornment>,
               }}
               value={value}
               onChange={onChange}
@@ -264,7 +239,6 @@ const Profile: React.FC = () => {
           }}>
             max. upload size 1 Mb
           </Typography>
-
         </Box>
         <Grid container spacing={3}>
           {createTextField("Username", editableUsername, handleInputChange(setEditableUsername), false, usernameError)}
@@ -284,11 +258,19 @@ const Profile: React.FC = () => {
       </Box>
       <Snackbar
         open={snackbarOpen}
-        autoHideDuration={3000}
         onClose={handleSnackbarClose}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
       >
-        <MuiAlert elevation={6} variant="filled" severity={snackbarSeverity}>
+        <MuiAlert
+          elevation={6}
+          variant="filled"
+          severity={snackbarSeverity}
+          action={
+            <IconButton size="small" color="inherit" onClick={handleSnackbarClose}>
+              <CloseIcon fontSize="small" />
+            </IconButton>
+          }
+        >
           {snackbarMessage}
         </MuiAlert>
       </Snackbar>
