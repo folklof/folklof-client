@@ -27,7 +27,7 @@ const BestStories: React.FC = () => {
           Best Stories
         </Typography>
         <Typography
-          className={styles.title}
+          className={styles.allStories}
           variant="h5"
           onClick={handleSeeAllStoriesClick}
         >

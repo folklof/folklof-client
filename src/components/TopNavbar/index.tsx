@@ -61,7 +61,7 @@ const TopNavbar: React.FC = () => {
           {userProfile ? (
             <>
               <Button
-                sx={{ marginTop: 1, color: '#FFFFFF', fontWeight: 'bold', textTransform: 'none', borderRadius: '10px', border: '1px solid grey' }}
+                sx={{ marginTop: 1, color: '#FFFFFF', fontWeight: 'bold', textTransform: 'none' }}
                 onClick={handleMenuClick}
               >
                 <Avatar src={userProfile.avatar} sx={{ width: 40, height: 40 }} />&ensp;
