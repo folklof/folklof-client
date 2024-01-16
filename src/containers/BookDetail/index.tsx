@@ -9,8 +9,7 @@ import { fetchBookData } from "../../api/book/bookAPI";
 import React, { useEffect, useState } from "react";
 import { BookAttributes } from "../../types";
 import { fetchRatings } from "../../api";
-import { format } from 'date-fns';
-
+import { format } from "date-fns";
 
 interface BookDetailProps {
   bookId: string;
@@ -57,9 +56,9 @@ const BookDetail: React.FC<BookDetailProps> = ({ bookId }) => {
       <Accordion
         className={styles.accordion}
         style={{
-          backgroundColor: "#f1f1f13d",
+          backgroundColor: "rgba(242, 242, 242, 0.9)",
           borderRadius: "10px",
-          color: "white",
+          color: "black",
         }}
       >
         <AccordionSummary
@@ -68,26 +67,40 @@ const BookDetail: React.FC<BookDetailProps> = ({ bookId }) => {
           id="panel2-header"
           style={{ textAlign: "center" }}
         >
-          <Typography>Click for more details</Typography>
+          <Typography
+            variant="h4"
+            sx={{
+              textAlign: "center",
+              fontSize: "1.7rem",
+            }}
+          >
+            Book Details
+          </Typography>
         </AccordionSummary>
         <AccordionDetails
+          className={styles.accordionDetails}
           sx={{
             "& .MuiOutlinedInput-notchedOutline": {
               border: "none",
               color: "white",
             },
             display: "flex",
-            gap: "2vw",
+            gap: "5vw",
           }}
         >
           {bookDetails ? (
             <>
               <Box
                 sx={{
-                  ".css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input": {
+                  "& .MuiInputBase-input": {
                     border: "none",
-                    color: "white",
-                    width: "12vw",
+                    width: "33vw",
+                    fontSize: "1.3rem",
+                    color: "black",
+                    "@media (max-width: 768px)": {
+                      fontSize: "1.2rem",
+                      width: "60vw"
+                    },
                   },
                 }}
               >
@@ -150,24 +163,20 @@ const BookDetail: React.FC<BookDetailProps> = ({ bookId }) => {
               <Box
                 className={styles.bookDetailsText1}
                 sx={{
-                  ".css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input": {
+                  "& .MuiInputBase-input": {
                     border: "none",
-                    color: "white",
                     textAlign: "center",
-                    marginLeft: "10px",
-                    marginTop: "-12px",
+                    marginTop: "-7px",
+                    fontSize: "1.2rem",
+                    color: "black",
                   },
                 }}
               >
                 <Box>
                   <img
+                    className={styles.coverImage}
                     src={bookDetails?.cover_image}
-                    alt=""
-                    style={{
-                      width: "21vh",
-                      objectFit: "cover",
-                      borderRadius: "10px",
-                    }}
+                    alt={`cover image ${bookDetails.title}`}
                   />
                 </Box>
                 <Box>

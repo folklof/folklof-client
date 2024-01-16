@@ -26,7 +26,7 @@ const App: React.FC = () => {
                   {" "}
                   Website is currently only available on larger screens.
                 </Typography>
-                <Typography sx={{ color: "white" }} variant="1">
+                <Typography sx={{ color: "white", margin: 2 }} variant="body1">
                   Please access the website from a device with a wider screen.
                 </Typography>
               </Box>

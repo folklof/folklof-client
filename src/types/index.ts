@@ -22,9 +22,25 @@ export interface BookAttributes {
   user: {
     role_id: number;
     username: string;
-  }
+  };
 
   isLoading?: boolean;
+}
+
+export interface PopularBook {
+  book_id: string;
+  book?: {
+    title: string;
+    category: {
+      name: string;
+    };
+    cover_image: string;
+    user: {
+      role_id: number;
+      username: string;
+    };
+  };
+  avgRating?: string;
 }
 
 export interface ICategory {
@@ -98,7 +114,7 @@ export interface FavouriteBookDetails {
   audio_link: string;
   cover_image: string;
   created_date: string;
-  avgRating?: number;
+  avgRating?: string;
 }
 
 export interface FavouriteBook {
@@ -123,7 +139,7 @@ export interface BookDetails {
   audio_link: string;
   cover_image: string;
   created_date: string;
-  avgRating?: number;
+  avgRating?: string;
 }
 
 export interface LibraryBook {
@@ -160,8 +176,8 @@ export interface UserProfile {
   avatar: string;
   created_date: string;
   role?: {
-    name: string
-  }
+    name: string;
+  };
 }
 
 //book card

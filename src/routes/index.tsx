@@ -16,7 +16,6 @@ const AppRoutes: React.FC = () => {
         <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
         <Route path="/our-team" element={<OurTeamPage />} />
 
-
         {/* Wrap the protected routes */}
         <Route element={<ProtectedRoute />}>
           <Route path="/dashboard" element={<DashboardPage />} />

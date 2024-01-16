@@ -145,7 +145,7 @@
     width: 8vw;
     height: 8vw;
     border-radius: 20px;
-    margin-bottom: 10vh;
+    margin-bottom: 10.6vh;
     transform: rotate(-2deg);
     opacity: 0.77;
 
@@ -156,7 +156,6 @@
       transform: translateX(80%);
       margin-bottom: 5vh;
     }
-
     @media(max-width: 768px) {
       max-width: 30vw;
       width: 30vw;
@@ -180,6 +179,12 @@
       max-width: 100%;
       display: flex;
       flex-direction: column;
+    }
+
+    .wordContainer {
+      .subheading{
+        text-align: center;
+      }
     }
 
     .imageContainerMiddle {

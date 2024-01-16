@@ -11,7 +11,7 @@ const SearchPage: React.FC = () => {
     <>
       <TopNavbar />
       <DashboardNavbar />
-      <SearchList searchQuery={titleQuery} /> {/* Pass searchQuery as a prop */}
+      <SearchList searchQuery={titleQuery} />
       <Footer />
     </>
   );

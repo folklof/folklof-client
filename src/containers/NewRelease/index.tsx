@@ -15,7 +15,7 @@ const NewRelease: React.FC = () => {
     isError,
   } = useQuery<BookAttributes[]>("new-release", fetchNewReleaseBooks);
 
-  const fetchAllRatings = useCallback(async () => {
+  const fetchAndSetRatings = useCallback(async () => {
     const ratingsData: Record<string, RatingResponse | null> = {};
     for (const book of books) {
       const rating = await fetchRatings(book.ID);
@@ -25,8 +25,9 @@ const NewRelease: React.FC = () => {
   }, [books]);
 
   useEffect(() => {
-    fetchAllRatings();
-  }, [fetchAllRatings]);
+    fetchAndSetRatings();
+  }, [books, fetchAndSetRatings]);
+
 
   return (
     <Box

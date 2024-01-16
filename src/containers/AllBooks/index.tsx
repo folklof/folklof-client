@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
 import {
   Grid,
   Box,
@@ -30,18 +30,19 @@ const AllBooks: React.FC<{
   const [selectedAgeGroup, setSelectedAgeGroup] = useState<string>("");
   const [categories, setCategories] = useState<ICategory[]>([]);
   const [ageGroups, setAgeGroups] = useState<IAgeGroup[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [page, setPage] = useState(1);
+
+  const fetchCategoriesMemoized = useMemo(() => fetchCategories, []);
+  const fetchAgeGroupsMemoized = useMemo(() => fetchAgeGroups, []);
 
   useEffect(() => {
     const initializeData = async () => {
       try {
-        setCategories(await fetchCategories());
-        setAgeGroups(await fetchAgeGroups());
+        setCategories(await fetchCategoriesMemoized());
+        setAgeGroups(await fetchAgeGroupsMemoized());
       } catch (error) {
-        console.error("Failed to initialize data:", error);
+        console.error("Failed to initialize data:", (error as Error).message || error);
       } finally {
-        setIsLoading(false);
         if (onLoaded) {
           onLoaded();
         }
@@ -49,7 +50,7 @@ const AllBooks: React.FC<{
     };
 
     initializeData();
-  }, [onLoaded]);
+  }, [fetchAgeGroupsMemoized, fetchCategoriesMemoized, onLoaded]);
 
   const effectiveSearchQuery = searchQuery || "";
 
@@ -140,14 +141,14 @@ const AllBooks: React.FC<{
             displayEmpty
             className={styles.sortSelect}
             sx={{ borderRadius: "50px", bgcolor: "#F5F5F5" }}
-            inputProps={{MenuProps: {disableScrollLock: true}}}
+            inputProps={{ MenuProps: { disableScrollLock: true } }}
           >
             <MenuItem value="">Default</MenuItem>
             <MenuItem value="1">Oldest</MenuItem>
             <MenuItem value="2">Latest</MenuItem>
           </Select>
         </Box>
-        {isLoading || isFetchingInitialData ? (
+        {isFetchingInitialData ? (
           <Box className={styles.noBooksContainer}>
             <Typography variant="h5" className={styles.noBooksText}>
               Please wait
@@ -162,13 +163,12 @@ const AllBooks: React.FC<{
               <BookList
                 books={data.data as BookAttributes[]}
                 sort={sort}
-                handleSortChange={handleSortChange} />    
-            </Box>                    
+                handleSortChange={handleSortChange} />
+            </Box>
           </>
         ) : (
           shouldRenderNoBooksMessage && renderNoBooksMessage()
         )}
-        {/* <Box sx={{display: "flex", width: "70vw", justifyContent: "center"}}> */}
         <Box className={styles.paginationWrapper}>
           <Box className={styles.paginationContainer}>
             <Box sx={{ display: "flex", alignItems: "center", gap: "5px" }}>
@@ -186,16 +186,16 @@ const AllBooks: React.FC<{
                 </Select>
               </FormControl>
             </Box>
-          <Box sx={{ width: "220px", alignSelf: "center"}}>
-            <Pagination
-              pageCount={
-                Math.max(Math.ceil((data?.totalBook ?? 0) / Number(limit)), 1)
-              }
-              currentPage={page}
-              onPageChange={handlePageChange}
-            />
-          </Box>            
-        </Box>
+            <Box sx={{ width: "220px", alignSelf: "center" }}>
+              <Pagination
+                pageCount={
+                  Math.max(Math.ceil((data?.totalBook ?? 0) / Number(limit)), 1)
+                }
+                currentPage={page}
+                onPageChange={handlePageChange}
+              />
+            </Box>
+          </Box>
         </Box>
       </Grid>
     </Grid>
