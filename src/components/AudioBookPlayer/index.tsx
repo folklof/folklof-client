@@ -144,8 +144,7 @@ const AudioBookPlayer: React.FC = () => {
     <Box
       sx={{
         width: "100%",
-        padding: "5vw 8vw",
-        marginBottom: "10vh",
+        padding: "5vw 5vw 1vw 8vw",
         overflow: "hidden",
       }}
     >
