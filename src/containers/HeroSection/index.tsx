@@ -30,12 +30,14 @@ const HeroSection: React.FC = () => {
             Empowering Every Child's Journey Through Interactive, Inclusive, and
             Creative AI-Powered Storytelling.
           </Typography>
-          <PrimaryButton text="Try it now" onClick={handleTryNowClick} />
+          <Box className={styles.tryButton}>
+            <PrimaryButton text="Try it now" onClick={handleTryNowClick} />
+          </Box>
         </Box>
       </Box>
 
       <Box className={styles.imageContainerRight}>
-        <LoadingImages imgUrl="https://folklof.s3.ap-southeast-1.amazonaws.com/images/heroright.webp" styleName={styles.bigHero} styleName2={styles.bigHero} alt="Hero image" />
+        <LoadingImages imgUrl="https://folklof.s3.ap-southeast-1.amazonaws.com/images/heroright.webp" styleName={styles.bigHero} alt="Hero image" />
       </Box>
     </Box>
   );

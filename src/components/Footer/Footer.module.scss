@@ -10,9 +10,15 @@
     border-radius: 20px;
     margin-top: 15vh;
     position: absolute;
+<<<<<<< Updated upstream
     right: -8px;
     bottom: -150px;
     left: -8px;;
+=======
+    right: 0;
+    bottom: -230px;
+    left: 0;
+>>>>>>> Stashed changes
     @media (max-width: 768px) {
       bottom: -300px;
       flex-direction: column;
