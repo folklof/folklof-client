@@ -26,7 +26,7 @@ const AudioBookPlayer: React.FC = () => {
     // Function to decode the text
     const decodeModelText = (modelText: string) => {
       // Replace escaped newlines and quotes
-      let decodedText = modelText.replace(/\\n/g, "\n").replace(/\\"/g, '"');
+      const decodedText = modelText.replace(/\\n/g, "\n").replace(/\\"/g, '"');
       return decodedText;
     };
 
@@ -89,6 +89,7 @@ const AudioBookPlayer: React.FC = () => {
     }
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleSliderChange = (_: any, newValue: number | number[]) => {
     const audio = audioRef.current;
     const newTime = Array.isArray(newValue) ? newValue[0] : newValue;

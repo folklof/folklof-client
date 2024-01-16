@@ -4,9 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { useQuery } from "react-query";
 import { BookCard } from "../../components";
 import { fetchBestStoriesBooks } from "../../api/book/bookAPI";
-import { BookAttributes, RatingResponse } from "../../types";
+import { PopularBook } from "../../types";
 import styles from "./BestStories.module.scss";
-import { fetchRatings } from "../../api";
 import { getFirstAndSecondName } from "../../utils/Helper/GetFirstAndSecondName";
 
 const BestStories: React.FC = () => {
@@ -15,22 +14,7 @@ const BestStories: React.FC = () => {
     data: books = [],
     isLoading: isLoadingBestStory,
     isError: isErrorBestStory,
-  } = useQuery<BookAttributes[]>("best-stories", fetchBestStoriesBooks);
-
-  const { data: ratings = {}, isLoading: isLoadingBookRating, isError: isErrorBookRating } = useQuery<Record<string, RatingResponse | null>>(
-    "book-rating",
-    async () => {
-      const ratings: Record<string, RatingResponse | null> = {};
-      for (const book of books) {
-        const rating = await fetchRatings(book.ID);
-        ratings[book.ID] = rating;
-      }
-      return ratings;
-    },
-    {
-      enabled: !!books.length, // Only fetch ratings when books are available
-    }
-  );
+  } = useQuery<PopularBook[]>("best-stories", fetchBestStoriesBooks);
 
   const handleSeeAllStoriesClick = () => {
     navigate("/categories");
@@ -53,21 +37,21 @@ const BestStories: React.FC = () => {
       <Grid container className={styles.gridContainer}>
         <Grid item xs={12}>
           <Box className={styles.bookDisplay}>
-            {isLoadingBestStory && isLoadingBookRating ? (
+            {isLoadingBestStory ? (
               <Skeleton variant="rectangular" width="100%" height={118} />
-            ) : isErrorBestStory && isErrorBookRating ? (
+            ) : isErrorBestStory ? (
               <Typography color="error">Error loading stories.</Typography>
             ) : (
               books.map((book) => (
                 <BookCard
-                  id={book.ID}
-                  key={book.ID}
-                  title={book.title}
-                  category={book.category.name}
-                  imageUrl={book.cover_image}
-                  avgRating={String(ratings[book.ID]?.data.avgRating) || "0"}
-                  iconRole={book.user.role_id}
-                  author={getFirstAndSecondName(book.user.username)}
+                  id={book.book_id}
+                  key={book.book_id}
+                  title={book.book?.title || "N/A"}
+                  category={book.book?.category.name || "N/A"}
+                  imageUrl={book.book?.cover_image || ""}
+                  avgRating={book.avgRating || "0"}
+                  iconRole={book.book?.user.role_id}
+                  author={getFirstAndSecondName(book.book?.user.username ?? "")}
                 />
               ))
             )}

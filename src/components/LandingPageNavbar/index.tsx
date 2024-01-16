@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
 import { AppBar, Toolbar, Typography, Button, Container } from '@mui/material';
 import { useNavigate } from "react-router-dom";
@@ -5,8 +6,6 @@ import { useNavigate } from "react-router-dom";
 const LPNavbar: React.FC = () => {
   const navigate = useNavigate();
  
-
-
   const handleLogoClick = () => {
     navigate('/dashboard');
   };
@@ -14,8 +13,6 @@ const LPNavbar: React.FC = () => {
   const handleSignInClick = () => {
     navigate("/signin");
   };
-
- 
 
   return (
     <AppBar position="static" sx={{ backgroundColor: 'transparent', width: '100%', boxShadow: 'none' }}>

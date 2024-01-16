@@ -6,8 +6,12 @@ import { AppBar, Toolbar, Typography, Button, Container, Menu, MenuItem, Avatar 
 import { useNavigate } from "react-router-dom";
 import { useQueryClient } from 'react-query';
 import { logoutUser } from '../../api/auth';
-import VerifiedIcon from '@mui/icons-material/Verified';
 import { getFirstAndSecondName } from '../../utils/Helper/GetFirstAndSecondName';
+
+import VerifiedIcon from '@mui/icons-material/Verified';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import ListItemIcon from '@mui/material/ListItemIcon';
 
 const TopNavbar: React.FC = () => {
   const navigate = useNavigate();
@@ -57,7 +61,7 @@ const TopNavbar: React.FC = () => {
           {userProfile ? (
             <>
               <Button
-                sx={{ color: '#FFFFFF', fontWeight: 'bold', textTransform: 'none' }}
+                sx={{ marginTop: 1, color: '#FFFFFF', fontWeight: 'bold', textTransform: 'none', borderRadius: '10px', border: '1px solid grey' }}
                 onClick={handleMenuClick}
               >
                 <Avatar src={userProfile.avatar} sx={{ width: 40, height: 40 }} />&ensp;
@@ -69,9 +73,25 @@ const TopNavbar: React.FC = () => {
                 anchorEl={anchorEl}
                 open={menuOpen}
                 onClose={handleMenuClose}
+                MenuListProps={{
+                  style: {
+                    backgroundColor: '#FFF',
+                    color: '#333',
+                  },
+                }}
               >
-                <MenuItem onClick={handleProfile} >Profile Setting</MenuItem>
-                <MenuItem onClick={handleLogout}>Sign Out</MenuItem>
+                <MenuItem onClick={handleProfile}>
+                  <ListItemIcon>
+                    <AccountCircleIcon sx={{ color: '#333' }} />
+                  </ListItemIcon>
+                  <Typography variant="inherit">Profile Setting</Typography>
+                </MenuItem>
+                <MenuItem onClick={handleLogout}>
+                  <ListItemIcon>
+                    <ExitToAppIcon sx={{ color: '#333' }} />
+                  </ListItemIcon>
+                  <Typography variant="inherit">Sign Out</Typography>
+                </MenuItem>
               </Menu>
             </>
           ) : (

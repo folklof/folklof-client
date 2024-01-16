@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   Box,
   Typography,
@@ -44,25 +44,25 @@ const BookList: React.FC<BookListProps> = ({ books }) => {
     BookWithRating[]
   >([]);
 
-  useEffect(() => {
-    const fetchRatingsForBooks = async () => {
-      const updatedBooks: BookWithRating[] = await Promise.all(
-        books.map(async (book) => {
-          const ratings: RatingResponse | null = await fetchRatings(book.ID);
-          const avgRatingAsString: string | undefined =
-            ratings?.data.avgRating?.toString();
-          return ratings
-            ? { ...book, avgRating: avgRatingAsString }
-            : { ...book };
-        })
-      );
-      setBookListWithRatings(updatedBooks);
-    };
+  const fetchRatingsForBooks = useCallback(async () => {
+    const updatedBooks: BookWithRating[] = await Promise.all(
+      books.map(async (book) => {
+        const ratings: RatingResponse | null = await fetchRatings(book.ID);
+        const avgRatingAsString: string | undefined =
+          ratings?.data.avgRating?.toString();
+        return ratings
+          ? { ...book, avgRating: avgRatingAsString }
+          : { ...book };
+      })
+    );
+    setBookListWithRatings(updatedBooks);
+  }, [books]);
 
+  useEffect(() => {
     if (books.length > 0) {
       fetchRatingsForBooks();
     }
-  }, [books]);
+  }, [books, fetchRatingsForBooks]);
 
   useEffect(() => {
     const loadImage = (src: string) => {

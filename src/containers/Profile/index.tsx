@@ -4,13 +4,12 @@ import axios from 'axios';
 import { Avatar, Typography, Grid, Box, TextField, IconButton, Snackbar, Tooltip } from "@mui/material";
 import MuiAlert from "@mui/material/Alert";
 import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
+import { BASE_URL } from "../../utils/BaseURL";
 import CloseIcon from '@mui/icons-material/Close';
 import { UserRootState } from "../../types";
 import { setUserProfile } from "../../store/userSlice";
 import { PrimaryButton } from "../../components";
 import styles from './Profile.module.scss';
-
-const baseURL = import.meta.env.VITE_BASE_URL;
 
 const Profile: React.FC = () => {
   const userProfile = useSelector((state: UserRootState) => state.user.user);
@@ -74,7 +73,8 @@ const Profile: React.FC = () => {
 
       try {
         setIsLoading(true);
-        const response = await axios.put(`${baseURL}/users/${userProfile?.ID}`, {
+
+        const response = await axios.put(`${BASE_URL}/users/${userProfile?.ID}`, {
           ...updatedUserData
         });
 
@@ -105,7 +105,7 @@ const Profile: React.FC = () => {
       const formData = new FormData();
       formData.append("image_file", file);
       try {
-        const awsResponse = await axios.post(`${baseURL}/users/profile/image/${userProfile?.ID}`, formData, {
+        const awsResponse = await axios.post(`${BASE_URL}/users/profile/image/${userProfile?.ID}`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
@@ -113,8 +113,7 @@ const Profile: React.FC = () => {
 
         if (awsResponse.data.success) {
           const awsImageURL = awsResponse.data.data.image_link;
-
-          const updateUserResponse = await axios.put(`${baseURL}/users/${userProfile?.ID}`, {
+          const updateUserResponse = await axios.put(`${BASE_URL}/users/${userProfile?.ID}`, {
             avatar: awsImageURL,
           });
 
