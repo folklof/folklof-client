@@ -97,6 +97,10 @@ const BookDetail: React.FC<BookDetailProps> = ({ bookId }) => {
                     width: "33vw",
                     fontSize: "1.3rem",
                     color: "black",
+                    "@media (max-width: 900px)": {
+                      fontSize: "1.1rem",
+                      width: "60vw"
+                    },
                     "@media (max-width: 768px)": {
                       fontSize: "1.2rem",
                       width: "60vw"
@@ -169,6 +173,10 @@ const BookDetail: React.FC<BookDetailProps> = ({ bookId }) => {
                     marginTop: "-7px",
                     fontSize: "1.2rem",
                     color: "black",
+                    "@media (max-width: 900px)": {
+                      fontSize: "1.1rem",
+                      width: "60vw"
+                    },
                   },
                 }}
               >

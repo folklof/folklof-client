@@ -87,7 +87,7 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ bookId, onNewReview }) => {
     <Box
       sx={{
         width: "81.5vw",
-        margin: "2vw 10vw 0vw 9vw",
+        margin: "5vw 5vw 1vw 8vw",
         padding: 5,
         border: '1px solid #f1f1f13d',
         backgroundColor: "transparent",

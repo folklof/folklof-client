@@ -2,7 +2,7 @@
   display: flex;
   justify-content: left;
   align-items: center;
-  margin-left: 8.8vw;
+  margin: 0vw 5vw 1vw 8vw;
 }
 
 .accordion {
@@ -13,6 +13,10 @@
   padding: 10px;
   padding-left: 30px;
   & .accordionDetails {
+    @media (max-width: 900) {
+      flex-direction: column-reverse;
+      padding: 0;
+    }
     @media (max-width: 768px) {
       flex-direction: column-reverse;
       padding: 0;
@@ -29,10 +33,21 @@
   & .label {
     width: 10vw;
     font-size: 1.3rem;
+    @media (max-width: 900px) {
+      width: 20vh;
+      font-size: 1rem;
+    }
     @media (max-width: 768px) {
       width: 20vh;
       font-size: 1rem;
     }
+  }
+  @media (max-width: 900px) {
+    flex-direction: column;
+    gap: 0;
+    padding: 0;
+    align-items: start;
+    margin-bottom: 10px;
   }
   @media (max-width: 768px) {
     flex-direction: column;
@@ -49,6 +64,10 @@
     width: 35vw;
     height: 6vh;
     flex-direction: row;
+    @media (max-width: 900px) {
+      width: 42vh;
+      height: 4vh;
+    }
     @media (max-width: 768px) {
       width: 31vh;
       height: 5vh;
@@ -65,6 +84,10 @@
     object-fit: cover;
     border-radius: 10px;
     margin-top: 5px;
+    @media (max-width: 900px) {
+      width: 31vh;
+      margin-bottom: 10px;
+    }
     @media (max-width: 768px) {
       width: 31vh;
     }
@@ -76,6 +99,14 @@
     width: 9.38vw;
     height: 6vh;
     align-items: center;
+    @media (max-width: 900px) {
+      width: 31vh;
+      height: 4vh;
+      margin-bottom: 20px;
+      flex-direction: row;
+      padding-top: 5px;
+      justify-content: center;
+    }
     @media (max-width: 768px) {
       width: 31vh;
       height: 5vh;
