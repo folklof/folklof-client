@@ -58,7 +58,6 @@ const NewRelease: React.FC = () => {
             sx={{
               display: "flex",
               justifyContent: "center",
-              marginLeft: "35px",
               overflowX: "none",
               flexWrap: "wrap",
             }}

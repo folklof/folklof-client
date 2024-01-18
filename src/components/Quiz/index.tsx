@@ -185,8 +185,13 @@ const Quiz: React.FC<QuizProps> = ({ bookId }) => {
         </Typography>
         <Typography
           variant="h4"
-          sx={{ fontSize: "1.1rem" }}
+          sx={{ fontSize: "1.1rem" ,
+             "@media (max-width: 768px)": {
+              fontSize: "0.8rem",
+          }
+        }}
           className={styles.quizTitle}
+          
         >
           Wrong Attempts : {answerAttempt}/2
         </Typography>

@@ -57,7 +57,7 @@ const BookDetail: React.FC<BookDetailProps> = ({ bookId }) => {
         className={styles.accordion}
         style={{
           backgroundColor: "rgba(242, 242, 242, 0.9)",
-          borderRadius: "10px",
+          borderRadius: "20px",
           color: "black",
         }}
       >
@@ -71,7 +71,6 @@ const BookDetail: React.FC<BookDetailProps> = ({ bookId }) => {
             variant="h4"
             sx={{
               textAlign: "center",
-              fontSize: "1.7rem",
             }}
           >
             Book Details
@@ -102,8 +101,8 @@ const BookDetail: React.FC<BookDetailProps> = ({ bookId }) => {
                       width: "60vw"
                     },
                     "@media (max-width: 768px)": {
-                      fontSize: "1.2rem",
-                      width: "60vw"
+                      fontSize: "1rem",
+                      width: "60vw",
                     },
                   },
                 }}
@@ -122,6 +121,7 @@ const BookDetail: React.FC<BookDetailProps> = ({ bookId }) => {
                     InputProps={{ readOnly: true }}
                     className={styles.readOnlyTextField}
                     value={bookDetails?.title}
+                    multiline={true}
                   />
                 </Box>
                 <Box className={styles.bookDetailsText}>
@@ -187,7 +187,7 @@ const BookDetail: React.FC<BookDetailProps> = ({ bookId }) => {
                     alt={`cover image ${bookDetails.title}`}
                   />
                 </Box>
-                <Box>
+                <Box sx={{display: "flex", flexWrap:"wrap", justifyContent:"center", gap: "20px"}}>
                   <TextField
                     InputProps={{ readOnly: true }}
                     className={styles.readOnlyText}

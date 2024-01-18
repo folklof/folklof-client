@@ -50,7 +50,7 @@ const Sidebar: React.FC<SidebarProps> = ({
   };
 
   const sidebarContent = (
-    <Box className={styles.sidebarContainer} sx={{ backgroundColor: 'transparent' }}>
+    <Box className={styles.sidebarContainer} sx={{ backgroundColor: 'transparent'}}>
       <Typography variant="h5" sx={{ color: 'white', mb: 2 }}>Filter by</Typography>
 
       <Accordion sx={{ backgroundColor: 'transparent', color: 'white' }}>

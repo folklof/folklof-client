@@ -142,12 +142,12 @@ const AudioBookPlayer: React.FC = () => {
   if (isError) return <div>Error: {getErrorMessage(error)}</div>;
 
   return (
-    <Box
-      sx={{
-        width: "100%",
-        padding: "5vw 5vw 1vw 7vw",
-        overflow: "hidden",
-      }}
+    <Box className={styles.WrapperContainer}
+      // sx={{
+      //   width: "100%",
+      //   padding: "5vw 8vw",
+      //   overflow: "hidden",
+      // }}
     >
       <Widget>
         <audio ref={audioRef} src={bookData?.audio_link} preload="metadata" />
@@ -179,7 +179,7 @@ const AudioBookPlayer: React.FC = () => {
                 }}
               />
             </Box>
-            <Typography variant="h5" noWrap sx={{ textAlign: "center" }}>
+            <Typography variant="h5"sx={{ textAlign: "center" }}>
               {bookData?.title}
             </Typography>
             <Slider
@@ -227,7 +227,7 @@ const AudioBookPlayer: React.FC = () => {
             //   borderRadius: "20px",
             // }}
           >
-            <Typography variant="h4" noWrap sx={{ textAlign: "center" }}>
+            <Typography variant="h4" noWrap sx={{ textAlign: "center", marginBottom: "10px" }}>
               {bookData?.title}
             </Typography>
             <Typography

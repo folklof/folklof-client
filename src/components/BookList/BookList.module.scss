@@ -3,6 +3,9 @@
   flex-direction: column;
   gap: 16px;
   padding: 2vw;
+  @media (max-width: 500px) {
+    padding: 0;
+  }
 }
 
 .bookItem {
@@ -15,10 +18,14 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
   margin-bottom: 16px;
+  @media (max-width: 500px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
   @media (max-width: 768px) {
     flex-direction: column;
-    align-items: center;
   }
+  
 }
 
 .bookCover {
@@ -45,6 +52,7 @@
 .ratingContainer {
   display: flex;
   gap: 10px;
+  margin-bottom: 4vh;
 }
 
 .boxTypography {

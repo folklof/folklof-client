@@ -1,14 +1,17 @@
 .container {
   height: 100%;
-  padding: 10px 40px 100px 40px;
+  padding: 5vw 2vw;
 
   .header {
     justify-content: center;
     text-align: center;
     align-items: center;
     color: white;
-    margin: 20px 0px 0px 0px;
-    font-size: 40px;
+    margin: 0 5vh 5vh;
+    font-size: 28px;
+    @media (max-width: 768px) {
+      margin: 8vh 2vh 5vh;
+    }
   }
 
   .items {

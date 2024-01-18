@@ -3,7 +3,12 @@ import { Box, Typography } from "@mui/material";
 
 const PrivacyPolicy: React.FC = () => {
   return (
-    <Box sx={{ padding: "10vh" }}>
+    <Box sx={{
+      padding: "10vh",
+      "@media (max-width: 768px)": {
+        padding: "5vh 2vh",
+      }
+    }}>
       <Typography variant="h4" sx={{ color: "white", textAlign: "center" }}>
         Privacy Policy
       </Typography>
