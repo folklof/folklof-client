@@ -19,7 +19,28 @@ export interface BookAttributes {
     name: string;
     desc: string;
   };
-  isLoading?: boolean; // Optional isLoading attribute
+  user: {
+    role_id: number;
+    username: string;
+  };
+
+  isLoading?: boolean;
+}
+
+export interface PopularBook {
+  book_id: string;
+  book?: {
+    title: string;
+    category: {
+      name: string;
+    };
+    cover_image: string;
+    user: {
+      role_id: number;
+      username: string;
+    };
+  };
+  avgRating?: string;
 }
 
 export interface ICategory {
@@ -47,7 +68,7 @@ export interface QuizProps {
 }
 
 export interface BookWithRating extends BookAttributes {
-  avgRating?: number;
+  avgRating?: string;
   totalBookReviews?: number;
 }
 
@@ -93,7 +114,7 @@ export interface FavouriteBookDetails {
   audio_link: string;
   cover_image: string;
   created_date: string;
-  avgRating?: number;
+  avgRating?: string;
 }
 
 export interface FavouriteBook {
@@ -118,7 +139,7 @@ export interface BookDetails {
   audio_link: string;
   cover_image: string;
   created_date: string;
-  avgRating?: number;
+  avgRating?: string;
 }
 
 export interface LibraryBook {
@@ -154,6 +175,9 @@ export interface UserProfile {
   age: number | null;
   avatar: string;
   created_date: string;
+  role?: {
+    name: string;
+  };
 }
 
 //book card
@@ -162,6 +186,9 @@ export interface BookCardProps {
   title: string;
   category: string;
   imageUrl: string;
+  author: string;
+  avgRating?: string;
+  iconRole?: number;
 }
 
 // featured card
@@ -170,4 +197,21 @@ export interface FeatureCardProps {
   description: string;
   imageUrl: string;
   imageAlt: string;
+}
+
+export interface ImageProps {
+  imgUrl: string;
+  styleName: string;
+  styleName2?: string;
+  alt: string;
+}
+
+export interface UserRootState {
+  user: {
+    user: UserProfile | null;
+  };
+}
+
+export interface MesageBackdrop {
+  message: string;
 }

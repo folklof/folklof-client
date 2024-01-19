@@ -1,6 +1,148 @@
 .booksContainer {
-  // Apply your global container styles here
   padding: 20px;
   box-sizing: border-box;
   overflow: hidden;
+  margin-left: -6px !important;
+  min-height: 100vh;
+}
+
+.bookPageContainer {
+  padding: 20px;
+  box-sizing: border-box;
+
+  @media(max-width: 500px){
+    height: 80vh;
+    padding: 0;
+    overflow-y: scroll;
+    overflow-x: hidden;
+  }
+}
+
+.sortingContainer {
+  display: flex;
+  justify-content: flex-end;
+  margin: 10vh 2vh 0 0;
+  align-items: center;
+  // padding: 0 75px 0 50px;
+
+  @media (max-width: 768px) {
+    margin-top: 0;
+    margin-bottom:  2vh;
+    justify-content: flex-start;
+  }
+
+  @media (max-width: 655px) {
+    padding: 0 30px 0 30px;
+    align-items: flex-start;
+  }
+
+  @media (max-width: 500px) {
+    padding: 0 30px 0 10px;
+  }
+
+  .sorting {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+
+    @media (max-width: 500px) {
+      align-items: none;
+    }
+  }
+}
+
+.paginationWrapper {
+  display: flex;
+  width: 70vw;
+  justify-content: center;
+
+  @media(max-width: 899px){
+    width: 100vw;
+  }
+
+  @media(max-width: 768px){
+    width: 90vw;
+  }
+
+
+  @media(max-width: 500px){
+    width: 86vw;
+  }
+}
+
+.paginationContainer {
+  display: flex;
+  margin-top: 20px;
+  justify-content: center;
+  align-self: center;
+  gap: 2px;
+
+  @media (max-width: 655px) {
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+.sortSelect {
+  background-color: #efefef;
+  border-radius: 4px;
+  padding: 0 10px;
+  max-height: 45px;
+
+  @media(max-width: 655px){
+    margin-top: 7px;
+  }
+}
+
+.sortSelect {
+  .MuiSelect-select {
+    padding-right: 5px;
+  }
+
+  .MuiSvgIcon-root {
+    color: #000000;
+  }
+}
+
+.limitSelect {
+  border-radius: 4px;
+  padding: 0 !important;
+  background-color: #efefef;
+  border: none;
+}
+
+.limitSelect {
+  .MuiSelect-select {
+    padding-right: 5px;
+  }
+
+  .MuiSvgIcon-root {
+    color: #000000;
+  }
+}
+
+.bookPageContainer::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  background-color: #f5f5f5;
+}
+
+.bookPageContainer::-webkit-scrollbar {
+  width: 0px;
+  background-color: #f5f5f5;
+}
+
+.bookPageContainer::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background-color: #555;
+}
+
+.noBooksContainer {
+  padding: 30vh 15vh;
+}
+
+.noBooksText {
+  color: rgb(29, 103, 214);
+  padding: 1vh 0;
 }

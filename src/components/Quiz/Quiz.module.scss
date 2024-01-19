@@ -1,44 +1,52 @@
 .quizBox {
-    max-width: 80vw;
-    margin: auto;
+    max-width: 81.5vw;
+    margin: 5vw 5vw 1vw 8vw;
     padding: 3;
     background-color: #f1f1f13d;
     border: 1px solid #227078;
     border-radius: 20px;
+    position: relative;
+    margin-top: 4vh;
+  }
+
+  .quizHead {
+    display: flex;
+    justify-content: space-between;
   }
   
-  .quizTitle {
-    color: white;
-    margin-bottom: 6;
-    padding: 20px;
-  }
-  
-  .quizFormControl {
-    margin-bottom: 6;
-    padding: 20px;
-  
-    .formLabel {
+    .quizTitle {
       color: white;
-      margin-bottom: 1;
-      &.Mui-focused {
+      margin-bottom: 6;
+      padding: 20px;
+      font-size: 1.2rem;
+    }
+    
+    .quizFormControl {
+      margin-bottom: 6;
+      padding: 20px;
+    
+      .formLabel {
         color: white;
+        margin-bottom: 1;
+        &.Mui-focused {
+          color: white;
+        }
+      }
+    
+      .radioGroup {
+        .MuiFormControlLabel-root {
+          margin-right: 4;
+        }
+    
+        .MuiRadio-root {
+          color: white;
+        }
+    
+        .Mui-checked {
+          color: #FDCC64;
+        }
       }
     }
-  
-    .radioGroup {
-      .MuiFormControlLabel-root {
-        margin-right: 4;
-      }
-  
-      .MuiRadio-root {
-        color: white;
-      }
-  
-      .Mui-checked {
-        color: #FDCC64;
-      }
-    }
-  }
   
   .submitBox {
     display: flex;

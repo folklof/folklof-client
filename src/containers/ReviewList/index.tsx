@@ -17,11 +17,11 @@ const ReviewList: React.FC<ReviewListProps> = ({ bookId, refresh }) => {
     const getReviews = async () => {
       // console.log(`Fetching reviews for bookId: ${bookId}`);
       setLoading(true);
-  
+
       try {
         const bookReviews = await fetchBookReviews(bookId);
         // console.log('Fetched reviews:', bookReviews);
-  
+
         if (bookReviews && bookReviews.length > 0) {
           setReviews(bookReviews);
         } else {
@@ -35,7 +35,7 @@ const ReviewList: React.FC<ReviewListProps> = ({ bookId, refresh }) => {
         setLoading(false);
       }
     };
-  
+
     if (bookId) {
       getReviews();
     } else {
@@ -45,28 +45,28 @@ const ReviewList: React.FC<ReviewListProps> = ({ bookId, refresh }) => {
     }
 
 
-  return () => {
-    setReviews([]); // Reset reviews when bookId changes
-    setError(null); // Reset any errors
-  };
-}, [bookId, refresh]);
-  
+    return () => {
+      setReviews([]); // Reset reviews when bookId changes
+      setError(null); // Reset any errors
+    };
+  }, [bookId, refresh]);
+
 
   if (isLoading) {
     return <Typography>Loading reviews...</Typography>;
   }
 
   if (error) {
-    return <Typography variant="h5" sx={{color:"white", opacity:"0.5", padding:"5vw 10vw"}}>{error}</Typography>;
+    return <Typography variant="h5" sx={{ color: "white", opacity: "0.5", padding: "5vw 10vw" }}>{error}</Typography>;
   }
 
   const bookTitle = reviews.length > 0 ? reviews[0].book.title : "Unknown Book";
 
   return (
-    <Box sx={{ bgcolor: 'transparent', color: 'white', p: 3, borderRadius: 2, padding:"8vw" }}>
+    <Box sx={{ bgcolor: 'transparent', color: 'white', p: 3, borderRadius: 2, padding: "8vw" }}>
       <Typography variant="h5" gutterBottom>
         What listeners say about {bookTitle}
-      </Typography>    
+      </Typography>
       {reviews.map((review) => (
         <Box key={review.ID} sx={{ my: 6 }}>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -83,7 +83,7 @@ const ReviewList: React.FC<ReviewListProps> = ({ bookId, refresh }) => {
           </Box>
           <Typography variant="h5">{review.title}</Typography>
           <Typography variant="body1">{review.description}</Typography>
-          <Divider sx={{borderColor:"#f1f1f13d", mt:"32px"}}/>
+          <Divider sx={{ borderColor: "#f1f1f13d", mt: "32px" }} />
         </Box>
       ))}
 

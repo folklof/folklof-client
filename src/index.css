@@ -1,5 +1,10 @@
+body {
+  position: relative;
+  min-height: 100%;
+  overflow-x: hidden;
+  }
+
 :root {
-  
   box-sizing: border-box;
   background-color: #0c0113;
 

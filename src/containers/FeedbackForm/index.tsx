@@ -86,12 +86,16 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ bookId, onNewReview }) => {
   return (
     <Box
       sx={{
-        maxWidth: "80vw",
-        margin: "10vw 9vw",
-        padding: 0,
+        width: "81.5vw",
+        margin: "5vw 5vw 1vw 8vw",
+        padding: 5,
+        border: '1px solid #f1f1f13d',
         backgroundColor: "transparent",
         borderRadius: 2,
         color: "white",
+        '@media (max-width: 768px)': {
+          marginTop: '4vh',
+        },
         "& .MuiTextField-root": {
           marginBottom: 2,
           backgroundColor: "#f1f1f13d",

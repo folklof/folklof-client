@@ -14,6 +14,8 @@ import {
 } from "@mui/material";
 import { PrimaryButton } from "../../components";
 import { UserProfile } from "../../types";
+import { useDispatch } from "react-redux";
+import { setUserProfile } from "../../store/userSlice";
 
 const UserAuth: React.FC = () => {
   const navigate = useNavigate();
@@ -22,11 +24,14 @@ const UserAuth: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
   const [age, setAge] = useState("");
   const [ageError, setAgeError] = useState(false);
-  const [snackbarOpen, setSnackbarOpen] = useState(false); // State for Snackbar
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+
+  const dispatch = useDispatch();
 
   // Fetch user profile
   const { isLoading } = useQuery<UserProfile>("userProfile", getUserProfile, {
     onSuccess: (data) => {
+      dispatch(setUserProfile(data));
       setUser(data);
       if (data.age === null || data.age === undefined) {
         setShowModal(true);
@@ -48,9 +53,10 @@ const UserAuth: React.FC = () => {
     try {
       setAgeError(false);
       const updatedUser = await updateUserAge(user?.ID || "", ageNum);
-      queryClient.setQueryData("userProfile", updatedUser);
+      dispatch(setUserProfile(updatedUser.data));
+      queryClient.setQueryData("userProfile", updatedUser.data);
       setShowModal(false);
-      setSnackbarOpen(true); // Open the Snackbar
+      setSnackbarOpen(true);
 
       // Redirect to dashboard after a delay
       setTimeout(() => {
@@ -82,7 +88,7 @@ const UserAuth: React.FC = () => {
             boxShadow: "none",
           },
         }}
-        onClose={() => {}}
+        onClose={() => { }}
       >
         <DialogContent sx={{ color: "white" }}>
           <Typography variant="h5">

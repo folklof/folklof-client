@@ -1,86 +1,119 @@
 .bookList {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    padding: 2vw;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 2vw;
+  @media (max-width: 500px) {
+    padding: 0;
+  }
 }
 
 .bookItem {
-    display: flex;
-    align-items: center;
-    // width: 85vw;
-    gap: 20px;
-    padding: 16px;
-    background-color: tr;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  // width: 85vw;
+  gap: 20px;
+  padding: 16px;
+  background-color: tr;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  margin-bottom: 16px;
+  @media (max-width: 500px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+  
 }
 
 .bookCover {
-    width: 15vw;
-    height: 15vw;
-    object-fit: cover;
-    margin-right: 16px;
-    border-radius: 4px;
+  width: 15vw;
+  height: 15vw;
+  object-fit: cover;
+  margin-right: 16px;
+  border-radius: 4px;
+  @media (max-width: 768px) {
+    width: 75vw;
+    height: 55vw;
+  }
 }
 
 .bookDetails {
-    display: flex;
-    flex-direction: column;
-    height: 15vw;
-    flex: 1;
-    color: #EFEFEF;
-    justify-content: space-between;
+  display: flex;
+  flex-direction: column;
+  height: 15vw;
+  flex: 1;
+  color: #efefef;
+  justify-content: space-between;
+}
+
+.ratingContainer {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 4vh;
+}
+
+.boxTypography {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 5px;
+}
+
+.boxTypography > * {
+  white-space: nowrap;
 }
 
 .bookTitle {
-    display: -webkit-box;
-    -webkit-line-clamp: 2; // Number of lines to show
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; // Number of lines to show
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.buttonWrapper {
+  // margin-left: 15vw;
+  display: flex;
+  flex-direction: column;
+  gap: 2vh;
+  @media (max-width: 768px) {
+      display: none;
   }
-
-.sortByContainer {
-    display: flex;
-    justify-content: flex-end;
-    margin-bottom: 16px;
 }
 
-.sortSelect {
-    background-color: #EFEFEF;
-    border-radius: 4px; // Optionally round corners of the select
-    padding: 0 32px; // Padding inside the select
-    max-height: 45px;
-}
+.buttonWrapper1 {
+  // margin-left: 15vw;
+  display: flex;
+  flex-direction: column;
+  font-size: 40px;
+  margin-right: 16px;
+  gap: 4px;
+  @media (min-width: 768px) {
+    display: none;
+  }
+  @media (max-width: 768px) {
+    flex-direction: row;
+  }
+} 
 
-.sortSelect {
-    .MuiSelect-select {
-        padding-right: 8px; // Adjusts padding for the select element
-    }
-
-    .MuiSvgIcon-root {
-        color: #000000; // Color for the dropdown icon
-    }
-}
-
-.buttonWrapper{
-    // margin-left: 15vw;
-    display: flex;
-    flex-direction: column;
-    gap: 2vh;
+.iconButtonPrimary1 {
+    border-radius: 50px 10px 10px 50px !important;
 }
 
 .paginationContainer {
-    display: flex;
-    justify-content: center; // Centers the pagination component
-    padding: 16px; // Adds some padding around the pagination component
-    background-color: transparent; // Sets the background color to dark
-    // .MuiPagination-ul {
-    //   // Additional styling for the pagination component if needed
-    // }
-  }
+  display: flex;
+  justify-content: center; // Centers the pagination component
+  padding: 16px; // Adds some padding around the pagination component
+  background-color: transparent; // Sets the background color to dark
+  // .MuiPagination-ul {
+  //   // Additional styling for the pagination component if needed
+  // }
+}
 
+.bookRatings {
+  display: flex;
+}
 
 // Additional styles for buttons and other elements can be added here

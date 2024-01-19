@@ -1,4 +1,4 @@
-import { createTheme } from "@mui/material/styles";
+import { createTheme } from "@mui/material";
 
 // Extending the TypographyVariants interface
 declare module "@mui/material/styles" {
@@ -14,7 +14,7 @@ declare module "@mui/material/styles" {
 const theme = createTheme({
   typography: {
     logotype: {
-      fontFamily: "abril-display, serif",
+      fontFamily: "eixample-dip, serif",
       fontWeight: 700,
       fontStyle: "normal",
       fontSize: "1.8rem",
@@ -28,18 +28,27 @@ const theme = createTheme({
     h4: {
       fontFamily: "eixample-dip, sans-serif",
       fontWeight: 700,
+      '@media (max-width:768px)': {
+        fontSize: '1.2rem',
+      }
     },
 
     h5: {
       fontFamily: "eixample-dip, sans-serif",
       fontWeight: 700,
       fontSize: "1.5rem",
+      '@media (max-width:768px)': {
+        fontSize: '1.2rem',
+      }
     },
 
     h6: {
       fontFamily: "elza-text, sans-serif",
       fontWeight: 400,
       fontSize: "1.5rem",
+      '@media (max-width:768px)': {
+        fontSize: '1rem',
+      }
     },
 
     body1: {

@@ -1,18 +1,35 @@
-import React from 'react';
-import { Typography, Card, CardMedia, CardContent } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { Typography, Card, CardMedia, CardContent, Skeleton } from '@mui/material';
 import styles from './FeatureCard.module.scss';
 import { FeatureCardProps } from '../../types';
 
+
 const FeatureCard: React.FC<FeatureCardProps> = ({ title, description, imageUrl, imageAlt }) => {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const image = new Image();
+    image.src = imageUrl;
+    image.onload = () => setLoading(false);
+  }, [imageUrl]);
+
   return (
     <div className={styles.featureCardContainer}>
     <Card className={styles.featureCard}>
-      <CardMedia
-        component="img"
-        image={imageUrl}
-        alt={imageAlt}
-        className={styles.featureImage}
-      />
+      {loading ? (
+        <Skeleton
+          className={styles.featureImage2}
+          variant="rounded"
+          sx={{ bgcolor: "#15202B" }}
+        />
+      ):(
+        <CardMedia
+          component="img"
+          image={imageUrl}
+          alt={imageAlt}
+          className={styles.featureImage}
+        />
+      )}      
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
           {title}

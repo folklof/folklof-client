@@ -23,11 +23,19 @@ const AudioBookPlayer: React.FC = () => {
   } = useQuery(["bookData", id], () => fetchBookData(id!), { enabled: !!id });
 
   const FormattedText = ({ text }: { text: string }) => {
-    const cleanText = text.replace(/\\"/g, '"');
+    // Function to decode the text
+    const decodeModelText = (modelText: string) => {
+      // Replace escaped newlines and quotes
+      const decodedText = modelText.replace(/\\n/g, "\n").replace(/\\"/g, '"');
+      return decodedText;
+    };
+
+    // Decode the text
+    const cleanText = decodeModelText(text);
 
     return (
       <>
-        {cleanText.split("\\n").map((line, index) => (
+        {cleanText.split("\n").map((line, index) => (
           <React.Fragment key={index}>
             {line}
             <br />
@@ -81,6 +89,7 @@ const AudioBookPlayer: React.FC = () => {
     }
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleSliderChange = (_: any, newValue: number | number[]) => {
     const audio = audioRef.current;
     const newTime = Array.isArray(newValue) ? newValue[0] : newValue;
@@ -133,41 +142,31 @@ const AudioBookPlayer: React.FC = () => {
   if (isError) return <div>Error: {getErrorMessage(error)}</div>;
 
   return (
-    <Box
-      sx={{
-        width: "100%",
-        padding: "5vw 8vw",
-        marginBottom: "10vh",
-        overflow: "hidden",
-      }}
+    <Box className={styles.WrapperContainer}
+      // sx={{
+      //   width: "100%",
+      //   padding: "5vw 8vw",
+      //   overflow: "hidden",
+      // }}
     >
       <Widget>
         <audio ref={audioRef} src={bookData?.audio_link} preload="metadata" />
         {/* Main container for media player and text */}
-        <Box
-          sx={{ display: "flex", gap: "35px", width: "100%", height: "65vh" }}
-        >
+        <Box className={styles.widget}>
           {/* Media Player Container */}
           <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              maxWidth: "50%",
-              backgroundColor: "rgba(242,242,242, 0.9)",
-              borderRadius: "15px",
-              backdropFilter: "blur(40px)",
-            }}
+            className={styles.mediaPlayerContainer}
+            // sx={{
+            //   display: "flex",
+            //   flexDirection: "column",
+            //   alignItems: "center",
+            //   maxWidth: "50%",
+            //   backgroundColor: "rgba(242,242,242, 0.9)",
+            //   borderRadius: "15px",
+            //   backdropFilter: "blur(40px)",
+            // }}
           >
-            <Box
-              sx={{
-                width: "25vw",
-                height: "25vw",
-                overflow: "hidden",
-                borderRadius: "15px",
-                marginBottom: "1rem",
-              }}
-            >
+            <Box className={styles.imgContainer}>
               <img
                 src={bookData?.cover_image}
                 alt={bookData?.title}
@@ -180,7 +179,7 @@ const AudioBookPlayer: React.FC = () => {
                 }}
               />
             </Box>
-            <Typography variant="h5" noWrap sx={{ textAlign: "center" }}>
+            <Typography variant="h5"sx={{ textAlign: "center" }}>
               {bookData?.title}
             </Typography>
             <Slider
@@ -218,42 +217,23 @@ const AudioBookPlayer: React.FC = () => {
 
           {/* Text Container */}
           <Box
-            sx={{
-              Width: "100%",
-              overflow: "hidden",
-              padding: "45px",
-              backdropFilter: "blur(40px)",
-              backgroundColor: "rgba(242,242,242, 0.9)",
-              borderRadius: "20px",
-            }}
+            className={styles.textContainer}
+            // sx={{
+            //   Width: "100%",
+            //   overflow: "hidden",
+            //   padding: "45px",
+            //   backdropFilter: "blur(40px)",
+            //   backgroundColor: "rgba(242,242,242, 0.9)",
+            //   borderRadius: "20px",
+            // }}
           >
-            <Typography variant="h4" noWrap sx={{ textAlign: "center" }}>
+            <Typography variant="h4" noWrap sx={{ textAlign: "center", marginBottom: "10px" }}>
               {bookData?.title}
             </Typography>
             <Typography
               variant="h6"
               letterSpacing={-0.25}
-              sx={{
-                width: "50vw",
-                maxHeight: "50vh",
-                mt: 2,
-                paddingLeft: 0,
-                paddingRight: 6,
-                overflow: "auto",
-                "&::-webkit-scrollbar": {
-                  width: "10px",
-                },
-                "&::-webkit-scrollbar-track": {
-                  backgroundColor: "#f1f1f1",
-                },
-                "&::-webkit-scrollbar-thumb": {
-                  backgroundColor: "#515CB1",
-                  borderRadius: "5px",
-                  "&:hover": {
-                    backgroundColor: "#515CB1",
-                  },
-                },
-              }}
+              className={styles.typographyCustom}
             >
               <FormattedText text={bookData ? bookData.desc : ""} />
             </Typography>

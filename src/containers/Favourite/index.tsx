@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {
-  Box,
-  Typography,
-  Rating,
-  Skeleton
-} from '@mui/material';
+import { Box, Typography, Rating, Skeleton } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import HeadsetIcon from '@mui/icons-material/Headset';
 import { fetchFavouriteBooks, removeFavouriteBook } from '../../api';
 import { PrimaryButton, SecondaryButton } from '../../components';
 import { FavouriteBook, FavouriteProps } from '../../types';
+import styles from './Favourite.module.scss';
 
 const FavouritePage: React.FC<FavouriteProps> = ({ onLoaded }) => {
   const navigate = useNavigate();
@@ -17,107 +15,102 @@ const FavouritePage: React.FC<FavouriteProps> = ({ onLoaded }) => {
 
   useEffect(() => {
     const loadFavouriteBooks = async () => {
-      setIsLoading(true);
       const books = await fetchFavouriteBooks();
       setFavouriteBooks(books);
-      setIsLoading(false);
       if (onLoaded) {
         onLoaded();
       }
     };
-
     loadFavouriteBooks();
-  }, []);
+  }, [onLoaded]);
+
+  useEffect(() => {
+    const loadImage = (src: string) => {
+      return new Promise<void>((resolve) => {
+        const image = new Image();
+        image.src = src;
+        image.onload = () => resolve();
+      });
+    };
+
+    const loadImages = async () => {
+      const promises = favouriteBooks.map((book) => loadImage(book.book.cover_image));
+      await Promise.all(promises);
+      setIsLoading(false);
+    };
+
+    if (favouriteBooks.length > 0) {
+      loadImages();
+    } else {
+      setIsLoading(false);
+    }
+  }, [favouriteBooks]);
 
   const handleListenNow = (bookId: string) => {
     navigate(`/book/${bookId}`);
   };
 
   const handleRemoveBook = async (favouriteId: string) => {
-    const response = await removeFavouriteBook(favouriteId);
-    if (response.success) {
+    try {
+      await removeFavouriteBook(favouriteId);
       setFavouriteBooks(prevBooks => prevBooks.filter(book => book.ID !== favouriteId));
+    } catch (error) {
+      console.error("Error while removing book:", error);
+      setIsLoading(false);
     }
   };
 
-  const renderSkeletons = () => {
-    return [...Array(3)].map((_, index) => (
-      <Box key={index} sx={{ display: "flex", mb: 2, padding: "1vw 4vw"}}>
-        <Skeleton variant="rectangular" width={100} height={100} sx={{ bgcolor: "#f1f1f13d" }}/>
-        <Box sx={{ ml: 2, flex: 1 }}>
-          <Skeleton variant="text" width="60%" sx={{ bgcolor: "#f1f1f13d" }}/>
-          <Skeleton variant="text" width="40%" sx={{ bgcolor: "#f1f1f13d" }}/>
-        </Box>
-        <Box sx={{ display: "flex", flexDirection: "column", alignItems: "start", gap:"16px" }}>
-          <Skeleton variant="rectangular" width={100} height={36} sx={{ bgcolor: "#f1f1f13d" }}/>
-          <Skeleton variant="rectangular" width={100} height={36} sx={{ bgcolor: "#f1f1f13d" }}/>
-        </Box>
+  const renderBooks = () => favouriteBooks.map(book => (
+    <Box key={book.ID} className={styles.bookItem}>
+      <img src={book.book.cover_image} alt={book.book.title} style={{ width: 120, height: 120, borderRadius: "10px" }} />
+      <Box className={styles.bookDetails}>
+        <Typography variant="h6">{book.book.title}</Typography>
+        <Rating name="read-only" value={parseFloat(book.book.avgRating ?? '') || 0} readOnly precision={0.5} />
+        <Typography variant="body2">Duration: {book.book.duration}</Typography>
+        <Typography variant="body2">Release date: {new Date(book.book.created_date).toLocaleDateString()}</Typography>
       </Box>
-    ));
-  };
+      <Box className={styles.buttonWrapper}>
+        <PrimaryButton text="Listen Now" onClick={() => handleListenNow(book.book.ID)} icon={<HeadsetIcon />} />
+        <SecondaryButton text="Remove" onClick={() => handleRemoveBook(book.ID)} icon={<DeleteIcon />} />
+      </Box>
+    </Box>
+  ));
 
-  if (isLoading) {
-    return (
-      <Box sx={{ bgcolor: "transparent", padding: "8vw"}}>
-        <Typography variant="h5" gutterBottom sx={{ color: 'white', mb:'5vh' }}>
-          Favourites
-        </Typography>
-        {renderSkeletons()}
+  const renderSkeletons = () => [...Array(3)].map((_, index) => (
+    <Box key={index} className={styles.bookItem}>
+      <Skeleton variant="rectangular" width={100} height={100} style={{ backgroundColor: "#f1f1f13d" }} />
+      <Box className={styles.bookDetails}>
+        <Skeleton variant="text" width="50%" style={{ backgroundColor: "#f1f1f13d" }} />
+        <Box>
+          <Skeleton variant="text" width="15%" style={{ backgroundColor: "#f1f1f13d" }} />
+          <Skeleton variant="text" width="15%" style={{ backgroundColor: "#f1f1f13d" }} />
+        </Box>
       </Box>
-    );
-  }
+      <Box className={styles.buttonWrapper}>
+        <Skeleton variant="rounded" width={180} height={36} style={{ backgroundColor: "#f1f1f13d" }} />
+        <Skeleton variant="rounded" width={180} height={36} style={{ backgroundColor: "#f1f1f13d" }} />
+      </Box>
+    </Box>
+  ));
 
   return (
-    <Box sx={{ bgcolor: "transparent", padding: "8vw"}}>
-      <Typography variant="h5" gutterBottom sx={{ color: 'white' }}>
+    <Box className={styles.favouriteContainer}>
+      <Typography variant="h5" gutterBottom className={styles.title}>
         Favourites
       </Typography>
-      <Box sx={{ mt: 0, p: 8}}>
-        {favouriteBooks.length > 0 ? (
-          favouriteBooks.map((book) => (
-            <Box key={book.ID} sx={{ display: "flex", mb: 6, color: 'white' }}>
-              <img
-                src={book.book.cover_image}
-                alt={book.book.title}
-                style={{ width: 100, height: 100 }}
-              />
-              <Box sx={{ ml: 2, flex: 1 }}>
-                <Typography variant="h6" sx={{ color: 'white' }}>{book.book.title}</Typography>
-                <Rating
-                  name="read-only"
-                  value={book.book.avgRating || 0}
-                  readOnly
-                  precision={0.5}
-                />
-                <Typography variant="body2" sx={{ color: 'white' }}>
-                  Duration: {book.book.duration}
-                </Typography>
-                <Typography variant="body2" sx={{ color: 'white' }}>
-                  Release date: {new Date(book.book.created_date).toLocaleDateString()}
-                </Typography>
-              </Box>
-              <Box sx={{ display: "flex", flexDirection: "column", alignItems: "start", gap:"16px" }}>
-                <PrimaryButton
-                  text="Listen Now"
-                  onClick={() => handleListenNow(book.book.ID)}
-                />
-                <SecondaryButton
-                  text="Remove"
-                  onClick={() => handleRemoveBook(book.ID)}
-                />
-              </Box>
-            </Box>
-          ))
-        ) : (
-          <Box sx={{ textAlign: 'center', padding:'10vw' }}>
-            <Typography variant="body1" sx={{ color: 'white' }}>
-              Your Favourite Stories
-              <br />
-              Find and add your favourite stories to see them here.
-            </Typography>
-          </Box>
-        )}
-      </Box>
+      {isLoading ? (
+        renderSkeletons()
+      ) : favouriteBooks.length > 0 ? (
+        renderBooks()
+      ) : (
+        <Box sx={{ textAlign: 'center', padding: '10vw' }}>
+          <Typography variant="body1" sx={{ color: 'white' }}>
+            Your Favourite Stories
+            <br />
+            Find and add your favourite stories to see them here.
+          </Typography>
+        </Box>
+      )}
     </Box>
   );
 };

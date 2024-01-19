@@ -1,17 +1,25 @@
 import React, { useState } from 'react';
-import { AppBar, Toolbar, Typography, Button, Container, Menu, MenuItem } from '@mui/material';
+import { useSelector, useDispatch } from 'react-redux';
+import { logoutUser as logoutUserRedux } from '../../store/userSlice';
+import { UserRootState } from '../../types';
+import { AppBar, Toolbar, Typography, Button, Container, Menu, MenuItem, Avatar } from '@mui/material';
 import { useNavigate } from "react-router-dom";
-import { useQuery, useQueryClient } from 'react-query';
-import { getUserProfile, logoutUser } from '../../api/auth';
+import { useQueryClient } from 'react-query';
+import { logoutUser } from '../../api/auth';
+import { getFirstAndSecondName } from '../../utils/Helper/GetFirstAndSecondName';
 
+import VerifiedIcon from '@mui/icons-material/Verified';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import ListItemIcon from '@mui/material/ListItemIcon';
 
 const TopNavbar: React.FC = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
+  const dispatch = useDispatch();
 
-  const { data: userProfile, isSuccess } = useQuery('userProfile', getUserProfile, {
-  });
+  const userProfile = useSelector((state: UserRootState) => state.user.user);
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const menuOpen = Boolean(anchorEl);
@@ -32,36 +40,58 @@ const TopNavbar: React.FC = () => {
     setAnchorEl(null);
   };
 
+  const handleProfile = async () => {
+    navigate('/profile');
+  };
+
   const handleLogout = async () => {
     await logoutUser();
+    dispatch(logoutUserRedux());
     queryClient.removeQueries('userProfile');
     navigate('/');
   };
-  
-
 
   return (
     <AppBar position="static" sx={{ backgroundColor: 'transparent', width: '100%', boxShadow: 'none' }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters sx={{ justifyContent: 'space-between' }}>
-          <Typography variant={"logotype" as any} noWrap sx={{ color: '#CFCFCF', fontWeight: 'bold', cursor: 'pointer' }} onClick={handleLogoClick}>
+          <Typography variant={"logotype" as never} noWrap sx={{ color: '#CFCFCF', fontWeight: 'bold', cursor: 'pointer' }} onClick={handleLogoClick}>
             folklof
           </Typography>
-          {isSuccess && userProfile ? (
+          {userProfile ? (
             <>
               <Button
-                sx={{ color: '#FFFFFF', fontWeight: 'bold', textTransform: 'none' }}
+                sx={{ marginTop: 1, color: '#FFFFFF', fontWeight: 'bold', textTransform: 'none' }}
                 onClick={handleMenuClick}
               >
-                {userProfile.username}
+                <Avatar src={userProfile.avatar} sx={{ width: 40, height: 40 }} />&ensp;
+                {getFirstAndSecondName(userProfile.username)}&ensp;
+                {userProfile.role_id === 3 && <VerifiedIcon sx={{ color: "#448aff" }} />}
               </Button>
               <Menu
+                disableScrollLock
                 anchorEl={anchorEl}
                 open={menuOpen}
                 onClose={handleMenuClose}
+                MenuListProps={{
+                  style: {
+                    backgroundColor: '#FFF',
+                    color: '#333',
+                  },
+                }}
               >
-                {/* <MenuItem onClick={() => navigate('/profile')}>Profile</MenuItem> */}
-                <MenuItem onClick={handleLogout}>Sign Out</MenuItem>
+                <MenuItem onClick={handleProfile}>
+                  <ListItemIcon>
+                    <AccountCircleIcon sx={{ color: '#333' }} />
+                  </ListItemIcon>
+                  <Typography variant="inherit">Profile Setting</Typography>
+                </MenuItem>
+                <MenuItem onClick={handleLogout}>
+                  <ListItemIcon>
+                    <ExitToAppIcon sx={{ color: '#333' }} />
+                  </ListItemIcon>
+                  <Typography variant="inherit">Sign Out</Typography>
+                </MenuItem>
               </Menu>
             </>
           ) : (

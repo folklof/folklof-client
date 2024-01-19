@@ -1,16 +1,33 @@
-import React from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { Box, Typography, Grid, Skeleton } from "@mui/material";
 import { BookCard } from "../../components";
 import { useQuery } from "react-query";
 import { fetchNewReleaseBooks } from "../../api/book/bookAPI";
-import { BookAttributes } from "../../types";
+import { BookAttributes, RatingResponse } from "../../types";
+import { fetchRatings } from "../../api";
+import { getFirstAndSecondName } from "../../utils/Helper/GetFirstAndSecondName";
 
 const NewRelease: React.FC = () => {
+  const [ratings, setRatings] = useState<Record<string, RatingResponse | null>>({});
   const {
     data: books = [],
     isLoading,
     isError,
   } = useQuery<BookAttributes[]>("new-release", fetchNewReleaseBooks);
+
+  const fetchAndSetRatings = useCallback(async () => {
+    const ratingsData: Record<string, RatingResponse | null> = {};
+    for (const book of books) {
+      const rating = await fetchRatings(book.ID);
+      ratingsData[book.ID] = rating;
+    }
+    setRatings(ratingsData);
+  }, [books]);
+
+  useEffect(() => {
+    fetchAndSetRatings();
+  }, [books, fetchAndSetRatings]);
+
 
   return (
     <Box
@@ -41,7 +58,6 @@ const NewRelease: React.FC = () => {
             sx={{
               display: "flex",
               justifyContent: "center",
-              marginLeft: "35px",
               overflowX: "none",
               flexWrap: "wrap",
             }}
@@ -58,6 +74,9 @@ const NewRelease: React.FC = () => {
                   title={book.title}
                   category={book.category.name}
                   imageUrl={book.cover_image}
+                  avgRating={String(ratings[book.ID]?.data.avgRating) || "0"} // Use the rating from state and convert it to a string
+                  iconRole={book.user.role_id}
+                  author={getFirstAndSecondName(book.user.username)}
                 />
               ))
             )}

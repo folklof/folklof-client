@@ -1,0 +1,65 @@
+.bookCard {
+  max-width: 253px;
+  background-color: transparent;
+  border-radius: 3px;
+  margin-right: 33px;
+
+  .bookCardMedia {
+    border-radius: 2px;
+    cursor: pointer;
+    height: 250px;
+    width: 250px;
+  }
+
+  .bookCardContent {
+    .title {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
+      cursor: pointer;
+      color: white;
+    }
+
+    .author {
+      color: white;
+      font-weight: 600;
+    }
+
+    .category {
+      color: white;
+      font-weight: 600;
+    }
+
+    .boxRating {
+      display: flex;
+      align-items: center;
+    }
+
+    .ratingNumber {
+      color: white;
+      padding-top: 4px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    max-width: 85%;
+    margin-right: 0;
+    margin-bottom: 3vh;
+
+    .bookCardMedia {
+      height: 20vh;
+      width: 80vw;
+    }
+
+    .bookCardContent {
+      .title {
+        font-size: 1rem;
+      }
+
+      .category {
+        font-size: 0.8rem;
+      }
+    }
+  }
+}

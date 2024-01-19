@@ -1,17 +1,36 @@
 import React, { useState, useEffect } from "react";
-import { AppBar, Toolbar, Typography, InputBase, Box } from "@mui/material";
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  InputBase,
+  Box,
+  IconButton,
+  Menu,
+  MenuItem
+} from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+import styles from './DashboardNavbar.module.scss';
 
 const DashboardNavbar: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
-  const [debounceTimer, setDebounceTimer] = useState<NodeJS.Timeout | null>(
-    null
-  );
+  const location = useLocation();
+  const [debounceTimer, setDebounceTimer] = useState<NodeJS.Timeout | null>(null);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+  
+  const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   const executeSearch = () => {
-    // console.log(`Navigating to search with title: ${searchTerm}`);
     navigate(`/search?title=${encodeURIComponent(searchTerm)}`);
   };
 
@@ -54,61 +73,71 @@ const DashboardNavbar: React.FC = () => {
         clearTimeout(debounceTimer);
       }
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchTerm]);
+
+  const isActive = (path: string) => location.pathname === path;
+
   return (
-    <AppBar
-      position="static"
-      sx={{
-        backgroundColor: "transparent",
-        boxShadow: "none",
-        padding: "0 10vw",
-      }}
-    >
-      <Toolbar sx={{ justifyContent: "center" }}>
-        <Typography
-          variant="body1"
-          sx={{ color: "white", marginRight: "15vw", cursor: "pointer" }}
-          onClick={navigateToLibrary}
+    <AppBar position="static" sx={{ backgroundColor: 'transparent', boxShadow: 'none' }} className={styles.dashboardNavbar}>
+      <Toolbar className={styles.toolbar}>
+        <IconButton
+          size="large"
+          edge="start"
+          color="inherit"
+          aria-label="menu"
+          sx={{ mr: 2, display: { xs: 'block', sm: 'none' } }}
+          onClick={handleMenu}
         >
-          Library
-        </Typography>
-        <Typography
-          variant="body1"
-          sx={{ color: "white", marginRight: "15vw", cursor: "pointer" }}
-          onClick={navigateToCategories}
-        >
-          Categories
-        </Typography>
-        <Typography
-          variant="body1"
-          sx={{ color: "white", marginRight: "10vw", cursor: "pointer" }}
-          onClick={navigateToFavourites}
-        >
-          Favourites
-        </Typography>
-        <Box sx={{ flexGrow: 1 }} />
-        <Box
-          sx={{
-            position: "relative",
-            borderRadius: "20px",
-            backgroundColor: "rgba(255, 255, 255, 0.15)",
-            "&:hover": { backgroundColor: "rgba(255, 255, 255, 0.25)" },
-            marginLeft: "auto",
-            width: "auto",
-            maxWidth: "300px",
+          <MenuIcon />
+        </IconButton>
+        <Menu
+          id="menu-appbar"
+          anchorEl={anchorEl}
+          anchorOrigin={{
+            vertical: 'top',
+            horizontal: 'right',
           }}
+          keepMounted
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'right',
+          }}
+          open={open}
+          onClose={handleClose}
+          disableScrollLock
         >
-          <Box
-            sx={{
-              padding: "0 16px",
-              height: "100%",
-              position: "absolute",
-              pointerEvents: "none",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
+          <MenuItem onClick={navigateToLibrary}>Library</MenuItem>
+          <MenuItem onClick={navigateToCategories}>Categories</MenuItem>
+          <MenuItem onClick={navigateToFavourites}>Favourites</MenuItem>
+        </Menu>
+
+        <Box sx={{ display: { xs: 'none', sm: 'flex' } }}>
+          <Typography
+            variant="body1"
+            className={`${styles.navItem} ${isActive('/library') ? styles.activeNavItem : ''}`}
+            onClick={navigateToLibrary}
           >
+            Library
+          </Typography>
+          <Typography
+            variant="body1"
+            className={`${styles.navItem} ${isActive('/categories') ? styles.activeNavItem : ''}`}
+            onClick={navigateToCategories}
+          >
+            Categories
+          </Typography>
+          <Typography
+            variant="body1"
+            className={`${styles.navItem} ${isActive('/favourites') ? styles.activeNavItem : ''}`}
+            onClick={navigateToFavourites}
+          >
+            Favourites
+          </Typography>
+        </Box>
+
+        <Box className={styles.searchBox}>
+          <Box className={styles.searchIcon}>
             <SearchIcon />
           </Box>
           <InputBase
@@ -116,15 +145,7 @@ const DashboardNavbar: React.FC = () => {
             value={searchTerm}
             onChange={handleInputChange}
             onKeyDown={handleKeyDown}
-            sx={{
-              marginRight: "10px",
-              color: "inherit",
-              width: "100%",
-              "& .MuiInputBase-input": {
-                padding: "8px 8px 8px calc(1em + 32px)",
-              },
-            }}
-            inputProps={{ "aria-label": "search" }}
+            className={styles.inputBase}
           />
         </Box>
       </Toolbar>
