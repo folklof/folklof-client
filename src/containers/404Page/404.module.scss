@@ -1,0 +1,54 @@
+.wrapper {
+    .notFoundContainer {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+      justify-content: center;
+      height: 90vh;
+      z-index: 1;
+  
+      &:before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border-radius: 20px; 
+        background: url(src/assets/404.webp) center/cover no-repeat;
+        opacity: 0.5;
+        z-index: -1;
+      }
+    }
+
+    .CardContainer {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        background-color: #89898965;
+        backdrop-filter: blur(10px);
+        height: 25vh;
+        padding: 2vh;
+        border-radius: 20px;
+
+        @media (max-width: 768px){
+            height: 35vh;
+            padding: 4vh;
+
+        }
+    }
+    
+    .notFoundTitle {
+      color: #dedede;
+      margin-bottom: 8px;
+      z-index: 2;
+    }
+    
+    .notFoundText {
+      color: #dedede;
+      z-index: 2;
+      margin-bottom: 32px;
+    }
+  }
+  
