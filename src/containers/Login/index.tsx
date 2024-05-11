@@ -48,7 +48,7 @@ const LoginPage: React.FC = () => {
                 />
                 <Typography variant="body2" className={styles.terms}>
                   By logging in to Folklof, you agree to our{" "}
-                  <a href="#">terms of use</a>.
+                  <a href="terms-of-use">terms of use</a>.
                 </Typography>
               </CardContent>
             </Card>

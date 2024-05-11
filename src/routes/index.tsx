@@ -1,7 +1,22 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { DashboardPage, LandingPage, LoginPage, AllCategoriesPage, BookDetailsPage, LibraryPage, FavouritePage, AuthPage, SearchPage, AboutUsPage, TermsOfUsePage, ProfilePage, OurTeamPage } from "../pages";
-import { ProtectedRoute } from '../services';
+import {
+  DashboardPage,
+  LandingPage,
+  LoginPage,
+  AllCategoriesPage,
+  BookDetailsPage,
+  LibraryPage,
+  FavouritePage,
+  AuthPage,
+  SearchPage,
+  AboutUsPage,
+  TermsOfUsePage,
+  ProfilePage,
+  OurTeamPage,
+  NotFoundPage
+} from "../pages";
+import { ProtectedRoute } from "../services";
 import PrivacyPolicyPage from "../pages/PrivacyPolicy";
 
 const AppRoutes: React.FC = () => {
@@ -26,6 +41,8 @@ const AppRoutes: React.FC = () => {
           <Route path="/favourites" element={<FavouritePage />} />
           <Route path="/profile" element={<ProfilePage />} />
         </Route>
+        {/* 404 Not Found Route */}
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </Router>
   );

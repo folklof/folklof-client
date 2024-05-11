@@ -15,7 +15,7 @@
 
   @media (max-width: 768px) {
     flex-direction: column;
-    height: 90vh;
+    height: 98vh;
   }
 }
 
@@ -73,6 +73,12 @@
   text-align: justify;
 
   @media (max-width: 768px) {
+    width: 80vw;
+    height: 40vh;
+    padding-right: 1rem; // paddingRight: 6
+  }
+
+  @media (max-width: 668px) {
     width: 72vw;
     height: 40vh;
     padding-right: 1rem; // paddingRight: 6

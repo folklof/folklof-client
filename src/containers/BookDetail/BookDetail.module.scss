@@ -90,7 +90,12 @@
       margin-bottom: 10px;
     }
     @media (max-width: 768px) {
-      width: 34vh;
+      width: 76vw;
+      height: 25vh;
+    }
+    @media (max-width: 698px) {
+      width: 72vw;
+      height: 35vh;
     }
   }
   & .readOnlyText {
